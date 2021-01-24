@@ -1,5 +1,5 @@
 from models.roles.RoleBase import RoleBase;
 
-class Peasant(RoleBase):
+class Werewolf(RoleBase):
     def __init__(self, role):
         super().__init__(role)

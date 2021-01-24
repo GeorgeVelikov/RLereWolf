@@ -34,6 +34,9 @@
     <Compile Include="models\roles\RoleBase.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="models\roles\Werewolf.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\roles\__init__.py">
       <SubType>Code</SubType>
     </Compile>
