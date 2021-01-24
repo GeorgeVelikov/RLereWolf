@@ -1,3 +1,5 @@
+from enum import Enum
+
 class WerewolfPlayerTypeEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;

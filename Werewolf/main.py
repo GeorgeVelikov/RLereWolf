@@ -1,5 +1,7 @@
 import gym
 
+from models.roles.Peasant import Peasant;
+
 def main():
     env = gym.make('CartPole-v0')
 
