@@ -1,10 +1,8 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
+import socket;
 
-import logging;
-import threading;
-
-IP = "localhost";
+IP = socket.gethostbyname(socket.gethostname());
 PORT = 8000;
 
 RESPONSE_OK = 200;
@@ -23,18 +21,18 @@ class ServerBase():
 
     @property
     def ServerAddress(self):
-        return " ".join(map(str, self.__serverAddress));
+        return ":".join(map(str, self.__serverAddress));
 
     def run(self):
         try:
             self.__serverThread.start();
-            logging.info("Server successfully started at " + self.ServerAddress);
+            print("Server successfully started at " + self.ServerAddress);
         except:
             raise;
 
     def stop(self):
         try:
             self.__serverThread._stop();
-            logging.info("Server successfully stopped at " + self.ServerAddress);
+            print("Server successfully stopped at " + self.ServerAddress);
         except:
             raise;
