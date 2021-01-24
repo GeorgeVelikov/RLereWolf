@@ -1,9 +1,7 @@
 import gym
 
 class WerewolfEnvironment(object):
-    metadata = {'render.modes': ['human']}
-
-    def __init__(self, arg1, arg2, arg3):
+    def __init__(self, configuration):
         super(CustomEnv, self).__init__()
         # Define action and observation space
         # They must be gym.spaces objects
