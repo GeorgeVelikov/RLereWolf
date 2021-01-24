@@ -1,2 +1,3 @@
 class Client(object):
-    pass;
+    def __init(self):
+        self.Name = str();

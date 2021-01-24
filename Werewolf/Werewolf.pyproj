@@ -21,10 +21,22 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="environment\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\Client.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\WerewolfPlayerTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="enums\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\ServerBase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
@@ -43,7 +55,10 @@
     <Compile Include="models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WerewolfEnvironment.py">
+    <Compile Include="game\Server.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="environment\WerewolfEnvironment.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -51,6 +66,8 @@
     <Folder Include="models\" />
     <Folder Include="enums\" />
     <Folder Include="models\roles\" />
+    <Folder Include="game\" />
+    <Folder Include="environment\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

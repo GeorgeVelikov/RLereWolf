@@ -2,6 +2,8 @@ import gym
 
 from models.roles.Peasant import Peasant;
 
+from game.Server import Server
+
 def main():
     env = gym.make('CartPole-v0')
 
