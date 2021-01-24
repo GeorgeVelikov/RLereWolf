@@ -2,7 +2,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 import socket;
 
-IP = socket.gethostbyname(socket.gethostname());
+# LAN IPv4 for now, I can connect from LAN devices, this will be grabbed dynamically later on
+IP = "192.168.1.187";
 PORT = 8000;
 
 RESPONSE_OK = 200;
