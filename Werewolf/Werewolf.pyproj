@@ -31,7 +31,7 @@
     <Compile Include="environment\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\Client.py">
+    <Compile Include="game\infrastructure\Client.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="enums\WerewolfPlayerTypeEnum.py">
@@ -43,7 +43,10 @@
     <Compile Include="game\Game.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\ServerBase.py">
+    <Compile Include="game\infrastructure\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\infrastructure\ServerBase.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\__init__.py">
@@ -65,7 +68,7 @@
     <Compile Include="models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\Server.py">
+    <Compile Include="game\infrastructure\Server.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="environment\WerewolfEnvironment.py">
@@ -73,6 +76,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="game\infrastructure\" />
     <Folder Include="models\" />
     <Folder Include="enums\" />
     <Folder Include="models\roles\" />
