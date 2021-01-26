@@ -56,10 +56,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
+    <Compile Include="models\roles\Doctor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\roles\Peasant.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="models\roles\RoleBase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\roles\Seer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="models\roles\Werewolf.py">
