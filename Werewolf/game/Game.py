@@ -5,7 +5,7 @@ import game.Constants as Constant;
 
 class Game():
     def __init__(self):
-        self.__turn = 0;
+        self.__turn = int();
         self.__players = list();
         self.__timeOfDay = TimeOfDayEnum._None;
         self.__turnPhase = TurnPhaseTypeEnum._None
