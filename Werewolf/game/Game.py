@@ -5,33 +5,33 @@ import game.Constants as Constant;
 
 class Game():
     def __init__(self):
-        self.Turn = 0;
-        self.Players = list();
-        self.TimeOfDay = TimeOfDayEnum._None;
-        self.TurnPhase = TurnPhaseTypeEnum._None
+        self.__turn = 0;
+        self.__players = list();
+        self.__timeOfDay = TimeOfDayEnum._None;
+        self.__turnPhase = TurnPhaseTypeEnum._None
 
     def Join(self, player):
-        self.Players\
+        self.__players\
             .append(player)\
             .sort();
         return;
 
     def Leave(self, player):
-        if (player not in self.Players):
+        if (player not in self.__players):
             # TODO: raise some silent exception
             return;
 
         # no need to sort, already alphabetical
-        self.Players\
+        self.__players\
             .remove(player);
 
     def Start(self):
-        if (len(self.Players) < Constant.MINIMAL_PLAYER_COUNT):
+        if (len(self.__players) < Constant.MINIMAL_PLAYER_COUNT):
             # TODO: add some warning
             return;
 
         return;
 
     def NextPhase(self):
-        self.TurnPhase.Next();
+        self.__turnPhase.Next();
         return;
