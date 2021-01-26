@@ -1,7 +1,7 @@
 from enums.TimeOfDayEnum import TimeOfDayEnum;
 from enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
-import game.Constants as Constant;
+import constants.GameConstants as GameConstant;
 
 class Game():
     def __init__(self):
@@ -26,7 +26,7 @@ class Game():
             .remove(player);
 
     def Start(self):
-        if (len(self.__players) < Constant.MINIMAL_PLAYER_COUNT):
+        if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
             # TODO: add some warning
             return;
 

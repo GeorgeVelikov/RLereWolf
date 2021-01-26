@@ -22,6 +22,12 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="constants\NetConstants.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="constants\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\TurnPhaseTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
@@ -31,7 +37,7 @@
     <Compile Include="environment\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\Constants.py">
+    <Compile Include="constants\GameConstants.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\infrastructure\Client.py">
@@ -97,6 +103,7 @@
     <Folder Include="models\roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />
+    <Folder Include="constants\" />
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>

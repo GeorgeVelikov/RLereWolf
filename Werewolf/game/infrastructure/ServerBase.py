@@ -2,21 +2,17 @@ from http.server import HTTPServer, BaseHTTPRequestHandler;
 from threading import Thread;
 import socket;
 
-# keep IP empty for now, this binds to localhost/127.0.0.1/LAN IPv4
-IP = str();
-PORT = 26011;
-
-RESPONSE_OK = 200;
+import constants.NetConstants as NetConstants;
 
 class ServerRequestHandlerBase(BaseHTTPRequestHandler):
     def do_GET(self):
-        self.send_response(RESPONSE_OK);
+        self.send_response(NetConstants.RESPONSE_OK);
         self.end_headers();
         self.wfile.write(b"Root page");
 
 class ServerBase():
     def __init__(self):
-        self.__serverAddress = (IP, PORT);
+        self.__serverAddress = (NetConstants.IP, NetConstants.PORT);
         self.__server = HTTPServer(self.__serverAddress, ServerRequestHandlerBase);
         self.__serverThread = Thread(target=self.__server.serve_forever);
 
