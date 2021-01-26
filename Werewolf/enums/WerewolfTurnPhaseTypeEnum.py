@@ -6,8 +6,9 @@ class WerewolfTurnPhaseTypeEnum(Enum):
     _None = 0;
     Introduction = 1;
     Discussion = 2;
-    Accusation = 3;
-    Voting = 4;
+    Event = 3;
+    Accusation = 4;
+    Voting = 5;
 
     def __str__(self):
         if self.value == self._None.value:
@@ -16,6 +17,8 @@ class WerewolfTurnPhaseTypeEnum(Enum):
             return nameof(self.Introduction);
         elif self.value == self.Discussion.value:
             return nameof(self.Discussion);
+        elif self.value == self.Event.value:
+            return nameof(self.Event);
         elif self.value == self.Accusation.value:
             return nameof(self.Accusation);
         elif self.value == self.Voting.value:
@@ -27,6 +30,7 @@ class WerewolfTurnPhaseTypeEnum(Enum):
         return [\
             WerewolfTurnPhaseTypeEnum.Introduction,\
             WerewolfTurnPhaseTypeEnum.Discussion,\
+            WerewolfTurnPhaseTypeEnum.Event,\
             WerewolfTurnPhaseTypeEnum.Accusation,\
             WerewolfTurnPhaseTypeEnum.Voting];
 
