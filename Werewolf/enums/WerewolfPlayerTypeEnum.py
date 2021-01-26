@@ -6,25 +6,25 @@ class WerewolfPlayerTypeEnum(Enum):
     Peasant = 1;
     Werewolf = 2;
     Seer = 3;
-    Guard = 4;
+    Doctor = 4;
 
     def __str__(self):
         if self.value == self._None.value:
             return str();
         elif self.value == self.Peasant.value:
-            return name(Peasant);
+            return name(self.Peasant);
         elif self.value == self.Werewolf.value:
-            return name(Werewolf);
+            return name(self.Werewolf);
         elif self.value == self.Seer.value:
-            return name(Seer);
-        elif self.value == self.Guard.value:
-            return name(Guard);
+            return name(self.Seer);
+        elif self.value == self.Doctor.value:
+            return name(self.Doctor);
         else:
             raise Exception("Unknown player type used.");
 
     def Values():
         return [\
-            LogicalConnectiveEnum.Peasant,\
-            LogicalConnectiveEnum.Werewolf,\
-            LogicalConnectiveEnum.Seer,\
-            LogicalConnectiveEnum.Guard];
+            WerewolfPlayerTypeEnum.Peasant,\
+            WerewolfPlayerTypeEnum.Werewolf,\
+            WerewolfPlayerTypeEnum.Seer,\
+            WerewolfPlayerTypeEnum.Guard];

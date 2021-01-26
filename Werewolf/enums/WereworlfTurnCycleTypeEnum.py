@@ -10,15 +10,15 @@ class WereworlfTurnCycleTypeEnum(Enum):
         if self.value == self._None.value:
             return str();
         elif self.value == self.Day.value:
-            return name(Day);
+            return name(self.Day);
         elif self.value == self.Night.value:
-            return name(Night);
+            return name(self.Night);
         else:
             raise Exception("Unknown turn cycle type used.");
 
     def Values():
         return [\
-            LogicalConnectiveEnum.Day,\
-            LogicalConnectiveEnum.Night];
+            WereworlfTurnCycleTypeEnum.Day,\
+            WereworlfTurnCycleTypeEnum.Night];
 
 

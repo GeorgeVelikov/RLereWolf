@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="enums\WerewolfTurnPhaseTypeEnum.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\WereworlfTurnCycleTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
