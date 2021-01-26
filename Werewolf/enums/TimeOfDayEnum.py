@@ -1,7 +1,7 @@
 from enum import Enum;
 from utility.Helpers import nameof;
 
-class WereworlfTurnCycleTypeEnum(Enum):
+class TimeOfDayEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;
     Day = 1;
@@ -19,7 +19,7 @@ class WereworlfTurnCycleTypeEnum(Enum):
 
     def Values():
         return [\
-            WereworlfTurnCycleTypeEnum.Day,\
-            WereworlfTurnCycleTypeEnum.Night];
+            TimeOfDayEnum.Day,\
+            TimeOfDayEnum.Night];
 
 

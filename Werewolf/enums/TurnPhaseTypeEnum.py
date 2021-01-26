@@ -1,7 +1,7 @@
 from enum import Enum;
 from utility.Helpers import nameof;
 
-class WerewolfTurnPhaseTypeEnum(Enum):
+class TurnPhaseTypeEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;
     Introduction = 1;
@@ -28,11 +28,11 @@ class WerewolfTurnPhaseTypeEnum(Enum):
 
     def Values():
         return [\
-            WerewolfTurnPhaseTypeEnum.Introduction,\
-            WerewolfTurnPhaseTypeEnum.Discussion,\
-            WerewolfTurnPhaseTypeEnum.Event,\
-            WerewolfTurnPhaseTypeEnum.Accusation,\
-            WerewolfTurnPhaseTypeEnum.Voting];
+            TurnPhaseTypeEnum.Introduction,\
+            TurnPhaseTypeEnum.Discussion,\
+            TurnPhaseTypeEnum.Event,\
+            TurnPhaseTypeEnum.Accusation,\
+            TurnPhaseTypeEnum.Voting];
 
 
 

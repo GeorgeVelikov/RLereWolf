@@ -1,7 +1,7 @@
 from enum import Enum;
 from utility.Helpers import nameof;
 
-class WerewolfPlayerTypeEnum(Enum):
+class PlayerTypeEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;
     Peasant = 1;
@@ -25,7 +25,7 @@ class WerewolfPlayerTypeEnum(Enum):
 
     def Values():
         return [\
-            WerewolfPlayerTypeEnum.Peasant,\
-            WerewolfPlayerTypeEnum.Werewolf,\
-            WerewolfPlayerTypeEnum.Seer,\
-            WerewolfPlayerTypeEnum.Doctor];
+            PlayerTypeEnum.Peasant,\
+            PlayerTypeEnum.Werewolf,\
+            PlayerTypeEnum.Seer,\
+            PlayerTypeEnum.Doctor];

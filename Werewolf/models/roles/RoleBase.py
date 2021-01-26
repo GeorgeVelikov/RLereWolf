@@ -1,6 +1,6 @@
 from abc import abstractmethod;
 
-from enums.WerewolfPlayerTypeEnum import WerewolfPlayerTypeEnum;
+from enums.PlayerTypeEnum import PlayerTypeEnum;
 
 class RoleBase():
     def __init__(self, role):

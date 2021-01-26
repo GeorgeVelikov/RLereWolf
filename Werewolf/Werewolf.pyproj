@@ -22,10 +22,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="enums\WerewolfTurnPhaseTypeEnum.py">
+    <Compile Include="enums\TurnPhaseTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="enums\WereworlfTurnCycleTypeEnum.py">
+    <Compile Include="enums\TimeOfDayEnum.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="environment\__init__.py">
@@ -37,7 +37,7 @@
     <Compile Include="game\infrastructure\Client.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="enums\WerewolfPlayerTypeEnum.py">
+    <Compile Include="enums\PlayerTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="enums\__init__.py">
