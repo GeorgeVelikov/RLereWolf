@@ -1,5 +1,5 @@
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from threading import Thread
+from http.server import HTTPServer, BaseHTTPRequestHandler;
+from threading import Thread;
 import socket;
 
 # keep IP empty for now, this binds to localhost/127.0.0.1/LAN IPv4

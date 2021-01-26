@@ -1,4 +1,4 @@
-import gym
+import gym;
 
 class WerewolfEnvironment(object):
     def __init__(self, configuration):

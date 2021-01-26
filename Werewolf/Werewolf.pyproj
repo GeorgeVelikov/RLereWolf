@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="enums\WereworlfTurnCycleTypeEnum.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="environment\__init__.py">
       <SubType>Code</SubType>
     </Compile>

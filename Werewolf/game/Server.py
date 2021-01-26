@@ -1,4 +1,4 @@
-from game.ServerBase import ServerBase
+from game.ServerBase import ServerBase;
 
 class Server(ServerBase):
     def __init(self, name):
