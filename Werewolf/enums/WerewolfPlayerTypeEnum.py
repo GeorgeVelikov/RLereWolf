@@ -27,4 +27,4 @@ class WerewolfPlayerTypeEnum(Enum):
             WerewolfPlayerTypeEnum.Peasant,\
             WerewolfPlayerTypeEnum.Werewolf,\
             WerewolfPlayerTypeEnum.Seer,\
-            WerewolfPlayerTypeEnum.Guard];
+            WerewolfPlayerTypeEnum.Doctor];
