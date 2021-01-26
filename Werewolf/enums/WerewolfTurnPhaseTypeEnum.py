@@ -1,4 +1,5 @@
 from enum import Enum;
+from varname.helpers import nameof;
 
 class WerewolfTurnPhaseTypeEnum(Enum):
     # Can't escape keywords in Python :(
@@ -12,13 +13,13 @@ class WerewolfTurnPhaseTypeEnum(Enum):
         if self.value == self._None.value:
             return str();
         elif self.value == self.Introduction.value:
-            return name(self.Introduction);
+            return nameof(self.Introduction);
         elif self.value == self.Discussion.value:
-            return name(self.Discussion);
+            return nameof(self.Discussion);
         elif self.value == self.Accusation.value:
-            return name(self.Accusation);
+            return nameof(self.Accusation);
         elif self.value == self.Voting.value:
-            return name(self.Voting);
+            return nameof(self.Voting);
         else:
             raise Exception("Unknown turn phase type used.");
 

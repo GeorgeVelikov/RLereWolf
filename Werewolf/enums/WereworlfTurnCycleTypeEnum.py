@@ -1,4 +1,5 @@
 from enum import Enum;
+from varname.helpers import nameof;
 
 class WereworlfTurnCycleTypeEnum(Enum):
     # Can't escape keywords in Python :(
@@ -10,9 +11,9 @@ class WereworlfTurnCycleTypeEnum(Enum):
         if self.value == self._None.value:
             return str();
         elif self.value == self.Day.value:
-            return name(self.Day);
+            return nameof(self.Day);
         elif self.value == self.Night.value:
-            return name(self.Night);
+            return nameof(self.Night);
         else:
             raise Exception("Unknown turn cycle type used.");
 
