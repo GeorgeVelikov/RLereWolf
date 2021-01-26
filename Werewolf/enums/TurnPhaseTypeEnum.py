@@ -48,6 +48,3 @@ class TurnPhaseTypeEnum(Enum):
             TurnPhaseTypeEnum.Event,\
             TurnPhaseTypeEnum.Accusation,\
             TurnPhaseTypeEnum.Voting];
-
-
-

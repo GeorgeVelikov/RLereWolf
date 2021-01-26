@@ -21,5 +21,3 @@ class TimeOfDayEnum(Enum):
         return [\
             TimeOfDayEnum.Day,\
             TimeOfDayEnum.Night];
-
-
