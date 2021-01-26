@@ -36,6 +36,9 @@
     <Compile Include="enums\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="game\Game.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game\ServerBase.py">
       <SubType>Code</SubType>
     </Compile>
