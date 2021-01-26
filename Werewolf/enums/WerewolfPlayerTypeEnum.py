@@ -1,5 +1,5 @@
 from enum import Enum;
-from varname.helpers import nameof;
+from utility.Helpers import nameof;
 
 class WerewolfPlayerTypeEnum(Enum):
     # Can't escape keywords in Python :(
