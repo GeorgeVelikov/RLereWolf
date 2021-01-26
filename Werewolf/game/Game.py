@@ -15,6 +15,8 @@ class Game():
             # TODO: add some warning
             return;
 
+        return;
+
     def NextPhase(self):
-        # TODO:
+        self.TurnPhase.Next();
         return;

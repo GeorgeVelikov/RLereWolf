@@ -12,7 +12,7 @@ class TurnPhaseTypeEnum(Enum):
 
     def __str__(self):
         if self.value == self._None.value:
-            return str();
+            return str()
         elif self.value == self.Introduction.value:
             return nameof(self.Introduction);
         elif self.value == self.Discussion.value:
@@ -25,6 +25,21 @@ class TurnPhaseTypeEnum(Enum):
             return nameof(self.Voting);
         else:
             raise Exception("Unknown turn phase type used.");
+
+    def Next(self):
+        if self.value == self.Introduction or self.value == self.Discussion:
+            self.value = self.Event;
+            return
+        elif self.value == self.Event:
+            self.value = self.Accusation;
+            return
+        elif self.value == self.Accusation:
+            self.value = self.Voting;
+            return
+        elif self.value == self.Voting:
+            self.value = self.Discussion;
+        else:
+            raise Exception("Turn phase " + str(self.value) + " has no next phase.");
 
     def Values():
         return [\
