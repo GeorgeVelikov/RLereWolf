@@ -2,10 +2,13 @@ from models.roles.Peasant import Peasant;
 from models.roles.Doctor import Doctor;
 
 def TestPlayers():
-    j = Peasant("James");
-    d = Peasant("Donald");
-    a = Doctor("Alison");
-    j.Talk("Hello there Donald");
-    d.Talk("Hello there James");
-    a.Heal(d);
-    j.Vote(d);
+    james = Peasant("James");
+    donald = Peasant("Donald");
+    alison = Doctor("Alison");
+
+    james.Talk("Hello there Donald");
+    donald.Talk("Hello there James");
+
+    alison.Heal(donald);
+
+    james.Vote(donald);
