@@ -1,7 +1,6 @@
 import gym;
 
 import Test;
-
 from game.infrastructure.Server import Server;
 
 def main():
@@ -20,7 +19,9 @@ def main():
     env.close()
 
 if __name__ == "__main__":
-    Test.TestPlayers();
     server = Server();
     server.Run();
+
+    Test.TestPlayers();
+    Test.TestPlayerConnection();
     #main();
