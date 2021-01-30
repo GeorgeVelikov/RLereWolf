@@ -3,3 +3,8 @@ IP = str();
 PORT = 26011;
 
 RESPONSE_OK = 200;
+
+ROOT = "/";
+INDEX = "/index";
+
+GAME_CREATE = "/game/create/<name>";

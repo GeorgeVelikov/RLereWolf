@@ -40,6 +40,12 @@
     <Compile Include="constants\GameConstants.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="game\communication\Presets.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\communication\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game\infrastructure\Client.py">
       <SubType>Code</SubType>
     </Compile>
@@ -55,7 +61,7 @@
     <Compile Include="game\infrastructure\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\infrastructure\ServerBase.py">
+    <Compile Include="game\infrastructure\Server.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\__init__.py">
@@ -83,9 +89,6 @@
     <Compile Include="models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\infrastructure\Server.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="environment\WerewolfEnvironment.py">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="game\infrastructure\" />
+    <Folder Include="game\communication\" />
     <Folder Include="models\" />
     <Folder Include="enums\" />
     <Folder Include="models\roles\" />

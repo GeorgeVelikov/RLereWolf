@@ -22,5 +22,5 @@ def main():
 if __name__ == "__main__":
     Test.TestPlayers();
     server = Server();
-    server.run();
+    server.Run();
     #main();
