@@ -2,8 +2,6 @@
 IP = "0.0.0.0";
 PORT = 26011;
 
-RESPONSE_OK = 200;
-
 ROUTE_ROOT = "/";
 ROUTE_INDEX = "/index";
 
