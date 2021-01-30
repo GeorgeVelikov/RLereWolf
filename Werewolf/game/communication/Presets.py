@@ -2,8 +2,8 @@ __PLAYER = "%player%";
 __ROLE = "%role%";
 
 # General
-YES = "Yes.";
-NO = "No.";
+AGREE_PLAYER = "I agree with {__PLAYER}.";
+DISAGREE_PLAYER = "I disagree with {__PLAYER}.";
 
 ASSERT_PLAYER_ROLE = f"I think {__PLAYER} is a {__ROLE}.";
 DECLARE_ROLE = f"I am a {__ROLE}.";
