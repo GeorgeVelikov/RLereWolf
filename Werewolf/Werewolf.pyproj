@@ -89,6 +89,9 @@
     <Compile Include="environment\WerewolfEnvironment.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Test.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="utility\Helpers.py">
       <SubType>Code</SubType>
     </Compile>
