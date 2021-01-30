@@ -1,10 +1,13 @@
 from enums.TimeOfDayEnum import TimeOfDayEnum;
 from enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
+import hashlib;
+
 import constants.GameConstants as GameConstant;
 
 class Game():
     def __init__(self, name):
+        self.__identifier = str(hash(self));
         self.__name = name;
         self.__turn = int();
         self.__players = list();
@@ -15,11 +18,15 @@ class Game():
         return self.__name;
 
     def __repr__(self):
-        return self.__name;
+        return self.__name + " - " + self.Identifier;
 
     @property
     def Name(self):
-        return self.__name;
+        return self.__name + " - " + self.Identifier;
+
+    @property
+    def Identifier(self):
+        return self.__identifier;
 
     def Join(self, player):
         self.__players\
