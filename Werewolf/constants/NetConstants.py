@@ -4,7 +4,7 @@ PORT = 26011;
 
 RESPONSE_OK = 200;
 
-ROOT = "/";
-INDEX = "/index";
+ROUTE_ROOT = "/";
+ROUTE_INDEX = "/index";
 
-GAME_CREATE = "/game/create/<name>";
+ROUTE_GAME_CREATE = "/game/create/<name>";

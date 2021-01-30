@@ -28,14 +28,14 @@ class Server():
         return;
 
     def __RegisterRoutes(self):
-        @self.__flask.route(NetConstants.ROOT)
-        @self.__flask.route(NetConstants.INDEX)
+        @self.__flask.route(NetConstants.ROUTE_ROOT)
+        @self.__flask.route(NetConstants.ROUTE_INDEX)
         def Home():
             return str(self.Games);
 
-        @self.__flask.route(NetConstants.GAME_CREATE)
+        @self.__flask.route(NetConstants.ROUTE_GAME_CREATE)
         def CreateGame(name):
             self.CreateGame(name);
-            return redirect(NetConstants.ROOT);
+            return redirect(NetConstants.ROUTE_ROOT);
 
         return;
