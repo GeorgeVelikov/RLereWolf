@@ -23,5 +23,6 @@ if __name__ == "__main__":
     server.Run();
 
     Test.TestPlayers();
-    Test.TestPlayerConnection();
+    Test.TestPlayerRoles();
+    Test.TestClientConnection();
     #main();

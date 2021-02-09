@@ -64,6 +64,9 @@
     <Compile Include="game\infrastructure\Server.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="game\Player.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game\__init__.py">
       <SubType>Code</SubType>
     </Compile>

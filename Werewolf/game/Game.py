@@ -1,6 +1,11 @@
 from enums.TimeOfDayEnum import TimeOfDayEnum;
 from enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
+from models.roles.Peasant import Peasant;
+from models.roles.Seer import Seer;
+from models.roles.Doctor import Doctor;
+from models.roles.Werewolf import Werewolf;
+
 import hashlib;
 
 import constants.GameConstants as GameConstant;
@@ -29,9 +34,8 @@ class Game():
         return self.__identifier;
 
     def Join(self, player):
-        self.__players\
-            .append(player)\
-            .sort();
+        self.__players.append(player);
+        self.__players.sort(key = lambda p: p.Name, reverse = False);
 
         player.JoinGame(self);
         return;
@@ -49,6 +53,10 @@ class Game():
         if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
             # TODO: add some warning
             return;
+
+        for player in self.__players:
+            player.SetRole(Peasant(), self);
+            continue;
 
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;

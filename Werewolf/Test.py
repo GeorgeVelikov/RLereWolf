@@ -1,27 +1,46 @@
-from game.infrastructure.Client import Client;
+from game.Game import Game;
+from game.Player import Player;
 
 from models.roles.Peasant import Peasant;
 from models.roles.Doctor import Doctor;
 
-james = Peasant("James");
-donald = Peasant("Donald");
-alison = Doctor("Alison");
+from game.infrastructure.Client import Client;
+
+from utility.Helpers import nameof;
+
+game = Game("A game of Werewolf");
+
+james = Player("James");
+donald = Player("Donald");
+alison = Player("Alison");
+
+jamesRole = Peasant();
+donaldRole = Peasant();
+alisonRole = Doctor();
 
 def TestPlayers():
-    james.Talk("Hello there Donald");
-    donald.Talk("Hello there James");
+    game.Join(james);
+    game.Join(donald);
+    game.Join(alison);
 
-    alison.Heal(donald);
+    return;
 
-    james.Vote(donald);
+def TestPlayerRoles():
+    jamesRole.Talk("Hello there Donald");
+    donaldRole.Talk("Hello there James");
 
-def TestPlayerConnection():
+    alisonRole.Heal(donaldRole);
+
+    jamesRole.Vote(donaldRole);
+    return;
+
+def TestClientConnection():
     jamesClient = Client();
-    jamesClient.SetPlayer(james);
+    jamesClient.SetPlayer(jamesRole);
 
     donaldClient = Client();
-    donaldClient.SetPlayer(donald);
+    donaldClient.SetPlayer(donaldRole);
 
     alisonClient = Client();
-    alisonClient.SetPlayer(alison);
+    alisonClient.SetPlayer(alisonRole);
     return;
