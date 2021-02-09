@@ -14,7 +14,7 @@ class Player():
         self.__identifier = str(hash(self));
         self.__name = name.strip();
         self.__role = None;
-        self.__game = None;
+        self.__gameIdentifier = None;
 
     def __str__(self):
         return self.__name;
@@ -38,10 +38,10 @@ class Player():
         self.__role = role;
         return;
 
-    def JoinGame(self, game):
-        if self.__game:
+    def JoinGame(self, gameIdentifier):
+        if self.__gameIdentifier:
             # can't join a game when already in one
             return;
 
-        self.__game = game;
+        self.__gameIdentifier = gameIdentifier;
         return;

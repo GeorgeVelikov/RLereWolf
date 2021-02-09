@@ -1,5 +1,6 @@
-# keep IP empty for now, this binds to localhost/127.0.0.1/LAN IPv4
-IP = "127.0.0.1";
+import socket;
+
+IP = socket.gethostbyname(socket.gethostname());
 PORT = 26011;
 ADDRESS = (IP, PORT);
 
