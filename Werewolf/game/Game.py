@@ -15,7 +15,7 @@ class Game():
         self.__identifier = str(hash(self));
         self.__name = name;
         self.__turn = int();
-        self.__players = list();
+        self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
         self.__turnPhase = TurnPhaseTypeEnum._None;
 
@@ -30,12 +30,17 @@ class Game():
         return self.__name + " - " + self.Identifier;
 
     @property
+    def Players(self):
+        return sorted(self.__players,\
+            key = lambda p: p.Name, \
+            reverse = False);
+
+    @property
     def Identifier(self):
         return self.__identifier;
 
     def Join(self, player):
-        self.__players.append(player);
-        self.__players.sort(key = lambda p: p.Name, reverse = False);
+        self.__players.add(player);
 
         player.JoinGame(self);
         return;

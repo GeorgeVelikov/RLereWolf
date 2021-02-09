@@ -14,19 +14,20 @@ james = Player("James");
 donald = Player("Donald");
 alison = Player("Alison");
 
-jamesRole = Peasant();
-donaldRole = Peasant();
-alisonRole = Doctor();
+jamesRole = Peasant("James");
+donaldRole = Peasant("Sir Donald");
+alisonRole = Doctor("Alison VII");
 
 def TestPlayers():
     game.Join(james);
     game.Join(donald);
     game.Join(alison);
 
+    print(game.Players);
     return;
 
 def TestPlayerRoles():
-    jamesRole.Talk("Hello there Donald");
+    jamesRole.Talk("Hello there Sir Donald");
     donaldRole.Talk("Hello there James");
 
     alisonRole.Heal(donaldRole);

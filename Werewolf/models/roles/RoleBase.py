@@ -3,8 +3,17 @@ from abc import abstractmethod;
 from enums.PlayerTypeEnum import PlayerTypeEnum;
 
 class RoleBase():
-    def __init__(self):
+    def __init__(self, name):
+        if (not isinstance(name, str)):
+            raise TypeError("Name must be a string in order to create a role.");
+            return;
+
+        self.__name = name.strip();
         return;
+
+    @property
+    def Name(self):
+        return self.__name;
 
     @property
     def Role(self):
