@@ -32,6 +32,8 @@ class Game():
         self.__players\
             .append(player)\
             .sort();
+
+        player.JoinGame(self);
         return;
 
     def Leave(self, player):
@@ -48,6 +50,9 @@ class Game():
             # TODO: add some warning
             return;
 
+        self.__turn = 1;
+        self.__timeOfDay == TimeOfDayEnum.Day;
+        self.__turnPhase = TurnPhaseTypeEnum.Introduction;
         return;
 
     def NextPhase(self):

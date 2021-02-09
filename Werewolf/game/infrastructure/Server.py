@@ -27,6 +27,15 @@ class Server():
         self.__games.append(game);
         return;
 
+    def JoinGame(self, gameIdentifier):
+        gameToJoin = next(game for game in self.__games \
+            if game.Identifier == gameIdentifier);
+
+        if not gameToJoin:
+            return False;
+
+        return True;
+
     def __RegisterRoutes(self):
         @self.__flask.route(NetConstants.ROUTE_ROOT)
         @self.__flask.route(NetConstants.ROUTE_INDEX)
@@ -36,6 +45,11 @@ class Server():
         @self.__flask.route(NetConstants.ROUTE_GAME_CREATE)
         def CreateGame(name):
             self.CreateGame(name);
+            return redirect(NetConstants.ROUTE_ROOT);
+
+        @self.__flask.route(NetConstants.ROUTE_GAME_JOIN)
+        def JoinGame(name):
+            self.JoinGame(name);
             return redirect(NetConstants.ROUTE_ROOT);
 
         return;
