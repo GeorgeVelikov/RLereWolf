@@ -1,28 +1,32 @@
-from http.client import HTTPConnection;
-
 import constants.NetConstants as NetConstants;
 
-class Client():
-    def __init__(self):
-        self.__connection = HTTPConnection(NetConstants.IP, NetConstants.PORT);
-        self.__identifier = str(hash(self));
-        self.__game = None;
-        self.__player = None;
+from game.Player import Player;
 
-        self.__connection.request(NetConstants.GET, NetConstants.ROUTE_INDEX);
+import socket;
+import pickle;
 
-    @property
-    def Identifier(self):
-        return self.__identifier;
+class Client(Player):
+    def __init__(self, name):
+        super().__init__(name);
+        self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
 
-    @property
-    def Role(self):
-        return self.__player;
+    def Connect(self):
+        try:
+            self.__connection.connect(NetConstants.ADDRESS)
+            return self.__connection\
+                .recv(2 * NetConstants.BYTE)\
+                .decode();
+        except:
+            pass
 
-    def SetPlayer(self, role):
-        self.__player = role;
         return;
 
-    def JoinGame(self, game):
-        self.__connection.request(NetConstants.GET, NetConstants.ROUTE_GAME_CREATE\
-            .replace("<identifier>", game.Identifier));
+    def Send(self, data):
+        try:
+            self.__connection.send(str.encode(data))
+            return pickle.loads(self.client.recv(4 * NetConstants.BYTE))
+        except socket.error as error:
+            # Better print
+            print(error)
+
+        return;

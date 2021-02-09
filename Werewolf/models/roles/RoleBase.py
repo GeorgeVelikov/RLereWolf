@@ -9,6 +9,7 @@ class RoleBase():
             return;
 
         self.__name = name.strip();
+        self.__canWait = True;
         return;
 
     @property
@@ -46,4 +47,10 @@ class RoleBase():
 
         # TODO: call server to vote
         print(self.Name + " votes to kill " + player.Name);
+
+        self.__canWait = True;
+        return;
+
+    def Wait(self):
+        self.__canWait = False;
         return;

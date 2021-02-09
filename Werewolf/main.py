@@ -4,6 +4,19 @@ import Test;
 from game.infrastructure.Server import Server;
 
 def main():
+    pass;
+
+def RunServer():
+    server = Server();
+    server.Run();
+    return;
+
+def RunTests():
+    Test.TestPlayers();
+    Test.TestPlayerRoles();
+    Test.TestClientConnection();
+
+def RunOpenAiGym():
     env = gym.make('CartPole-v0')
 
     for i_episode in range(20):
@@ -19,10 +32,10 @@ def main():
     env.close()
 
 if __name__ == "__main__":
-    server = Server();
-    server.Run();
+    main();
 
-    Test.TestPlayers();
-    Test.TestPlayerRoles();
-    Test.TestClientConnection();
-    #main();
+    #RunServer();
+
+    RunTests();
+
+    #RunOpenAiGym();
