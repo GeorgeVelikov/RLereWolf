@@ -24,7 +24,7 @@ class Client(Player):
     def Send(self, data):
         try:
             self.__connection.send(str.encode(data))
-            return pickle.loads(self.client.recv(4 * NetConstants.BYTE))
+            return pickle.loads(self__connection.recv(4 * NetConstants.BYTE))
         except socket.error as error:
             # Better print
             print(error)

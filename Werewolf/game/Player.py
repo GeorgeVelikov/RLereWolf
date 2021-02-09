@@ -13,7 +13,6 @@ class Player():
 
         self.__identifier = str(hash(self));
         self.__name = name.strip();
-        self.__name = name;
         self.__role = None;
         self.__game = None;
 
