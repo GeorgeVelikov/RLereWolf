@@ -3,7 +3,7 @@ import constants.GameConstants as GameConstants;
 
 from game.Game import Game;
 
-from _thread import start_new_thread;
+import threading;
 import socket;
 import pickle;
 import sys;
@@ -18,8 +18,8 @@ class Server():
     def Games(self):
         return self.__games;
 
-    def ConnectClient(self, connection, gameIdentifier):
-        print("Connected to server.");
+    def ClientHandle(self, connection, address):
+        print(f"[STATUS] Connected to server - {address}.");
 
         while True:
             try:
@@ -45,7 +45,7 @@ class Server():
                 print(error);
                 break;
 
-        print("Lost connection to server.");
+        print(f"[STATUS] Lost connection to server - {address}.");
 
         connection.close();
         return;
@@ -53,16 +53,15 @@ class Server():
     def Run(self):
         try:
             self.__connection.bind(NetConstants.ADDRESS);
-            self.__connection.listen(GameConstants.MAXIMUM_PLAYER_COUNT);
-            print("Server successfully started at port " + str(NetConstants.PORT));
+            self.__connection.listen();
+            print(f"[STATUS] Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+            print(f"[STATUS] Active connections - {threading.activeCount() - 1}");
         except socket.error as error:
             print(error);
 
         while True:
             connection, address = self.__connection.accept();
-            gameIdentifier = None;
-            start_new_thread(self.ConnectClient, (connection, gameIdentifier));
-
+            threading.Thread(target = self.ClientHandle, args = (connection, address)).start();
         return;
 
     def CreateGame(self, name):

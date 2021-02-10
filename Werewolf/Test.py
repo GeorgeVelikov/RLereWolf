@@ -7,7 +7,7 @@ from models.roles.Doctor import Doctor;
 from game.infrastructure.Client import Client;
 
 from utility.Helpers import nameof;
-from _thread import start_new_thread;
+import threading;
 
 game = Game("A game of Werewolf");
 
@@ -38,11 +38,11 @@ def TestPlayerRoles():
 
 def TestClientConnection():
     jamesClient = Client("James");
-    start_new_thread(jamesClient.Connect);
+    threading.Thread(target = jamesClient.Connect).start();
 
     donaldClient = Client("Donald");
-    start_new_thread(donaldClient.Connect);
+    threading.Thread(target = donaldClient.Connect).start();
 
     alisonClient = Client("Alison");
-    start_new_thread(alisonClient.Connect);
+    threading.Thread(target = alisonClient.Connect).start();
     return;
