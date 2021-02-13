@@ -27,7 +27,7 @@ class Server():
 
     @property
     def UtcNowString(self):
-        return self.UtcNow.strftime("%m/%d/%Y %H:%M:%S");
+        return self.UtcNow.strftime(NetConstants.DATETIME_FORMAT);
 
     def ShowActiveConnections(self):
         print(f"{self.UtcNowString} [STATUS] Active connections - {threading.activeCount() - 1}");
