@@ -12,7 +12,7 @@ class Server():
     def __init__(self):
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.__games = list();
-        self.CreateGame("TestGame");
+        self.CreateGame("Game");
         return;
 
     @property
@@ -26,7 +26,7 @@ class Server():
         while True:
             try:
                 data = connection\
-                    .recv(4 * NetConstants.BYTE)\
+                    .recv(4 * NetConstants.KILOBYTE)\
                     .decode();
 
                 if not data:
@@ -44,7 +44,8 @@ class Server():
                 # Do game calls in here!
 
                 # Give users the game state back
-                connection.sendall(pickle.dumps(self.__games[0]));
+                game = self.__games[0];
+                connection.sendall(pickle.dumps(game));
             except Exception as error:
                 print("[ERROR] " + str(error));
                 break;

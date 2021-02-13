@@ -1,7 +1,9 @@
 import constants.NetConstants as NetConstants;
 
 from game.Player import Player;
-from utility.Helpers import ClearScreen;
+from utility.Helpers import ClearScreen, nameof;
+
+from datetime import datetime;
 
 import socket;
 import pickle;
@@ -10,10 +12,18 @@ class Client(Player):
     def __init__(self):
         super().__init__();
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.__lastUpdateUtc = None;
+
+    def __getstate__(self):
+        state = self.__dict__.copy();
+        state["_" + type(self).__name__ + nameof(self.__connection)] = None;
+        return state;
+
+    # TODO: Do we need to do __setstate__ as well? Will I ever override Client/Player?
 
     #region UI
 
-    def Menu(self):
+    def MenuMain(self):
         ClearScreen();
         print("1. Join Server");
         print("2. Set Name");
@@ -25,7 +35,7 @@ class Client(Player):
             try:
                 option = int(input("> "));
             except Exception as error:
-                print("[ERROR] Invalid option. " + str(error));
+                option = -1;
 
             if option == 0:
                 pass;
@@ -46,6 +56,31 @@ class Client(Player):
 
         return;
 
+    def MenuGame(self):
+        ClearScreen();
+        print("1. Player List");
+        print("\n0. Quit\n");
+
+        option = None;
+
+        while option != 0:
+            try:
+                option = int(input("> "));
+            except Exception as error:
+                option = -1;
+
+            if option == 0:
+                self.__connection.close(2);
+                self.MenuMain();
+
+            elif option == 1:
+                pass;
+
+            else:
+                print("[ERROR] Invalid option.");
+
+        return;
+
     #endregion
 
     #region Connection
@@ -54,7 +89,7 @@ class Client(Player):
         try:
             self.__connection.connect(NetConstants.ADDRESS)
 
-            data = self.__connection.recv(2048).decode();
+            data = self.__connection.recv(4 * NetConstants.KILOBYTE).decode();
 
             return data;
         except Exception as error:
@@ -64,11 +99,16 @@ class Client(Player):
 
     def Send(self, data):
         try:
+            # We send some data
             self.__connection.send(str.encode(data));
 
-            data = pickle.loads(self.__connection.recv(4 * NetConstants.BYTE))
+            # We get some reply
+            serializedReply = self.__connection.recv(4 * NetConstants.BYTE);
 
-            self.JoinGame(data.Identifier);
+            # this is some serialized object
+            reply = pickle.loads(serializedReply);
+
+            self.JoinGame(reply.Identifier);
             return data;
         except socket.error as error:
             print("[ERROR] " + str(error));
@@ -78,4 +118,4 @@ class Client(Player):
     #endregion
 
 if __name__ == "__main__":
-    Client().Menu();
+    Client().MenuMain();
