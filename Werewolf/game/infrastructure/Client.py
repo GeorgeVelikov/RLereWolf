@@ -2,7 +2,7 @@ import constants.NetConstants as NetConstants;
 from game.Player import Player;
 from game.infrastructure.Packet import Packet;
 from models.dtos.ClientJoinGameDto import ClientJoinGameDto;
-from utility.Helpers import ClearScreen, nameof;
+from utility.Helpers import ClearScreen, PromptOption, nameof;
 
 from datetime import datetime;
 
@@ -36,10 +36,7 @@ class Client(Player):
         option = None;
 
         while option != 0:
-            try:
-                option = int(input("> "));
-            except Exception as error:
-                option = -1;
+            option = PromptOption();
 
             if option == 0:
                 pass;
@@ -74,10 +71,7 @@ class Client(Player):
 
             print("\n0. Quit\n");
 
-            try:
-                option = int(input("> "));
-            except Exception as error:
-                option = -1;
+            option = PromptOption();
 
             if option == 0:
                 self.Disconnect();
@@ -101,10 +95,7 @@ class Client(Player):
         option = None;
 
         while option != 0:
-            try:
-                option = int(input("> "));
-            except Exception as error:
-                option = -1;
+            option = PromptOption();
 
             if option == 0:
                 self.Disconnect();
