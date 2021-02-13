@@ -12,6 +12,7 @@ class Server():
     def __init__(self):
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.__games = list();
+        self.CreateGame("TestGame");
         return;
 
     @property
@@ -19,6 +20,7 @@ class Server():
         return self.__games;
 
     def ClientHandle(self, connection, address):
+        connection.send(b"Hello client");
         print(f"[STATUS] Connected to server - {address}.");
 
         while True:
@@ -30,6 +32,8 @@ class Server():
                 if not data:
                     break;
 
+                print(data);
+
                 # TODO: grab the game instance from a game identifier param
                 #game = next(game for game in self.__games \
                 #    if game.Identifier == gameIdentifier);
@@ -40,7 +44,7 @@ class Server():
                 # Do game calls in here!
 
                 # Give users the game state back
-                connection.sendall(pickle.dumps(game));
+                connection.sendall(pickle.dumps(self.__games[0]));
             except Exception as error:
                 print("[ERROR] " + str(error));
                 break;

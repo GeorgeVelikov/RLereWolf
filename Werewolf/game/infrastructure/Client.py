@@ -22,7 +22,10 @@ class Client(Player):
         option = None;
 
         while option != 0:
-            option = int(input("> "));
+            try:
+                option = int(input("> "));
+            except Exception as error:
+                print("[ERROR] Invalid option. " + str(error));
 
             if option == 0:
                 pass;
@@ -32,6 +35,8 @@ class Client(Player):
                     print("[ERROR] Cannot connect until you have set your name.");
                 else:
                     self.Connect();
+                    self.Send("Hello server");
+                    self.MenuGame();
             elif option == 2:
                 self.SetName(str(input("Name: ")));
                 pass;
@@ -49,9 +54,7 @@ class Client(Player):
         try:
             self.__connection.connect(NetConstants.ADDRESS)
 
-            data = self.__connection\
-                .recv(2 * NetConstants.BYTE)\
-                .decode();
+            data = self.__connection.recv(2048).decode();
 
             return data;
         except Exception as error:
@@ -63,8 +66,9 @@ class Client(Player):
         try:
             self.__connection.send(str.encode(data));
 
-            data = pickle.loads(self__connection.recv(4 * NetConstants.BYTE))
+            data = pickle.loads(self.__connection.recv(4 * NetConstants.BYTE))
 
+            self.JoinGame(data.Identifier);
             return data;
         except socket.error as error:
             print("[ERROR] " + str(error));
