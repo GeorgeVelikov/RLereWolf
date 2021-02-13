@@ -28,6 +28,9 @@
     <Compile Include="constants\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="enums\PacketTypeEnum.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\TurnPhaseTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +64,9 @@
     <Compile Include="game\Game.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="game\infrastructure\Packet.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game\infrastructure\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -74,6 +80,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
+    <Compile Include="models\dtos\ClientJoinGameDto.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\dtos\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\roles\Doctor.py">
       <SubType>Code</SubType>
     </Compile>
@@ -113,6 +125,7 @@
     <Folder Include="game\communication\" />
     <Folder Include="models\" />
     <Folder Include="enums\" />
+    <Folder Include="models\dtos\" />
     <Folder Include="models\roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />

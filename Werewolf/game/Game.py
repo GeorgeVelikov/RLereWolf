@@ -21,14 +21,14 @@ class Game():
         self.__turnPhase = TurnPhaseTypeEnum._None;
 
     def __str__(self):
-        return self.__name;
+        return self.__name + " - " + self.Identifier;
 
     def __repr__(self):
         return self.__name + " - " + self.Identifier;
 
     @property
     def Name(self):
-        return self.__name + " - " + self.Identifier;
+        return self.__name;
 
     @property
     def Players(self):
@@ -43,7 +43,7 @@ class Game():
     def Join(self, player):
         self.__players.add(player);
 
-        player.JoinGame(self);
+        player.JoinGame(self.Identifier);
         return;
 
     def Leave(self, player):

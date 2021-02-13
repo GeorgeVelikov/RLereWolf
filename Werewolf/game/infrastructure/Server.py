@@ -1,7 +1,12 @@
 import constants.NetConstants as NetConstants;
 import constants.GameConstants as GameConstants;
 
+from enums.PacketTypeEnum import PacketTypeEnum;
 from game.Game import Game;
+from game.infrastructure.Client import Client;
+from game.infrastructure.Packet import Packet;
+
+from models.dtos.ClientJoinGameDto import ClientJoinGameDto
 
 from datetime import datetime;
 
@@ -13,8 +18,12 @@ import sys;
 class Server():
     def __init__(self):
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.__connections = set();
         self.__games = list();
-        self.CreateGame("Game");
+        self.CreateGame("Game 1");
+        self.CreateGame("Game 2");
+        self.CreateGame("Game 3");
+        self.CreateGame("Game 4");
         return;
 
     @property
@@ -32,6 +41,8 @@ class Server():
     def ShowActiveConnections(self):
         print(f"{self.UtcNowString} [STATUS] Active connections - {threading.activeCount() - 1}");
 
+    #region Server
+
     def ClientHandle(self, connection, address):
         connection.send(b"Hello client");
         print(f"{self.UtcNowString} [STATUS] Connected to server - {address}.");
@@ -39,31 +50,24 @@ class Server():
 
         while True:
             try:
-                data = connection\
-                    .recv(4 * NetConstants.KILOBYTE)\
-                    .decode();
+                packetStream = connection.recv(4 * NetConstants.KILOBYTE);
 
-                if not data:
+                packet = pickle.loads(packetStream);
+
+                if not packet:
                     break;
 
-                print(data);
+                print(f"{self.UtcNowString} [REQUEST] Packet type - {str(packet.PacketType)}.");
 
-                # TODO: grab the game instance from a game identifier param
-                #game = next(game for game in self.__games \
-                #    if game.Identifier == gameIdentifier);
+                if packet.PacketType == PacketTypeEnum.GetGamesList:
+                    self.GetGamesList(connection, packet);
 
-                #if not game:
-                #   break;
+                elif packet.PacketType == PacketTypeEnum.JoinGame:
+                    self.JoinGame(connection, packet);
 
-                # Do game calls in here!
-
-                # Give users the game state back
-                game = self.__games[0];
-                connection.sendall(pickle.dumps(game));
             except Exception as error:
-                print("{self.UtcNowString} [ERROR] " + str(error));
+                print(f"{self.UtcNowString} [ERROR] " + str(error));
                 break;
-
 
         print(f"{self.UtcNowString} [STATUS] Lost connection to server - {address}.");
         connection.close();
@@ -84,10 +88,44 @@ class Server():
             threading.Thread(target = self.ClientHandle, args = (connection, address)).start();
         return;
 
+    #endregion
+
+    #region Game calls
+
+    def Connect(self, connection, packet):
+        client = packet.Data;
+
+        connection.sendall(pickle.dumps(None));
+
+        return;
+
+    def GetGamesList(self, connection, packet):
+        games = dict((game.Identifier, game.Name) for game in self.__games);
+
+        connection.sendall(pickle.dumps(games));
+
+        return;
+
+    def JoinGame(self, connection, packet):
+        dto = packet.Data;
+
+        game = next(g for g in self.__games if g.Identifier == dto.GameIdentifier);
+
+        if not game:
+            connection.sendall(pickle.dumps(None));
+
+        game.Join(dto.Client);
+        connection.sendall(pickle.dumps(dto.GameIdentifier));
+
+        return;
+
     def CreateGame(self, name):
         game = Game(name);
         self.__games.append(game);
+
         return;
+
+    #endregion
 
 if __name__ == "__main__":
     Server().Run();

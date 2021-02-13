@@ -1,12 +1,16 @@
 import constants.NetConstants as NetConstants;
-
 from game.Player import Player;
+from game.infrastructure.Packet import Packet;
+from models.dtos.ClientJoinGameDto import ClientJoinGameDto;
 from utility.Helpers import ClearScreen, nameof;
 
 from datetime import datetime;
 
 import socket;
 import pickle;
+import threading;
+import time;
+
 
 class Client(Player):
     def __init__(self):
@@ -25,7 +29,7 @@ class Client(Player):
 
     def MenuMain(self):
         ClearScreen();
-        print("1. Join Server");
+        print("1. Connect to Server");
         print("2. Set Name");
         print("\n0. Quit\n");
 
@@ -45,8 +49,7 @@ class Client(Player):
                     print("[ERROR] Cannot connect until you have set your name.");
                 else:
                     self.Connect();
-                    self.Send("Hello server");
-                    self.MenuGame();
+                    self.MenuGameList();
             elif option == 2:
                 self.SetName(str(input("Name: ")));
                 pass;
@@ -56,7 +59,41 @@ class Client(Player):
 
         return;
 
-    def MenuGame(self):
+    def MenuGameList(self):
+        games = dict();
+        option = None;
+
+        while option != 0:
+            games = self.GetGamesList();
+            gameIndexToIdentifier = dict();
+            ClearScreen();
+
+            for index, (identifier, name) in enumerate(games.items()):
+                gameIndexToIdentifier[index + 1] = identifier;
+                print(f"{index + 1}. {name}");
+
+            print("\n0. Quit\n");
+
+            try:
+                option = int(input("> "));
+            except Exception as error:
+                option = -1;
+
+            if option == 0:
+                self.Disconnect();
+                self.MenuMain();
+
+            if option > 0 and option <= len(games):
+                gameIdentifier = gameIndexToIdentifier[option-1]
+                self.JoinGame(gameIdentifier);
+                self.MenuGameLobby();
+
+            else:
+                print("[ERROR] Invalid option.");
+
+        return;
+
+    def MenuGameLobby(self):
         ClearScreen();
         print("1. Player List");
         print("\n0. Quit\n");
@@ -85,10 +122,21 @@ class Client(Player):
 
     #region Connection
 
-    def Disconnect(self):
+    def Send(self, data):
         try:
-            self.__connection.close();
-        except Exception as error:
+            # We send some data
+            self.__connection.sendall(pickle.dumps(data));
+
+            # We get some reply
+            serializedReply = self.__connection.recv(4 * NetConstants.KILOBYTE);
+
+            # this is some serialized object
+            reply = pickle.loads(serializedReply);
+
+            return reply;
+
+            print(reply);
+        except socket.error as error:
             print("[ERROR] " + str(error));
 
         return;
@@ -106,23 +154,35 @@ class Client(Player):
 
         return;
 
-    def Send(self, data):
+    def Disconnect(self):
         try:
-            # We send some data
-            self.__connection.send(str.encode(data));
-
-            # We get some reply
-            serializedReply = self.__connection.recv(4 * NetConstants.BYTE);
-
-            # this is some serialized object
-            reply = pickle.loads(serializedReply);
-
-            self.JoinGame(reply.Identifier);
-            return data;
-        except socket.error as error:
+            self.__connection.close();
+            self.__gameIdentifier = None;
+        except Exception as error:
             print("[ERROR] " + str(error));
 
         return;
+
+    #endregion
+
+    #region Calls
+
+    def GetGamesList(self):
+        packet = Packet.GetGamesPacket(list());
+
+        reply = self.Send(packet);
+
+        return reply;
+
+    def JoinGame(self, gameIdentifier):
+        dto = ClientJoinGameDto(self, gameIdentifier)
+        packet = Packet.GetJoinGamePacket(dto);
+
+        reply = self.Send(packet);
+
+        self.__gameIdentifier = reply;
+
+        return reply;
 
     #endregion
 
