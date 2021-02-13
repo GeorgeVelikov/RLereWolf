@@ -1,3 +1,11 @@
 # A collection of various methods which I found useful throughout the development.
 
 from varname.helpers import nameof;
+
+import os
+
+UNIX_CLEAR = "clear";
+WIN_CLEAR = "cls";
+
+def ClearScreen():
+    os.system(UNIX_CLEAR if os.name == "posix" else WIN_CLEAR);

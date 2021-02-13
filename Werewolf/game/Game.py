@@ -14,6 +14,7 @@ class Game():
     def __init__(self, name):
         self.__identifier = str(hash(self));
         self.__name = name;
+        self.__messages = list();
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;

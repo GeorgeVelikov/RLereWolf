@@ -40,6 +40,9 @@
     <Compile Include="constants\GameConstants.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="game\communication\Message.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game\communication\Presets.py">
       <SubType>Code</SubType>
     </Compile>

@@ -11,9 +11,14 @@ import threading;
 
 game = Game("A game of Werewolf");
 
-james = Player("James");
-donald = Player("Donald");
-alison = Player("Alison");
+james = Player();
+james.SetName("James");
+
+donald = Player();
+donald.SetName("Donald");
+
+alison = Player();
+alison.SetName("Alison");
 
 jamesRole = Peasant("James");
 donaldRole = Peasant("Sir Donald");
@@ -37,12 +42,15 @@ def TestPlayerRoles():
     return;
 
 def TestClientConnection():
-    jamesClient = Client("James");
+    jamesClient = Client();
+    jamesClient.SetName(james.Name);
     threading.Thread(target = jamesClient.Connect).start();
 
-    donaldClient = Client("Donald");
+    donaldClient = Client();
+    donaldClient.SetName(donald.Name);
     threading.Thread(target = donaldClient.Connect).start();
 
-    alisonClient = Client("Alison");
+    alisonClient = Client();
+    alisonClient.SetName(alison.Name);
     threading.Thread(target = alisonClient.Connect).start();
     return;

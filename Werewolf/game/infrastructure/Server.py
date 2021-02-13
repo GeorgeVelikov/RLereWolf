@@ -42,7 +42,7 @@ class Server():
                 # Give users the game state back
                 connection.sendall(pickle.dumps(game));
             except Exception as error:
-                print(error);
+                print("[ERROR] " + str(error));
                 break;
 
         print(f"[STATUS] Lost connection to server - {address}.");
@@ -57,7 +57,7 @@ class Server():
             print(f"[STATUS] Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
             print(f"[STATUS] Active connections - {threading.activeCount() - 1}");
         except socket.error as error:
-            print(error);
+            print("[ERROR] " + str(error));
 
         while True:
             connection, address = self.__connection.accept();

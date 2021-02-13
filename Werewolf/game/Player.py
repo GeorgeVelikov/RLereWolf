@@ -6,13 +6,9 @@ import hashlib;
 import constants.GameConstants as GameConstant;
 
 class Player():
-    def __init__(self, name):
-        if (not isinstance(name, str)):
-            raise TypeError("Name must be a string in order to create a player.");
-            return;
-
+    def __init__(self):
         self.__identifier = str(hash(self));
-        self.__name = name.strip();
+        self.__name = str();
         self.__role = None;
         self.__gameIdentifier = None;
 
@@ -29,6 +25,14 @@ class Player():
     @property
     def Identifier(self):
         return self.__identifier;
+
+    def SetName(self, name):
+        if (not isinstance(name, str)):
+            print("[ERROR] Name must be a string in order to create a player.")
+            return;
+
+        self.__name = name.strip();
+        return;
 
     def SetRole(self, role, gameIdentifier):
         # verify the game is changing our role and not something else
