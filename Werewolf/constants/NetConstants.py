@@ -6,3 +6,5 @@ ADDRESS = (IP, PORT);
 
 BYTE = 2**10;
 KILOBYTE = 2**20;
+
+DATETIME_FORMAT = "%m/%d/%Y, %H:%M:%S"

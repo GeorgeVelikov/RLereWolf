@@ -1,12 +1,12 @@
 from datetime import datetime;
 
-import dateutil.tz;
+import constants.NetConstants as NetConstants;
 
-DATETIME_FORMAT = "%m/%d/%Y, %H:%M:%S"
+import dateutil.tz;
 
 class Message():
     def __init__(self, author, text):
-        self.__timestampUtc = datetime.utcnow;
+        self.__timestampUtc = datetime.utcnow();
         self.__author = author;
         self.__text = text;
 
@@ -19,12 +19,12 @@ class Message():
     @property
     def TimeStampUtc(self):
         return self.__timestampUtc\
-            .strftime(DATETIME_FORMAT);
+            .strftime(NetConstants.DATETIME_FORMAT);
 
     @property
     def TimeStampLocal(self):
         return datetime.fromtimestamp(self.TimeStampUtc)\
-            .strftime(DATETIME_FORMAT);
+            .strftime(NetConstants.DATETIME_FORMAT);
 
     @property
     def AuthorIdentifier(self):

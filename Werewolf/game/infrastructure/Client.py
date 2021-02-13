@@ -11,7 +11,7 @@ import pickle;
 class Client(Player):
     def __init__(self):
         super().__init__();
-        self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+        self.__connection = None;
         self.__lastUpdateUtc = None;
 
     def __getstate__(self):
@@ -70,7 +70,7 @@ class Client(Player):
                 option = -1;
 
             if option == 0:
-                self.__connection.close(2);
+                self.Disconnect();
                 self.MenuMain();
 
             elif option == 1:
@@ -85,9 +85,18 @@ class Client(Player):
 
     #region Connection
 
+    def Disconnect(self):
+        try:
+            self.__connection.close();
+        except Exception as error:
+            print("[ERROR] " + str(error));
+
+        return;
+
     def Connect(self):
         try:
-            self.__connection.connect(NetConstants.ADDRESS)
+            self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
+            self.__connection.connect(NetConstants.ADDRESS);
 
             data = self.__connection.recv(4 * NetConstants.KILOBYTE).decode();
 

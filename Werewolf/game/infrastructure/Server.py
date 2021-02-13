@@ -3,6 +3,8 @@ import constants.GameConstants as GameConstants;
 
 from game.Game import Game;
 
+from datetime import datetime;
+
 import threading;
 import socket;
 import pickle;
@@ -19,9 +21,21 @@ class Server():
     def Games(self):
         return self.__games;
 
+    @property
+    def UtcNow(self):
+        return datetime.utcnow();
+
+    @property
+    def UtcNowString(self):
+        return self.UtcNow.strftime("%m/%d/%Y %H:%M:%S");
+
+    def ShowActiveConnections(self):
+        print(f"{self.UtcNowString} [STATUS] Active connections - {threading.activeCount() - 1}");
+
     def ClientHandle(self, connection, address):
         connection.send(b"Hello client");
-        print(f"[STATUS] Connected to server - {address}.");
+        print(f"{self.UtcNowString} [STATUS] Connected to server - {address}.");
+        self.ShowActiveConnections();
 
         while True:
             try:
@@ -47,22 +61,23 @@ class Server():
                 game = self.__games[0];
                 connection.sendall(pickle.dumps(game));
             except Exception as error:
-                print("[ERROR] " + str(error));
+                print("{self.UtcNowString} [ERROR] " + str(error));
                 break;
 
-        print(f"[STATUS] Lost connection to server - {address}.");
 
+        print(f"{self.UtcNowString} [STATUS] Lost connection to server - {address}.");
         connection.close();
+
         return;
 
     def Run(self):
         try:
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
-            print(f"[STATUS] Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
-            print(f"[STATUS] Active connections - {threading.activeCount() - 1}");
+            print(f"{self.UtcNowString} [STATUS] Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+            self.ShowActiveConnections();
         except socket.error as error:
-            print("[ERROR] " + str(error));
+            print("{self.UtcNowString} [ERROR] " + str(error));
 
         while True:
             connection, address = self.__connection.accept();
