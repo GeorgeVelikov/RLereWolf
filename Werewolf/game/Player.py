@@ -2,12 +2,13 @@ from enums.TimeOfDayEnum import TimeOfDayEnum;
 from enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
 import hashlib;
+import uuid;
 
 import constants.GameConstants as GameConstant;
 
 class Player():
     def __init__(self):
-        self.__identifier = str(hash(self));
+        self.__identifier = uuid.uuid4().hex;
         self.__name = str();
         self.__role = None;
         self.__gameIdentifier = None;

@@ -7,12 +7,13 @@ from models.roles.Doctor import Doctor;
 from models.roles.Werewolf import Werewolf;
 
 import hashlib;
+import uuid;
 
 import constants.GameConstants as GameConstant;
 
 class Game():
     def __init__(self, name):
-        self.__identifier = str(hash(self));
+        self.__identifier = uuid.uuid4().hex;
         self.__name = name;
         self.__messages = set();
         self.__turn = int();
