@@ -24,3 +24,7 @@ class Packet():
     @staticmethod
     def GetLeaveGamePacket(data):
         return Packet(PacketTypeEnum.LeaveGame, data);
+
+    @staticmethod
+    def GetPlayersListPacket(data):
+        return Packet(PacketTypeEnum.GetPlayers, data);

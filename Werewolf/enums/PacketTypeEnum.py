@@ -7,6 +7,8 @@ class PacketTypeEnum(Enum):
     GetGamesList = 1;
     JoinGame = 2;
     LeaveGame = 3;
+    GetPlayers = 4;
+
 
     def __str__(self):
         if self.value == self._None.value:
@@ -17,6 +19,8 @@ class PacketTypeEnum(Enum):
             return nameof(self.JoinGame);
         elif self.value == self.LeaveGame.value:
             return nameof(self.LeaveGame);
+        elif self.value == self.GetPlayers.value:
+            return nameof(self.GetPlayers);
         else:
             raise Exception("Unknown packet type used.");
 
@@ -24,4 +28,5 @@ class PacketTypeEnum(Enum):
         return [\
             PacketTypeEnum.GetGamesList,\
             PacketTypeEnum.JoinGame,\
-            PacketTypeEnum.LeaveGame];
+            PacketTypeEnum.LeaveGame,\
+            PacketTypeEnum.GetPlayers];

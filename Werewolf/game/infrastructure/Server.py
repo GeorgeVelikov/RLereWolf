@@ -14,6 +14,9 @@ import threading;
 import socket;
 import pickle;
 import sys;
+import os;
+
+DIRECTORY_LOGS = "logs";
 
 class Server():
     def __init__(self):
@@ -24,6 +27,7 @@ class Server():
         self.CreateGame("Game 2");
         self.CreateGame("Game 3");
         self.CreateGame("Game 4");
+
         return;
 
     @property
@@ -39,13 +43,13 @@ class Server():
         return self.UtcNow.strftime(NetConstants.DATETIME_FORMAT);
 
     def ShowActiveConnections(self):
-        print(f"{self.UtcNowString} [STATUS] Active connections - {threading.activeCount() - 1}");
+        self.Log("[STATUS]", f"Active connections - {threading.activeCount() - 1}");
 
     #region Server
 
     def ClientHandle(self, connection, address):
         connection.send(b"Hello client");
-        print(f"{self.UtcNowString} [STATUS] Connected to server - {address}.");
+        self.Log("[STATUS]", f"Connected to server - {address}");
         self.ShowActiveConnections();
 
         while True:
@@ -57,7 +61,7 @@ class Server():
                 if not packet:
                     break;
 
-                print(f"{self.UtcNowString} [REQUEST] Packet type - {str(packet.PacketType)}.");
+                self.Log("[REQUEST]", f"Packet type - {str(packet.PacketType)}");
 
                 if packet.PacketType == PacketTypeEnum.GetGamesList:
                     self.GetGamesList(connection, packet);
@@ -68,11 +72,14 @@ class Server():
                 elif packet.PacketType == PacketTypeEnum.LeaveGame:
                     self.LeaveGame(connection, packet);
 
+                elif packet.PacketType == PacketTypeEnum.GetPlayers:
+                    self.GetPlayerList(connection, packet);
+
             except Exception as error:
-                print(f"{self.UtcNowString} [ERROR] " + str(error));
+                self.Log("[ERROR]", str(error));
                 break;
 
-        print(f"{self.UtcNowString} [STATUS] Lost connection to server - {address}.");
+        self.Log("[STATUS]", f"Lost connection to server - {address}");
         connection.close();
 
         return;
@@ -81,14 +88,29 @@ class Server():
         try:
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
-            print(f"{self.UtcNowString} [STATUS] Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+            self.Log("[STATUS]", f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
             self.ShowActiveConnections();
         except socket.error as error:
-            print("{self.UtcNowString} [ERROR] " + str(error));
+            self.Log("[ERROR]", str(error));
 
         while True:
             connection, address = self.__connection.accept();
             threading.Thread(target = self.ClientHandle, args = (connection, address)).start();
+        return;
+
+    def Log(self, status, message):
+        fileName = self.UtcNow.strftime("%d-%m-%Y");
+
+        if not os.path.exists(DIRECTORY_LOGS):
+            os.makedirs(DIRECTORY_LOGS);
+
+        logMessage = f"{self.UtcNowString} {status} {message}.";
+        print(logMessage);
+
+        log = open(f"{DIRECTORY_LOGS}{os.path.sep}{fileName}.txt", "a");
+        log.write(logMessage);
+        log.close();
+
         return;
 
     #endregion
@@ -112,7 +134,7 @@ class Server():
     def JoinGame(self, connection, packet):
         dto = packet.Data;
 
-        game = next(g for g in self.__games if g.Identifier == dto.GameIdentifier);
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
 
         if not game:
             connection.sendall(pickle.dumps(None));
@@ -125,7 +147,7 @@ class Server():
     def LeaveGame(self, connection, packet):
         dto = packet.Data;
 
-        game = next(g for g in self.__games if g.Identifier == dto.GameIdentifier);
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
 
         if not game:
             connection.sendall(pickle.dumps(True));
@@ -135,11 +157,35 @@ class Server():
 
         return;
 
+    def CreateGame(self, connection, packet):
+        # reuse the server-side call but encapsulate it with the connection and packet check
+        raise NotImplementedError("Not implemented yet");
+
+    def GetPlayerList(self, connection, packet):
+        dto = packet.Data;
+
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+
+        if not game:
+            connection.sendall(pickle.dumps(None));
+
+        playersByIdentifier = dict((player.Identifier, player.Name) for player in game.Players);
+
+        connection.sendall(pickle.dumps(playersByIdentifier));
+
+    #endregion
+
+    #region Server only calls
+    # Client cannot directly use those!
+
     def CreateGame(self, name):
         game = Game(name);
         self.__games.append(game);
 
         return;
+
+    def GetGameWithIdentifier(self, gameIdentifier):
+        return next(g for g in self.__games if g.Identifier == gameIdentifier);
 
     #endregion
 
