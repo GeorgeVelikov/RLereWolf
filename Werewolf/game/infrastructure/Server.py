@@ -108,7 +108,7 @@ class Server():
         print(logMessage);
 
         log = open(f"{DIRECTORY_LOGS}{os.path.sep}{fileName}.txt", "a");
-        log.write(logMessage);
+        log.write("\n" + logMessage);
         log.close();
 
         return;
