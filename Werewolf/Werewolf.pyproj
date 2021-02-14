@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="constants\LogConstants.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="constants\NetConstants.py">
       <SubType>Code</SubType>
     </Compile>

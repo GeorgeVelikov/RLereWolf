@@ -1,5 +1,6 @@
 import constants.NetConstants as NetConstants;
 import constants.GameConstants as GameConstants;
+import constants.LogConstants as LogConstants;
 
 from enums.PacketTypeEnum import PacketTypeEnum;
 from game.Game import Game;
@@ -43,13 +44,13 @@ class Server():
         return self.UtcNow.strftime(NetConstants.DATETIME_FORMAT);
 
     def ShowActiveConnections(self):
-        self.Log("[STATUS]", f"Active connections - {threading.activeCount() - 1}");
+        self.Log(LogConstants.INFORMATION, f"Active connections - {threading.activeCount() - 1}");
 
     #region Server
 
     def ClientHandle(self, connection, address):
         connection.send(b"Hello client");
-        self.Log("[STATUS]", f"Connected to server - {address}");
+        self.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
         self.ShowActiveConnections();
 
         while True:
@@ -61,7 +62,7 @@ class Server():
                 if not packet:
                     break;
 
-                self.Log("[REQUEST]", f"Packet type - {str(packet.PacketType)}");
+                self.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
 
                 if packet.PacketType == PacketTypeEnum.GetGamesList:
                     self.GetGamesList(connection, packet);
@@ -76,10 +77,10 @@ class Server():
                     self.GetPlayerList(connection, packet);
 
             except Exception as error:
-                self.Log("[ERROR]", str(error));
+                self.Log(LogConstants.ERROR, str(error));
                 break;
 
-        self.Log("[STATUS]", f"Lost connection to server - {address}");
+        self.Log(LogConstants.INFORMATION, f"Lost connection to server - {address}");
         connection.close();
 
         return;
@@ -88,10 +89,10 @@ class Server():
         try:
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
-            self.Log("[STATUS]", f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+            self.Log(LogConstants.INFORMATION, f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
             self.ShowActiveConnections();
         except socket.error as error:
-            self.Log("[ERROR]", str(error));
+            self.Log(LogConstants.ERROR, str(error));
 
         while True:
             connection, address = self.__connection.accept();
