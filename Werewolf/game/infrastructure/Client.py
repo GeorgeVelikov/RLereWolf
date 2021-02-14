@@ -1,7 +1,11 @@
 import constants.NetConstants as NetConstants;
+
 from game.Player import Player;
 from game.infrastructure.Packet import Packet;
-from models.dtos.ClientJoinGameDto import ClientGameDto;
+
+from models.dtos.ClientGameDto import ClientGameDto;
+from models.dtos.GamePlayerListDto import GamePlayerListDto;
+
 from utility.Helpers import ClearScreen, PromptOption, nameof;
 
 from datetime import datetime;
@@ -10,7 +14,6 @@ import socket;
 import pickle;
 import threading;
 import time;
-
 
 class Client(Player):
     def __init__(self):
@@ -102,7 +105,7 @@ class Client(Player):
                 self.MenuGameList();
 
             elif option == 1:
-                pass;
+                players = self.GetPlayerList();
 
             else:
                 print("[ERROR] Invalid option.");
@@ -189,6 +192,17 @@ class Client(Player):
         self.__gameIdentifier = reply;
 
         return reply;
+
+    def GetPlayerList(self):
+        if not self.__gameIdentifier:
+            return None;
+
+        dto = GamePlayerListDto(self.__gameIdentifier);
+        packet = Packet.GetPlayersListPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply.Players;
 
     #endregion
 

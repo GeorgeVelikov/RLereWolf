@@ -1,3 +1,5 @@
+DIRECTORY_LOGS = "logs";
+
 # General
 INFORMATION = "[INFORMATION]";
 WARNING = "[WARNING]"

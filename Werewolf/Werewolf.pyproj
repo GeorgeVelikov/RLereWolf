@@ -83,7 +83,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
-    <Compile Include="models\dtos\ClientJoinGameDto.py">
+    <Compile Include="models\dtos\ClientGameDto.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\dtos\GamePlayerListDto.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="models\dtos\__init__.py">

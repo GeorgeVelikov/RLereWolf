@@ -7,7 +7,8 @@ from game.Game import Game;
 from game.infrastructure.Client import Client;
 from game.infrastructure.Packet import Packet;
 
-from models.dtos.ClientJoinGameDto import ClientGameDto
+from models.dtos.ClientGameDto import ClientGameDto;
+from models.dtos.GamePlayerListDto import GamePlayerListDto;
 
 from datetime import datetime;
 
@@ -16,8 +17,6 @@ import socket;
 import pickle;
 import sys;
 import os;
-
-DIRECTORY_LOGS = "logs";
 
 class Server():
     def __init__(self):
@@ -28,6 +27,8 @@ class Server():
         self.CreateGame("Game 2");
         self.CreateGame("Game 3");
         self.CreateGame("Game 4");
+
+        self.Log(LogConstants.INFORMATION, "Server start up");
 
         return;
 
@@ -102,13 +103,13 @@ class Server():
     def Log(self, status, message):
         fileName = self.UtcNow.strftime("%d-%m-%Y");
 
-        if not os.path.exists(DIRECTORY_LOGS):
-            os.makedirs(DIRECTORY_LOGS);
+        if not os.path.exists(LogConstants.DIRECTORY_LOGS):
+            os.makedirs(LogConstants.DIRECTORY_LOGS);
 
         logMessage = f"{self.UtcNowString} {status} {message}.";
         print(logMessage);
 
-        log = open(f"{DIRECTORY_LOGS}{os.path.sep}{fileName}.txt", "a");
+        log = open(f"{LogConstants.DIRECTORY_LOGS}{os.path.sep}{fileName}.txt", "a");
         log.write("\n" + logMessage);
         log.close();
 
@@ -172,7 +173,9 @@ class Server():
 
         playersByIdentifier = dict((player.Identifier, player.Name) for player in game.Players);
 
-        connection.sendall(pickle.dumps(playersByIdentifier));
+        replyDto = GamePlayerListDto(dto.GameIdentifier, playersByIdentifier);
+
+        connection.sendall(pickle.dumps(replyDto));
 
     #endregion
 
