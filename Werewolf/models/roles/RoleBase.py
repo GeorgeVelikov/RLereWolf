@@ -10,6 +10,7 @@ class RoleBase():
 
         self.__name = name.strip();
         self.__canWait = True;
+        self.__isAlive = True;
         return;
 
     @property
@@ -19,6 +20,10 @@ class RoleBase():
     @property
     def Role(self):
         return PlayerTypeEnum._None;
+
+    @property
+    def IsAlive(self):
+        return self.__isAlive;
 
     def Talk(self, message):
         if (not isinstance(message, str)):

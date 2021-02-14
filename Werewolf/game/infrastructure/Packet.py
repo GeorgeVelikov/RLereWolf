@@ -20,3 +20,7 @@ class Packet():
     @staticmethod
     def GetJoinGamePacket(data):
         return Packet(PacketTypeEnum.JoinGame, data);
+
+    @staticmethod
+    def GetLeaveGamePacket(data):
+        return Packet(PacketTypeEnum.LeaveGame, data);

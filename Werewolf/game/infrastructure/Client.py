@@ -1,7 +1,7 @@
 import constants.NetConstants as NetConstants;
 from game.Player import Player;
 from game.infrastructure.Packet import Packet;
-from models.dtos.ClientJoinGameDto import ClientJoinGameDto;
+from models.dtos.ClientJoinGameDto import ClientGameDto;
 from utility.Helpers import ClearScreen, PromptOption, nameof;
 
 from datetime import datetime;
@@ -78,7 +78,7 @@ class Client(Player):
                 self.MenuMain();
 
             if option > 0 and option <= len(games):
-                gameIdentifier = gameIndexToIdentifier[option-1]
+                gameIdentifier = gameIndexToIdentifier[option]
                 self.JoinGame(gameIdentifier);
                 self.MenuGameLobby();
 
@@ -98,8 +98,8 @@ class Client(Player):
             option = PromptOption();
 
             if option == 0:
-                self.Disconnect();
-                self.MenuMain();
+                self.LeaveGame();
+                self.MenuGameList();
 
             elif option == 1:
                 pass;
@@ -159,14 +159,29 @@ class Client(Player):
     #region Calls
 
     def GetGamesList(self):
-        packet = Packet.GetGamesPacket(list());
+        packet = Packet.GetGamesPacket();
 
         reply = self.Send(packet);
 
         return reply;
 
+    def LeaveGame(self):
+        if not self.__gameIdentifier:
+            return;
+
+        dto = ClientGameDto(self, self.__gameIdentifier);
+        packet = Packet.GetLeaveGamePacket(dto)
+
+        reply = self.Send(packet);
+
+        if reply:
+            self.__gameIdentifier = None;
+
+        return reply;
+
+
     def JoinGame(self, gameIdentifier):
-        dto = ClientJoinGameDto(self, gameIdentifier)
+        dto = ClientGameDto(self, gameIdentifier)
         packet = Packet.GetJoinGamePacket(dto);
 
         reply = self.Send(packet);

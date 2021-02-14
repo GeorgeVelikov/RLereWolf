@@ -14,7 +14,7 @@ class Game():
     def __init__(self, name):
         self.__identifier = str(hash(self));
         self.__name = name;
-        self.__messages = list();
+        self.__messages = set();
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
@@ -42,8 +42,6 @@ class Game():
 
     def Join(self, player):
         self.__players.add(player);
-
-        player.JoinGame(self.Identifier);
         return;
 
     def Leave(self, player):

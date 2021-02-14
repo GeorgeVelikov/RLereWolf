@@ -6,7 +6,7 @@ from game.Game import Game;
 from game.infrastructure.Client import Client;
 from game.infrastructure.Packet import Packet;
 
-from models.dtos.ClientJoinGameDto import ClientJoinGameDto
+from models.dtos.ClientJoinGameDto import ClientGameDto
 
 from datetime import datetime;
 
@@ -65,6 +65,9 @@ class Server():
                 elif packet.PacketType == PacketTypeEnum.JoinGame:
                     self.JoinGame(connection, packet);
 
+                elif packet.PacketType == PacketTypeEnum.LeaveGame:
+                    self.LeaveGame(connection, packet);
+
             except Exception as error:
                 print(f"{self.UtcNowString} [ERROR] " + str(error));
                 break;
@@ -116,6 +119,19 @@ class Server():
 
         game.Join(dto.Client);
         connection.sendall(pickle.dumps(dto.GameIdentifier));
+
+        return;
+
+    def LeaveGame(self, connection, packet):
+        dto = packet.Data;
+
+        game = next(g for g in self.__games if g.Identifier == dto.GameIdentifier);
+
+        if not game:
+            connection.sendall(pickle.dumps(True));
+
+        game.Leave(dto.Client);
+        connection.sendall(pickle.dumps(True));
 
         return;
 

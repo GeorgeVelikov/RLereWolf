@@ -1,4 +1,4 @@
-class ClientJoinGameDto():
+class ClientGameDto():
     def __init__(self, client, gameIdentifier):
         self.__client = client;
         self.__gameIdentifier = gameIdentifier;
