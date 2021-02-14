@@ -91,13 +91,21 @@ class Client(Player):
         return;
 
     def MenuGameLobby(self):
-        ClearScreen();
-        print("1. Player List");
-        print("\n0. Quit\n");
-
+        players = dict();
         option = None;
 
         while option != 0:
+            playerIndexToIdentifier = dict();
+            players = self.GetPlayerList();
+            ClearScreen();
+            print("1. Placeholder");
+            print("\n0. Quit\n");
+
+            print("Players:");
+            for index, (identifier, name) in enumerate(players.items()):
+                playerIndexToIdentifier[index + 1] = identifier;
+                print(f"\t- {name}");
+
             option = PromptOption();
 
             if option == 0:
@@ -105,7 +113,7 @@ class Client(Player):
                 self.MenuGameList();
 
             elif option == 1:
-                players = self.GetPlayerList();
+                pass;
 
             else:
                 print("[ERROR] Invalid option.");

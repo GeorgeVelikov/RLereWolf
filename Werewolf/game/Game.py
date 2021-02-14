@@ -46,13 +46,13 @@ class Game():
         return;
 
     def Leave(self, player):
-        if (player not in self.__players):
+        if (player.Identifier not in [p.Identifier for p in self.__players]):
             # TODO: raise some silent exception
             return;
 
         # no need to sort, already alphabetical
         self.__players\
-            .remove(player);
+            .remove(next(p for p in self.__players if p.Identifier == player.Identifier));
 
     def Start(self):
         if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
