@@ -1,5 +1,6 @@
-import tkinter as tk
-import tkinter.ttk as ttk
+import tkinter as tk;
+import tkinter.ttk as ttk;
+import pygubu;
 
 class MainMenuScreen(ttk.Frame):
     def __init__(self, root, client):
@@ -21,7 +22,7 @@ class MainMenuScreen(ttk.Frame):
 
         self.__button_Connect.pack(ipady="5",\
             pady="10",\
-            side="top")
+            side="top");
 
         self.__button_SetName = ttk.Button(self.__button_Group,\
             command=self.SetName_Click);

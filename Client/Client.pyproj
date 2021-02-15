@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ClientInstance.py" />
+    <Compile Include="screens\GameListScreen.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="screens\MainMenuScreen.py">
       <SubType>Code</SubType>
     </Compile>
