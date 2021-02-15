@@ -1,8 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
-from functools import partial
-
 class MainMenuScreen(ttk.Frame):
     def __init__(self, root, client):
         self.__client = client;
