@@ -1,29 +1,9 @@
 import Shared.constants.GameConstants as GameConstants;
 
-import pygame;
-import sys;
+from Client.screens.MainMenuScreen import MainMenuScreen;
 
+import tkinter as tk
+import tkinter.ttk as ttk
 
-def GetMousePosition():
-    mouseX, mouseY = pygame.mouse.get_pos();
-
-    return (mouseX, mouseY);
-
-
-def Label(screen, text, x, y):
-    font = pygame.font.SysFont(None, 20);
-    label = font.render(text, 1, (0,0,0));
-    labelRect = label.get_rect();
-    labelRect.topleft = (x, y);
-    screen.blit(label, labelRect);
-
-    return labelRect;
-
-def Button(screen, text, x, y):
-    font = pygame.font.SysFont(None, 20);
-    button = font.render(text, 1, (0,0,0));
-    buttonRect = button.get_rect();
-    buttonRect.topleft = (x, y);
-    screen.blit(button, buttonRect);
-
-    return buttonRect;
+def ShowMainMenu(root, client):
+    MainMenuScreen(root, client);

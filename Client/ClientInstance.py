@@ -10,7 +10,6 @@ from Shared.utility.Helpers import nameof;
 
 from Werewolf.game.Player import Player;
 
-import Client.constants.ClientConstants as ClientConstants;
 import Client.utility.UIContext as UIContext;
 from Client.utility.Helpers import ClearScreen, PromptOption;
 
@@ -20,15 +19,16 @@ import socket;
 import pickle;
 import threading;
 import time;
-import pygame;
+
+import tkinter as tk
+import tkinter.ttk as ttk
 
 class ClientInstance(Player):
     def __init__(self):
         super().__init__();
         self.__connection = None;
         self.__lastUpdateUtc = None;
-        self.__screen = None;
-        self.__clock = None;
+        self.__mainwindow = None;
 
     def __getstate__(self):
         state = self.__dict__.copy();
@@ -42,42 +42,16 @@ class ClientInstance(Player):
     #region UI
 
     def Load(self):
-        self.__screen = pygame.display.set_mode([ClientConstants.WIDTH, ClientConstants.HEIGHT])
-        self.__clock = pygame.time.Clock();
-        self.Main();
+        # Main widget
+        self.__mainwindow = tk.Tk();
+        self.__mainwindow.title("Client");
+        self.__mainwindow.geometry("800x600");
+        self.__mainwindow.resizable(False, False);
+        self.MainMenu();
+        self.__mainwindow.mainloop();
 
-    def Main(self):
-
-        clientIsRunning = True;
-
-        while True:
-            clicked = False;
-            self.__screen.fill((255, 255, 255));
-
-            mouseCoordiantes = UIContext.GetMousePosition();
-
-            label = UIContext.Label(self.__screen, "Hello", 50, 50);
-
-            for event in pygame.event.get():
-
-                if event.type == pygame.QUIT:
-                    clientIsRunning = False;
-                    self.Disconnect();
-                    pygame.display.quit();
-                    pygame.quit();
-                    exit();
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    clicked = True;
-
-
-            if clicked and label.collidepoint(mouseCoordiantes):
-                print("XD");
-
-            pygame.display.update();
-            self.__clock.tick(ClientConstants.FRAME_RATE);
-
-        return;
+    def MainMenu(self):
+        UIContext.ShowMainMenu(self.__mainwindow, self);
 
     def MenuMain(self):
         ClearScreen();
@@ -267,5 +241,4 @@ class ClientInstance(Player):
     #endregion
 
 if __name__ == "__main__":
-    pygame.init();
-    ClientInstance().MenuMain();
+    ClientInstance().Load();

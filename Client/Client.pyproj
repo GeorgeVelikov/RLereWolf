@@ -22,10 +22,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ClientInstance.py" />
-    <Compile Include="constants\ClientConstants.py">
+    <Compile Include="screens\MainMenuScreen.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="constants\__init__.py">
+    <Compile Include="screens\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="utility\Helpers.py" />
@@ -36,8 +36,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="constants\" />
+    <Folder Include="pygubu\" />
+    <Folder Include="screens\" />
     <Folder Include="utility\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="pygubu\MainMenuScreen.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
