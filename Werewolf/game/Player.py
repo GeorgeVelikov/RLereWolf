@@ -1,10 +1,8 @@
-from enums.TimeOfDayEnum import TimeOfDayEnum;
-from enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
+from Shared.enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
 import hashlib;
 import uuid;
-
-import constants.GameConstants as GameConstant;
 
 class Player():
     def __init__(self):

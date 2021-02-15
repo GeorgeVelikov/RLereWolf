@@ -1,5 +1,5 @@
-from enums.PlayerTypeEnum import PlayerTypeEnum;
-from models.roles.RoleBase import RoleBase;
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Werewolf.roles.RoleBase import RoleBase;
 
 class Seer(RoleBase):
     def __init__(self, name):

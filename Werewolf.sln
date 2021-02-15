@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Werewolf", "Werewolf\Werewolf.pyproj", "{EBEB76B6-F945-4178-A682-0DAE77F084E9}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Server", "Server\Server.pyproj", "{4C904CE1-5D75-424D-A871-2968E9420319}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Client", "Client\Client.pyproj", "{6958B57E-47A5-44E3-BC4C-7F17E9F1E9E4}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Shared", "Shared\Shared.pyproj", "{6A6AA1F8-07D6-417D-9A11-A2B24EE379CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +19,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EBEB76B6-F945-4178-A682-0DAE77F084E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBEB76B6-F945-4178-A682-0DAE77F084E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C904CE1-5D75-424D-A871-2968E9420319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C904CE1-5D75-424D-A871-2968E9420319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6958B57E-47A5-44E3-BC4C-7F17E9F1E9E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6958B57E-47A5-44E3-BC4C-7F17E9F1E9E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6AA1F8-07D6-417D-9A11-A2B24EE379CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6AA1F8-07D6-417D-9A11-A2B24EE379CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

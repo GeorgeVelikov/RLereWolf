@@ -1,20 +1,7 @@
 import gym;
 
-import Test;
-from game.infrastructure.Server import Server;
-
 def main():
     pass;
-
-def RunServer():
-    server = Server();
-    server.Run();
-    return;
-
-def RunTests():
-    Test.TestPlayers();
-    Test.TestPlayerRoles();
-    Test.TestClientConnection();
 
 def RunOpenAiGym():
     env = gym.make('CartPole-v0')
@@ -33,9 +20,5 @@ def RunOpenAiGym():
 
 if __name__ == "__main__":
     main();
-
-    #RunServer();
-
-    RunTests();
 
     #RunOpenAiGym();

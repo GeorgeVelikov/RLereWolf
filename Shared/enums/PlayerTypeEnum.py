@@ -2,7 +2,6 @@ from Shared.utility.Helpers import nameof;
 
 from enum import Enum;
 
-
 class PlayerTypeEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;

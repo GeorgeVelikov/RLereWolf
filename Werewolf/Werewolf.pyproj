@@ -3,15 +3,16 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ebeb76b6-f945-4178-a682-0dae77f084e9</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
+    <ProjectHome>
+    </ProjectHome>
     <StartupFile>main.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\Werewolf</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Werewolf</Name>
     <RootNamespace>Werewolf</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,15 +23,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="constants\LogConstants.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="constants\NetConstants.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="constants\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="enums\PacketTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
@@ -43,9 +35,6 @@
     <Compile Include="environment\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="constants\GameConstants.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="game\communication\Message.py">
       <SubType>Code</SubType>
     </Compile>
@@ -53,9 +42,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\communication\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="game\infrastructure\Client.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="enums\PlayerTypeEnum.py">
@@ -67,15 +53,6 @@
     <Compile Include="game\Game.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\infrastructure\Packet.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="game\infrastructure\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="game\infrastructure\Server.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="game\Player.py">
       <SubType>Code</SubType>
     </Compile>
@@ -83,60 +60,37 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
-    <Compile Include="models\dtos\ClientGameDto.py">
+    <Compile Include="roles\Doctor.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\dtos\GamePlayerListDto.py">
+    <Compile Include="roles\Peasant.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\dtos\__init__.py">
+    <Compile Include="roles\RoleBase.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\roles\Doctor.py">
+    <Compile Include="roles\Seer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\roles\Peasant.py">
+    <Compile Include="roles\Werewolf.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\roles\RoleBase.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="models\roles\Seer.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="models\roles\Werewolf.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="models\roles\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="models\__init__.py">
+    <Compile Include="roles\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="environment\WerewolfEnvironment.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Test.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="utility\Helpers.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="utility\__init__.py">
+    <Compile Include="__init__.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="game\infrastructure\" />
     <Folder Include="game\communication\" />
-    <Folder Include="models\" />
     <Folder Include="enums\" />
-    <Folder Include="models\dtos\" />
-    <Folder Include="models\roles\" />
+    <Folder Include="roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />
-    <Folder Include="constants\" />
-    <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.9" />

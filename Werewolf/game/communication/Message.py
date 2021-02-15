@@ -1,6 +1,6 @@
-from datetime import datetime;
+import Shared.constants.NetConstants as NetConstants;
 
-import constants.NetConstants as NetConstants;
+from datetime import datetime;
 
 import dateutil.tz;
 

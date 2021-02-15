@@ -1,14 +1,18 @@
-import constants.NetConstants as NetConstants;
-import constants.GameConstants as GameConstants;
+import Shared.constants.NetConstants as NetConstants;
+import Shared.constants.GameConstants as GameConstants;
+
+from Shared.dtos.ClientGameDto import ClientGameDto;
+from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
+
+from Shared.Packet import Packet;
+from Shared.enums.PacketTypeEnum import PacketTypeEnum;
+
+# Temporary reference!
+from Client.ClientInstance import ClientInstance;
+
+from Werewolf.game.Game import Game;
+
 import constants.LogConstants as LogConstants;
-
-from enums.PacketTypeEnum import PacketTypeEnum;
-from game.Game import Game;
-from game.infrastructure.Client import Client;
-from game.infrastructure.Packet import Packet;
-
-from models.dtos.ClientGameDto import ClientGameDto;
-from models.dtos.GamePlayerListDto import GamePlayerListDto;
 
 from datetime import datetime;
 

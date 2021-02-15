@@ -1,6 +1,6 @@
-from abc import abstractmethod;
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 
-from enums.PlayerTypeEnum import PlayerTypeEnum;
+from abc import abstractmethod;
 
 class RoleBase():
     def __init__(self, name):

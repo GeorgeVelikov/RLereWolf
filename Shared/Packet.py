@@ -1,4 +1,4 @@
-from enums.PacketTypeEnum import PacketTypeEnum;
+from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 
 class Packet():
     def __init__(self, type, data):

@@ -1,12 +1,18 @@
-import constants.NetConstants as NetConstants;
+import Shared.constants.GameConstants as GameConstants;
+import Shared.constants.NetConstants as NetConstants;
 
-from game.Player import Player;
-from game.infrastructure.Packet import Packet;
+from Shared.dtos.ClientGameDto import ClientGameDto;
+from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
 
-from models.dtos.ClientGameDto import ClientGameDto;
-from models.dtos.GamePlayerListDto import GamePlayerListDto;
+from Shared.Packet import Packet;
 
-from utility.Helpers import ClearScreen, PromptOption, nameof;
+from Shared.utility.Helpers import nameof;
+
+from Werewolf.game.Player import Player;
+
+import Client.constants.ClientConstants as ClientConstants;
+import Client.utility.UIContext as UIContext;
+from Client.utility.Helpers import ClearScreen, PromptOption;
 
 from datetime import datetime;
 
@@ -14,21 +20,64 @@ import socket;
 import pickle;
 import threading;
 import time;
+import pygame;
 
-class Client(Player):
+class ClientInstance(Player):
     def __init__(self):
         super().__init__();
         self.__connection = None;
         self.__lastUpdateUtc = None;
+        self.__screen = None;
+        self.__clock = None;
 
     def __getstate__(self):
         state = self.__dict__.copy();
         state["_" + type(self).__name__ + nameof(self.__connection)] = None;
+        state["_" + type(self).__name__ + nameof(self.__screen)] = None;
+        state["_" + type(self).__name__ + nameof(self.__clock)] = None;
         return state;
 
     # TODO: Do we need to do __setstate__ as well? Will I ever override Client/Player?
 
     #region UI
+
+    def Load(self):
+        self.__screen = pygame.display.set_mode([ClientConstants.WIDTH, ClientConstants.HEIGHT])
+        self.__clock = pygame.time.Clock();
+        self.Main();
+
+    def Main(self):
+
+        clientIsRunning = True;
+
+        while True:
+            clicked = False;
+            self.__screen.fill((255, 255, 255));
+
+            mouseCoordiantes = UIContext.GetMousePosition();
+
+            label = UIContext.Label(self.__screen, "Hello", 50, 50);
+
+            for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+                    clientIsRunning = False;
+                    self.Disconnect();
+                    pygame.display.quit();
+                    pygame.quit();
+                    exit();
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    clicked = True;
+
+
+            if clicked and label.collidepoint(mouseCoordiantes):
+                print("XD");
+
+            pygame.display.update();
+            self.__clock.tick(ClientConstants.FRAME_RATE);
+
+        return;
 
     def MenuMain(self):
         ClearScreen();
@@ -92,7 +141,7 @@ class Client(Player):
 
     def MenuGameLobby(self):
         players = dict();
-        option = None;
+        option = -1;
 
         while option != 0:
             playerIndexToIdentifier = dict();
@@ -157,6 +206,9 @@ class Client(Player):
         return;
 
     def Disconnect(self):
+        if not self.__connection:
+            return;
+
         try:
             self.__connection.close();
             self.__gameIdentifier = None;
@@ -215,4 +267,5 @@ class Client(Player):
     #endregion
 
 if __name__ == "__main__":
-    Client().MenuMain();
+    pygame.init();
+    ClientInstance().MenuMain();

@@ -1,15 +1,15 @@
-from enums.TimeOfDayEnum import TimeOfDayEnum;
-from enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
+from Shared.enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
-from models.roles.Peasant import Peasant;
-from models.roles.Seer import Seer;
-from models.roles.Doctor import Doctor;
-from models.roles.Werewolf import Werewolf;
+import Shared.constants.GameConstants as GameConstant;
+
+from Werewolf.roles.Peasant import Peasant;
+from Werewolf.roles.Seer import Seer;
+from Werewolf.roles.Doctor import Doctor;
+from Werewolf.roles.Werewolf import Werewolf;
 
 import hashlib;
 import uuid;
-
-import constants.GameConstants as GameConstant;
 
 class Game():
     def __init__(self, name):
