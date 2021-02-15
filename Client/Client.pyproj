@@ -44,6 +44,7 @@
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="pygubu\GameListScreen.ui" />
     <Content Include="pygubu\MainMenuScreen.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

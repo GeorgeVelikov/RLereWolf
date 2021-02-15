@@ -2,8 +2,11 @@ import tkinter as tk;
 import tkinter.ttk as ttk;
 import pygubu;
 
+import Client.utility.UIContext as UIContext;
+
 class MainMenuScreen(ttk.Frame):
     def __init__(self, root, client):
+        self.__root = root;
         self.__client = client;
         super().__init__(root);
 
@@ -36,11 +39,17 @@ class MainMenuScreen(ttk.Frame):
             side="top");
 
     def Connect_Click(self):
-        self.__client.Connect();
+        try:
+            self.__client.Connect();
+            UIContext.ShowGameList(self.__root, self.__client);
+        except Exception as error:
+            # TODO: gracefully fail, some error dialog, perhaps?
+            pass;
+
         return;
 
     def SetName_Click(self):
         # TODO: dialog to set name
         self.__client.SetName("George");
-        self.__button_SetName.configure(default="normal", text=f"Set Name ({self.__client.Name})");
+        self.__button_SetName.configure(text=f"Set Name ({self.__client.Name})");
         return;
