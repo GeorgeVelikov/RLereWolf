@@ -1,0 +1,27 @@
+{
+    "Version": 3,
+    "ListAllProjects": false,
+    "MultiProjectConfigurations": {
+        "Client": {
+            "Projects": {
+                "Client": {}
+            }
+        },
+        "Server": {
+            "Projects": {
+                "Server": {}
+            }
+        },
+        "Client + Server": {
+            "Projects": {
+                "Client": {},
+                "Server": {}
+            }
+        },
+        "Werewolf": {
+            "Projects": {
+                "Werewolf": {}
+            }
+        }
+    }
+}
