@@ -15,20 +15,20 @@ class MainMenuScreen(ttk.Frame):
         self.__button_Connect = ttk.Button(self.__button_Group,\
             command=self.Connect_Click);
 
-        self.__button_Connect.configure(text='Connect',\
+        self.__button_Connect.configure(text="Connect",\
             takefocus=False, \
-            width='50');
+            width="50");
 
-        self.__button_Connect.pack(ipady='5',\
-            pady='10',\
-            side='top')
+        self.__button_Connect.pack(ipady="5",\
+            pady="10",\
+            side="top")
 
         self.__button_SetName = ttk.Button(self.__button_Group,\
             command=self.SetName_Click);
 
         self.__button_SetName.configure(text=f"Set Name ({self.__client.Name})", \
             takefocus=False, \
-            width='50');
+            width="50");
 
         self.__button_SetName.pack(ipady="5",\
             pady="10",\
