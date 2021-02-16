@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <interface version="1.0">
-  <object class="ttk.Frame" id="frame_1">
+  <object class="ttk.Frame" id="GameListScreen">
     <property name="height">200</property>
     <property name="width">200</property>
     <layout manager="pack">

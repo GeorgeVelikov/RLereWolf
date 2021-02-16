@@ -1,44 +1,18 @@
-import tkinter as tk;
-import tkinter.ttk as ttk;
-import pygubu;
+
+from Shared.utility.Helpers import nameof;
 
 import Client.utility.UIContext as UIContext;
+from Client.screens.ScreenBase import ScreenBase;
 
-class MainMenuScreen(ttk.Frame):
+class MainMenuScreen(ScreenBase):
     def __init__(self, root, client):
+        super().__init__(root);
         self.__root = root;
         self.__client = client;
-        super().__init__(root);
 
-        self.pack(anchor="center", expand="true", side="top");
+        self.InitializeScreen();
 
-        self.__button_Group = ttk.Frame(self)
-        self.__button_Group.grid();
-        self.__button_Group.rowconfigure("3", pad="0");
-
-        self.__button_Connect = ttk.Button(self.__button_Group,\
-            command=self.Connect_Click);
-
-        self.__button_Connect.configure(text="Connect",\
-            takefocus=False, \
-            width="50");
-
-        self.__button_Connect.pack(ipady="5",\
-            pady="10",\
-            side="top");
-
-        self.__button_SetName = ttk.Button(self.__button_Group,\
-            command=self.SetName_Click);
-
-        self.__button_SetName.configure(text=f"Set Name ({self.__client.Name})", \
-            takefocus=False, \
-            width="50");
-
-        self.__button_SetName.pack(ipady="5",\
-            pady="10",\
-            side="top");
-
-    def Connect_Click(self):
+    def Connect_Clicked(self):
         try:
             self.__client.Connect();
             UIContext.ShowGameList(self.__root, self.__client);
@@ -48,8 +22,11 @@ class MainMenuScreen(ttk.Frame):
 
         return;
 
-    def SetName_Click(self):
+    def SetName_Clicked(self):
         # TODO: dialog to set name
         self.__client.SetName("George");
-        self.__button_SetName.configure(text=f"Set Name ({self.__client.Name})");
+
+        # update button text
+        self.GetObject(nameof(self.__client.SetName))\
+            .configure(text=f"Set Name ({self.__client.Name})");
         return;
