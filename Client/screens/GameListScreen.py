@@ -11,6 +11,7 @@ class GameListScreen(ScreenBase):
         super().__init__(root);
         self.__root = root;
         self.__client = client;
+        self.__isRunningBackGroundTasks = True;
 
         self.InitializeScreen();
 
@@ -18,10 +19,23 @@ class GameListScreen(ScreenBase):
         self.__threadGetGameList.start();
 
     def UpdateGamesList(self):
-        games = self.__client.GetGamesList();
+        while self.__isRunningBackGroundTasks:
+            games = self.__client.GetGamesList();
 
-        for index, (identifier, name) in enumerate(games.items()):
-            pass;
+            for index, (identifier, name) in enumerate(games.items()):
+                pass;
 
-        time.sleep(2)
-        self.UpdateGamesList();
+            time.sleep(1);
+
+    def StopBackgroundCalls(self):
+        self.__isRunningBackGroundTasks = False;
+
+        self.__threadGetGameList.join();
+
+    def Disconnect_Clicked(self):
+        self.StopBackgroundCalls();
+        self.__client.Disconnect();
+        UIContext.ShowMainMenu(self.__root);
+
+    def Join_Clicked(self):
+        pass;
