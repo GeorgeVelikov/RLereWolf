@@ -45,11 +45,21 @@ class GameListScreen(ScreenBase):
         self.__isRunningBackGroundTasks = False;
 
         self.__threadGetGameList.join();
+        return;
 
     def Disconnect_Clicked(self):
         self.StopBackgroundCalls();
         self.__client.Disconnect();
         UIContext.ShowMainMenu(self.__root);
+        return;
 
     def Join_Clicked(self):
-        pass;
+        selection = self.__gamesListBox.curselection();
+
+        if not selection:
+            return;
+
+        selectedGameIndex = selection[0];
+        selectedGameIdentifier = list(self.__games)[selectedGameIndex];
+
+        return;
