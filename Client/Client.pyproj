@@ -29,6 +29,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.py" />
+    <Compile Include="screens\PlayerListScreen.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="views\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -60,6 +63,7 @@
   <ItemGroup>
     <Content Include="views\GameListScreen.ui" />
     <Content Include="views\MainMenuScreen.ui" />
+    <Content Include="views\PlayerListScreen.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -59,7 +59,12 @@ class GameListScreen(ScreenBase):
         if not selection:
             return;
 
+        self.StopBackgroundCalls();
+
         selectedGameIndex = selection[0];
         selectedGameIdentifier = list(self.__games)[selectedGameIndex];
+
+        self.__client.JoinGame(selectedGameIdentifier);
+        UIContext.ShowPlayerList(self.__root);
 
         return;

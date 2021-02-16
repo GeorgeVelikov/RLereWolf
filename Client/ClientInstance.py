@@ -31,8 +31,6 @@ class ClientInstance(Player):
     def __getstate__(self):
         state = self.__dict__.copy();
         state["_" + type(self).__name__ + nameof(self.__connection)] = None;
-        state["_" + type(self).__name__ + nameof(self.__screen)] = None;
-        state["_" + type(self).__name__ + nameof(self.__clock)] = None;
         return state;
 
     # TODO: Do we need to do __setstate__ as well? Will I ever override Client/Player?
