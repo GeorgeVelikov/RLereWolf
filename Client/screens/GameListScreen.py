@@ -3,6 +3,8 @@ from Shared.utility.Helpers import nameof;
 import Client.utility.UIContext as UIContext;
 from Client.screens.ScreenBase import ScreenBase;
 
+import tkinter as tk;
+
 import threading;
 import time;
 
@@ -15,15 +17,27 @@ class GameListScreen(ScreenBase):
 
         self.InitializeScreen();
 
+        self.__games = dict();
+        self.__gamesListBox = self.GetObject(nameof(self.__client.GetGamesList));
+
         self.__threadGetGameList = threading.Thread(target = self.UpdateGamesList);
         self.__threadGetGameList.start();
 
     def UpdateGamesList(self):
         while self.__isRunningBackGroundTasks:
-            games = self.__client.GetGamesList();
+            self.__games = self.__client.GetGamesList();
 
-            for index, (identifier, name) in enumerate(games.items()):
-                pass;
+            currentSelection = self.__gamesListBox.curselection();
+
+            self.__gamesListBox.delete(int(), tk.END);
+
+            for index, (identifier, name) in enumerate(self.__games.items()):
+                self.__gamesListBox.insert(tk.END, name);
+
+            if currentSelection:
+                index = currentSelection[0];
+                self.__gamesListBox.select_set(index);
+                self.__gamesListBox.activate(index);
 
             time.sleep(1);
 
