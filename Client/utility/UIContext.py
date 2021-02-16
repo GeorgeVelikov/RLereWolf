@@ -6,8 +6,8 @@ from Client.screens.GameListScreen import GameListScreen;
 import tkinter as tk
 import tkinter.ttk as ttk
 
-def ShowMainMenu(root, client):
-    MainMenuScreen(root, client);
+def ShowMainMenu(window):
+    window.DisplayScreen(MainMenuScreen);
 
-def ShowGameList(root, client):
-    GameListScreen(root, client);
+def ShowGameList(window):
+    window.DisplayScreen(GameListScreen);

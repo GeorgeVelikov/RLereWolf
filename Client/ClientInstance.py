@@ -11,6 +11,7 @@ from Shared.utility.Helpers import nameof;
 from Werewolf.game.Player import Player;
 
 import Client.utility.UIContext as UIContext;
+from Client.MainWindow import MainWindow;
 from Client.utility.Helpers import ClearScreen, PromptOption;
 
 from datetime import datetime;
@@ -20,15 +21,12 @@ import pickle;
 import threading;
 import time;
 
-import tkinter as tk
-import tkinter.ttk as ttk
-
 class ClientInstance(Player):
     def __init__(self):
         super().__init__();
         self.__connection = None;
         self.__lastUpdateUtc = None;
-        self.__mainwindow = None;
+        self.__mainWindow = MainWindow(self);
 
     def __getstate__(self):
         state = self.__dict__.copy();
@@ -40,18 +38,6 @@ class ClientInstance(Player):
     # TODO: Do we need to do __setstate__ as well? Will I ever override Client/Player?
 
     #region UI
-
-    def Load(self):
-        # Main widget
-        self.__mainwindow = tk.Tk();
-        self.__mainwindow.title("Client");
-        self.__mainwindow.geometry("800x600");
-        self.__mainwindow.resizable(False, False);
-        self.MainMenu();
-        self.__mainwindow.mainloop();
-
-    def MainMenu(self):
-        UIContext.ShowMainMenu(self.__mainwindow, self);
 
     def MenuMain(self):
         ClearScreen();
@@ -241,4 +227,4 @@ class ClientInstance(Player):
     #endregion
 
 if __name__ == "__main__":
-    ClientInstance().Load();
+    ClientInstance();

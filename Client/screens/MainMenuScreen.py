@@ -14,7 +14,7 @@ class MainMenuScreen(ScreenBase):
     def Connect_Clicked(self):
         try:
             self.__client.Connect();
-            UIContext.ShowGameList(self.__root, self.__client);
+            UIContext.ShowGameList(self.__root);
         except Exception as error:
             # TODO: gracefully fail, some error dialog, perhaps?
             pass;

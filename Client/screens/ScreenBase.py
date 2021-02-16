@@ -12,7 +12,7 @@ class ScreenBase():
 
     def InitializeScreen(self):
         self.__builder.add_from_file(ClientConstants.RELATIVE_UI_PATH + self.ClassName + ".ui");
-        self.__content = self.__builder.get_object(self.ClassName, self.__root);
+        self.__content = self.__builder.get_object(self.ClassName);
         self.__builder.connect_callbacks(self);
 
     def GetObject(self, objectId):
@@ -21,3 +21,7 @@ class ScreenBase():
     @property
     def ClassName(self):
         return self.__class__.__name__;
+
+    @property
+    def Content(self):
+        return self.__content;

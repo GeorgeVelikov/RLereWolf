@@ -28,6 +28,7 @@
     <Compile Include="constants\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainWindow.py" />
     <Compile Include="views\__init__.py">
       <SubType>Code</SubType>
     </Compile>
