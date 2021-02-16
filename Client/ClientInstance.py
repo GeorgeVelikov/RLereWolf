@@ -12,7 +12,6 @@ from Werewolf.game.Player import Player;
 
 import Client.utility.UIContext as UIContext;
 from Client.MainWindow import MainWindow;
-from Client.utility.Helpers import ClearScreen, PromptOption;
 
 from datetime import datetime;
 
@@ -34,100 +33,6 @@ class ClientInstance(Player):
         return state;
 
     # TODO: Do we need to do __setstate__ as well? Will I ever override Client/Player?
-
-    #region UI
-
-    def MenuMain(self):
-        ClearScreen();
-        print("1. Connect to Server");
-        print("2. Set Name");
-        print("\n0. Quit\n");
-
-        option = None;
-
-        while option != 0:
-            option = PromptOption();
-
-            if option == 0:
-                pass;
-
-            elif option == 1:
-                if (not self.Name or self.Name.isspace()):
-                    print("[ERROR] Cannot connect until you have set your name.");
-                else:
-                    self.Connect();
-                    self.MenuGameList();
-            elif option == 2:
-                self.SetName(str(input("Name: ")));
-                pass;
-
-            else:
-                print("[ERROR] Invalid option.");
-
-        return;
-
-    def MenuGameList(self):
-        games = dict();
-        option = None;
-
-        while option != 0:
-            games = self.GetGamesList();
-            gameIndexToIdentifier = dict();
-            ClearScreen();
-
-            for index, (identifier, name) in enumerate(games.items()):
-                gameIndexToIdentifier[index + 1] = identifier;
-                print(f"{index + 1}. {name}");
-
-            print("\n0. Quit\n");
-
-            option = PromptOption();
-
-            if option == 0:
-                self.Disconnect();
-                self.MenuMain();
-
-            if option > 0 and option <= len(games):
-                gameIdentifier = gameIndexToIdentifier[option]
-                self.JoinGame(gameIdentifier);
-                self.MenuGameLobby();
-
-            else:
-                print("[ERROR] Invalid option.");
-
-        return;
-
-    def MenuGameLobby(self):
-        players = dict();
-        option = -1;
-
-        while option != 0:
-            playerIndexToIdentifier = dict();
-            players = self.GetPlayerList();
-            ClearScreen();
-            print("1. Placeholder");
-            print("\n0. Quit\n");
-
-            print("Players:");
-            for index, (identifier, name) in enumerate(players.items()):
-                playerIndexToIdentifier[index + 1] = identifier;
-                print(f"\t- {name}");
-
-            option = PromptOption();
-
-            if option == 0:
-                self.LeaveGame();
-                self.MenuGameList();
-
-            elif option == 1:
-                pass;
-
-            else:
-                print("[ERROR] Invalid option.");
-
-        return;
-
-    #endregion
 
     #region Connection
 
