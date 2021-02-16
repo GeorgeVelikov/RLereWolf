@@ -1,4 +1,3 @@
-
 from Shared.utility.Helpers import nameof;
 
 import Client.utility.UIContext as UIContext;
