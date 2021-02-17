@@ -28,6 +28,8 @@ class GameLobbyScreen(ScreenBase):
         while self.__isRunningBackGroundTasks:
             self.__players = self.__client.GetPlayerList();
 
+            game = self.__client.GetGameLobby();
+
             currentSelection = self.__playersListBox.curselection();
 
             self.__playersListBox.delete(int(), tk.END);

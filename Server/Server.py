@@ -126,7 +126,7 @@ class Server():
             self.GetPlayerList(connection, packet);
 
         elif packet.PacketType == PacketTypeEnum.GameLobby:
-            self.GetGame(connection, packet);
+            self.GetGameLobby(connection, packet);
 
         return;
 
@@ -193,7 +193,12 @@ class Server():
 
         connection.sendall(pickle.dumps(replyDto));
 
-    def GetGame(connection, packet):
+        return;
+
+    def GetGameLobby(self, connection, packet):
+        dto = packet.Data;
+
+        connection.sendall(pickle.dumps(None));
 
         return;
 

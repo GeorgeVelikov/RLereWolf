@@ -137,6 +137,17 @@ class ClientInstance(Player):
 
         return reply.Players;
 
+    def GetGameLobby(self):
+        if not self.__gameIdentifier:
+            return None;
+
+        dto = None;
+        packet = PacketUtility.GetGameLobbyPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply;
+
     #endregion
 
     #region Client
