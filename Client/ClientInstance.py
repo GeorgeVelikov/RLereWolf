@@ -1,7 +1,7 @@
 import Shared.constants.GameConstants as GameConstants;
 import Shared.constants.NetConstants as NetConstants;
 
-from Shared.dtos.ClientGameDto import ClientGameDto;
+from Shared.dtos.PlayerGameDto import PlayerGameDto;
 from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
 
 from Shared.Packet import Packet;
@@ -21,13 +21,14 @@ import pickle;
 import threading;
 import time;
 
-class ClientInstance(Player):
+class ClientInstance():
     def __init__(self):
         super().__init__();
         self.__name = str();
         self.__connection = None;
         self.__lastUpdateUtc = None;
-        self.__gameIdentifier = None;
+        self.__player = None;
+        self.__game = None;
         self.__mainWindow = MainWindow(self);
 
     def __getstate__(self):
@@ -43,7 +44,10 @@ class ClientInstance(Player):
 
     @property
     def GameIdentifier(self):
-        return self.__gameIdentifier;
+        if not self.__game:
+            return None;
+
+        return self.__game.Identifier;
 
     #region Connection
 
@@ -73,6 +77,7 @@ class ClientInstance(Player):
 
             data = self.__connection.recv(4 * NetConstants.KILOBYTE).decode();
 
+            self.__player = Player(self.__name);
             return data;
         except Exception as error:
             print("[ERROR] " + str(error));
@@ -84,8 +89,8 @@ class ClientInstance(Player):
             return;
 
         try:
+            self.LeaveGame();
             self.__connection.close();
-            self.__gameIdentifier = None;
         except Exception as error:
             print("[ERROR] " + str(error));
 
@@ -103,45 +108,34 @@ class ClientInstance(Player):
         return reply;
 
     def LeaveGame(self):
-        if not self.__gameIdentifier:
+        if not self.GameIdentifier:
             return;
 
-        dto = ClientGameDto(self, self.__gameIdentifier);
+        dto = PlayerGameDto(self.__player, self.GameIdentifier);
         packet = PacketUtility.GetLeaveGamePacket(dto)
 
         reply = self.Send(packet);
 
         if reply:
-            self.SetGame(None);
+            self.__game = None;
 
         return reply;
 
     def JoinGame(self, gameIdentifier):
-        dto = ClientGameDto(self, gameIdentifier)
+        dto = PlayerGameDto(self.__player, gameIdentifier)
         packet = PacketUtility.GetJoinGamePacket(dto);
 
         reply = self.Send(packet);
 
-        self.SetGame(reply);
+        self.__game = reply;
 
         return reply;
 
-    def GetPlayerList(self):
-        if not self.__gameIdentifier:
-            return None;
-
-        dto = GamePlayerListDto(self.__gameIdentifier);
-        packet = PacketUtility.GetPlayersListPacket(dto);
-
-        reply = self.Send(packet);
-
-        return reply.Players;
-
     def GetGameLobby(self):
-        if not self.__gameIdentifier:
+        if not self.GameIdentifier:
             return None;
 
-        dto = None;
+        dto = PlayerGameDto(self.__player, self.GameIdentifier);
         packet = PacketUtility.GetGameLobbyPacket(dto);
 
         reply = self.Send(packet);
@@ -158,22 +152,6 @@ class ClientInstance(Player):
             return;
 
         self.__name = name.strip();
-        return;
-
-    def SetRole(self, role):
-        # verify the game is changing our role and not something else
-        if not self.__gameIdentifier:
-            return;
-
-        self.__role = role;
-        return;
-
-    def SetGame(self, gameIdentifier):
-        if self.__gameIdentifier and gameIdentifier:
-            # can't join a game when already in one
-            return;
-
-        self.__gameIdentifier = gameIdentifier;
         return;
 
     #endregion

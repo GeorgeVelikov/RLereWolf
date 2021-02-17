@@ -28,15 +28,11 @@ class Game():
     def __repr__(self):
         return self.__name + " - " + self.Identifier;
 
+    #region properties
+
     @property
     def Name(self):
         return self.__name;
-
-    @property
-    def Players(self):
-        return sorted(self.__players,\
-            key = lambda p: p.Name, \
-            reverse = False);
 
     @property
     def Identifier(self):
@@ -45,6 +41,34 @@ class Game():
     @property
     def HasStarted(self):
         return self.__hasStarted;
+
+    @property
+    def Name(self):
+        return self.__name;
+
+    @property
+    def Messages(self):
+        return self.__messages;
+
+    @property
+    def Turn(self):
+        return self.__turn;
+
+    @property
+    def Players(self):
+        return sorted(self.__players,\
+            key = lambda p: p.Name, \
+            reverse = False);
+
+    @property
+    def TimeOfDay(self):
+        return self.__timeOfDay;
+
+    @property
+    def TurnPhase(self):
+        return self.__turnPhase;
+
+    #endregion
 
     def Join(self, player):
         self.__players.add(player);

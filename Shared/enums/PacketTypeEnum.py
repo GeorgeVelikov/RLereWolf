@@ -8,8 +8,7 @@ class PacketTypeEnum(Enum):
     GetGamesList = 1;
     JoinGame = 2;
     LeaveGame = 3;
-    GetPlayers = 4;
-    GameLobby = 5;
+    GameLobby = 4;
 
     def __str__(self):
         if self.value == self._None.value:
@@ -20,8 +19,6 @@ class PacketTypeEnum(Enum):
             return nameof(self.JoinGame);
         elif self.value == self.LeaveGame.value:
             return nameof(self.LeaveGame);
-        elif self.value == self.GetPlayers.value:
-            return nameof(self.GetPlayers);
         elif self.value == self.GameLobby.value:
             return nameof(self.GameLobby);
         else:
@@ -33,5 +30,4 @@ class PacketTypeEnum(Enum):
             PacketTypeEnum.GetGamesList,\
             PacketTypeEnum.JoinGame,\
             PacketTypeEnum.LeaveGame,\
-            PacketTypeEnum.GetPlayers,\
             PacketTypeEnum.GameLobby];

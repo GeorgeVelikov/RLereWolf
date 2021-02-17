@@ -10,6 +10,11 @@ class MainMenuScreen(ScreenBase):
         self.__client = client;
 
         self.InitializeScreen();
+        self.UpdateButtonWithClientName();
+
+    def UpdateButtonWithClientName(self):
+        self.GetObject(nameof(self.__client.SetName))\
+            .configure(text=f"Set Name ({self.__client.Name})");
 
     def Connect_Clicked(self):
         try:
@@ -26,6 +31,5 @@ class MainMenuScreen(ScreenBase):
         self.__client.SetName("George");
 
         # update button text
-        self.GetObject(nameof(self.__client.SetName))\
-            .configure(text=f"Set Name ({self.__client.Name})");
+        self.UpdateButtonWithClientName();
         return;

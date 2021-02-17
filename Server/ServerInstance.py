@@ -1,7 +1,7 @@
 import Shared.constants.NetConstants as NetConstants;
 import Shared.constants.GameConstants as GameConstants;
 
-from Shared.dtos.ClientGameDto import ClientGameDto;
+from Shared.dtos.PlayerGameDto import PlayerGameDto;
 from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
 
 from Shared.Packet import Packet;
@@ -11,6 +11,8 @@ from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 from Client.ClientInstance import ClientInstance;
 
 from Werewolf.game.Game import Game;
+
+import Server.utility.ConversionHelper as ConversionHelper;
 
 import constants.LogConstants as LogConstants;
 
@@ -22,11 +24,11 @@ import pickle;
 import sys;
 import os;
 
-class Server():
+class ServerInstance():
     def __init__(self):
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.__connections = set();
-        self.__games = list();
+        self.__games = dict();
         self.CreateGame("Game 1");
         self.CreateGame("Game 2");
         self.CreateGame("Game 3");
@@ -87,7 +89,10 @@ class Server():
         try:
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
-            self.Log(LogConstants.INFORMATION, f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+
+            self.Log(LogConstants.INFORMATION, \
+                f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+
             self.ShowActiveConnections();
         except socket.error as error:
             self.Log(LogConstants.ERROR, str(error));
@@ -122,9 +127,6 @@ class Server():
         elif packet.PacketType == PacketTypeEnum.LeaveGame:
             self.LeaveGame(connection, packet);
 
-        elif packet.PacketType == PacketTypeEnum.GetPlayers:
-            self.GetPlayerList(connection, packet);
-
         elif packet.PacketType == PacketTypeEnum.GameLobby:
             self.GetGameLobby(connection, packet);
 
@@ -142,8 +144,9 @@ class Server():
         return;
 
     def GetGamesList(self, connection, packet):
-        games = dict((game.Identifier, game.Name) for game in self.__games \
-            if not game.HasStarted);
+        games = dict((identifier, game.Name)\
+            for (identifier, game) in self.__games.items() \
+                if not game.HasStarted);
 
         connection.sendall(pickle.dumps(games));
 
@@ -157,8 +160,13 @@ class Server():
         if not game:
             connection.sendall(pickle.dumps(None));
 
-        game.Join(dto.Client);
-        connection.sendall(pickle.dumps(dto.GameIdentifier));
+        player = dto.Player;
+
+        game.Join(player);
+
+        gameDto = ConversionHelper.GameToDto(game);
+
+        connection.sendall(pickle.dumps(gameDto));
 
         return;
 
@@ -170,7 +178,7 @@ class Server():
         if not game:
             connection.sendall(pickle.dumps(True));
 
-        game.Leave(dto.Client);
+        game.Leave(dto.Player);
         connection.sendall(pickle.dumps(True));
 
         return;
@@ -198,7 +206,11 @@ class Server():
     def GetGameLobby(self, connection, packet):
         dto = packet.Data;
 
-        connection.sendall(pickle.dumps(None));
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+
+        gameDto = ConversionHelper.GameToDto(game);
+
+        connection.sendall(pickle.dumps(gameDto));
 
         return;
 
@@ -209,14 +221,18 @@ class Server():
 
     def CreateGame(self, name):
         game = Game(name);
-        self.__games.append(game);
+
+        self.__games[game.Identifier] = game;
 
         return;
 
     def GetGameWithIdentifier(self, gameIdentifier):
-        return next(g for g in self.__games if g.Identifier == gameIdentifier);
+        if not gameIdentifier in self.__games:
+            return None;
+
+        return self.__games[gameIdentifier];
 
     #endregion
 
 if __name__ == "__main__":
-    Server().Run();
+    ServerInstance().Run();

@@ -18,36 +18,59 @@ class GameLobbyScreen(ScreenBase):
         self.InitializeScreen();
 
         self.__players = dict();
-        self.__playersListBox = self.GetObject(nameof(self.__client.GetPlayerList));
+        self.__playersListBox = self.GetObject("PlayerListBox");
 
-        self.__threadGetPlayerList = threading.Thread(target = self.UpdatePlayerList);
-        self.__threadGetPlayerList.start();
+        # don't need to keep track of messages, too much memory
+        # would go into it with no gains to do it whatsoever.
+        self.__messagesListBox = self.GetObject("MessagesListBox");
 
-    # TODO: have a "shared" game object which the server can toss to all clients
-    def UpdatePlayerList(self):
+        self.__threadUpdateGameData = threading.Thread(target = self.UpdateGameData);
+        self.__threadUpdateGameData.start();
+
+    def UpdateGameData(self):
         while self.__isRunningBackGroundTasks:
-            self.__players = self.__client.GetPlayerList();
 
             game = self.__client.GetGameLobby();
 
-            currentSelection = self.__playersListBox.curselection();
+            self.UpdatePlayerList(game.Players);
 
-            self.__playersListBox.delete(int(), tk.END);
-
-            for index, (identifier, name) in enumerate(self.__players.items()):
-                self.__playersListBox.insert(tk.END, name);
-
-            if currentSelection:
-                index = currentSelection[0];
-                self.__playersListBox.select_set(index);
-                self.__playersListBox.activate(index);
+            self.UpdateMessagesList(game.Messages);
 
             time.sleep(1);
+
+    def UpdatePlayerList(self, players):
+        self.__players = dict((p.Identifier, p) for p in players);
+
+        currentSelection = self.__playersListBox.curselection();
+
+        self.__playersListBox.delete(int(), tk.END);
+
+        if not players:
+            return;
+
+        for (identifier, player) in self.__players.items():
+            self.__playersListBox.insert(tk.END, player.Name);
+
+        if currentSelection:
+            index = currentSelection[0];
+            self.__playersListBox.select_set(index);
+            self.__playersListBox.activate(index);
+
+        return;
+
+    def UpdateMessagesList(self, messages):
+        if not messages:
+            return;
+
+        for message in messages:
+            self.__messagesListBox.insert(tk.END, str(message));
+
+        return;
 
     def StopBackgroundCalls(self):
         self.__isRunningBackGroundTasks = False;
 
-        self.__threadGetPlayerList.join();
+        self.__threadUpdateGameData.join();
         return;
 
     # General Controls

@@ -5,7 +5,7 @@
     <ProjectGuid>4c904ce1-5d75-424d-a871-2968e9420319</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Server.py</StartupFile>
+    <StartupFile>ServerInstance.py</StartupFile>
     <SearchPath>..\..\Werewolf</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -22,13 +22,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="constants\" />
+    <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="constants\LogConstants.py" />
     <Compile Include="constants\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server.py" />
+    <Compile Include="ServerInstance.py" />
+    <Compile Include="utility\ConversionHelper.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utility\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
     </Compile>

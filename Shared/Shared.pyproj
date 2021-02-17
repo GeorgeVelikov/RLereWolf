@@ -39,7 +39,10 @@
     <Compile Include="constants\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="dtos\ClientGameDto.py" />
+    <Compile Include="dtos\PlayerGameDto.py" />
+    <Compile Include="dtos\GameDto.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="dtos\GamePlayerListDto.py" />
     <Compile Include="dtos\GameWrapperDto.py">
       <SubType>Code</SubType>
