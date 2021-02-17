@@ -25,6 +25,7 @@
     <Folder Include="dtos\" />
     <Folder Include="enums\" />
     <Folder Include="constants\" />
+    <Folder Include="exceptions\" />
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,12 @@
     <Compile Include="enums\TimeOfDayEnum.py" />
     <Compile Include="enums\TurnPhaseTypeEnum.py" />
     <Compile Include="enums\__init__.py" />
+    <Compile Include="exceptions\GameException.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="exceptions\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Packet.py" />
     <Compile Include="utility\Helpers.py">
       <SubType>Code</SubType>

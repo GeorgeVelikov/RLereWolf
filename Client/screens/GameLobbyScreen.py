@@ -8,7 +8,7 @@ import tkinter as tk;
 import threading;
 import time;
 
-class PlayerListScreen(ScreenBase):
+class GameLobbyScreen(ScreenBase):
     def __init__(self, root, client):
         super().__init__(root);
         self.__root = root;
@@ -27,10 +27,17 @@ class PlayerListScreen(ScreenBase):
         while self.__isRunningBackGroundTasks:
             self.__players = self.__client.GetPlayerList();
 
+            currentSelection = self.__playersListBox.curselection();
+
             self.__playersListBox.delete(int(), tk.END);
 
             for index, (identifier, name) in enumerate(self.__players.items()):
                 self.__playersListBox.insert(tk.END, name);
+
+            if currentSelection:
+                index = currentSelection[0];
+                self.__playersListBox.select_set(index);
+                self.__playersListBox.activate(index);
 
             time.sleep(1);
 

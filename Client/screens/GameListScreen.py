@@ -65,6 +65,6 @@ class GameListScreen(ScreenBase):
         selectedGameIdentifier = list(self.__games)[selectedGameIndex];
 
         self.__client.JoinGame(selectedGameIdentifier);
-        UIContext.ShowPlayerList(self.__root);
+        UIContext.ShowGameLobby(self.__root);
 
         return;

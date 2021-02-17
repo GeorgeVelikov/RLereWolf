@@ -29,13 +29,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.py" />
-    <Compile Include="screens\PlayerListScreen.py">
+    <Compile Include="screens\GameListScreen.py" />
+    <Compile Include="screens\GameLobbyScreen.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="views\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="screens\GameListScreen.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="screens\MainMenuScreen.py">
@@ -62,8 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="views\GameListScreen.ui" />
+    <Content Include="views\GameLobbyScreen.ui" />
     <Content Include="views\MainMenuScreen.ui" />
-    <Content Include="views\PlayerListScreen.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

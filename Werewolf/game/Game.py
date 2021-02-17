@@ -5,7 +5,7 @@ import Shared.constants.GameConstants as GameConstant;
 
 from Werewolf.roles.Peasant import Peasant;
 from Werewolf.roles.Seer import Seer;
-from Werewolf.roles.Doctor import Doctor;
+from Werewolf.roles.Guard import Guard;
 from Werewolf.roles.Werewolf import Werewolf;
 
 import hashlib;

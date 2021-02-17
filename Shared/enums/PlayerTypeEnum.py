@@ -8,7 +8,7 @@ class PlayerTypeEnum(Enum):
     Peasant = 1;
     Werewolf = 2;
     Seer = 3;
-    Doctor = 4;
+    Guard = 4;
 
     def __str__(self):
         if self.value == self._None.value:
@@ -19,8 +19,8 @@ class PlayerTypeEnum(Enum):
             return nameof(self.Werewolf);
         elif self.value == self.Seer.value:
             return nameof(self.Seer);
-        elif self.value == self.Doctor.value:
-            return nameof(self.Doctor);
+        elif self.value == self.Guard.value:
+            return nameof(self.Guard);
         else:
             raise Exception("Unknown player type used.");
 
