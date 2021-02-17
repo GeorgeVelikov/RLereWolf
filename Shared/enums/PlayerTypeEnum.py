@@ -24,6 +24,7 @@ class PlayerTypeEnum(Enum):
         else:
             raise Exception("Unknown player type used.");
 
+    @staticmethod
     def Values():
         return [\
             PlayerTypeEnum.Villager,\

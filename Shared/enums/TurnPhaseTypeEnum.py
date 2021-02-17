@@ -30,18 +30,16 @@ class TurnPhaseTypeEnum(Enum):
     def Next(self):
         if self.value == self.Introduction or self.value == self.Discussion:
             self.value = self.Event;
-            return
         elif self.value == self.Event:
             self.value = self.Accusation;
-            return
         elif self.value == self.Accusation:
             self.value = self.Voting;
-            return
         elif self.value == self.Voting:
             self.value = self.Discussion;
         else:
             raise Exception("Turn phase " + str(self.value) + " has no next phase.");
 
+    @staticmethod
     def Values():
         return [\
             TurnPhaseTypeEnum.Introduction,\

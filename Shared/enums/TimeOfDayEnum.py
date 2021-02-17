@@ -18,6 +18,7 @@ class TimeOfDayEnum(Enum):
         else:
             raise Exception("Unknown turn cycle type used.");
 
+    @staticmethod
     def Values():
         return [\
             TimeOfDayEnum.Day,\

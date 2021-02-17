@@ -69,17 +69,10 @@ class Server():
 
                 self.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
 
-                if packet.PacketType == PacketTypeEnum.GetGamesList:
-                    self.GetGamesList(connection, packet);
+                validPacketTypes = PacketTypeEnum.Values()
 
-                elif packet.PacketType == PacketTypeEnum.JoinGame:
-                    self.JoinGame(connection, packet);
-
-                elif packet.PacketType == PacketTypeEnum.LeaveGame:
-                    self.LeaveGame(connection, packet);
-
-                elif packet.PacketType == PacketTypeEnum.GetPlayers:
-                    self.GetPlayerList(connection, packet);
+                if packet.PacketType in validPacketTypes:
+                    self.RedirectPacket(connection, packet);
 
             except Exception as error:
                 self.Log(LogConstants.ERROR, str(error));
@@ -119,6 +112,24 @@ class Server():
 
         return;
 
+    def RedirectPacket(self, connection, packet):
+        if packet.PacketType == PacketTypeEnum.GetGamesList:
+            self.GetGamesList(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.JoinGame:
+            self.JoinGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.LeaveGame:
+            self.LeaveGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.GetPlayers:
+            self.GetPlayerList(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.GameLobby:
+            self.GetGame(connection, packet);
+
+        return;
+
     #endregion
 
     #region Game calls
@@ -131,7 +142,8 @@ class Server():
         return;
 
     def GetGamesList(self, connection, packet):
-        games = dict((game.Identifier, game.Name) for game in self.__games);
+        games = dict((game.Identifier, game.Name) for game in self.__games \
+            if not game.HasStarted);
 
         connection.sendall(pickle.dumps(games));
 
@@ -180,6 +192,10 @@ class Server():
         replyDto = GamePlayerListDto(dto.GameIdentifier, playersByIdentifier);
 
         connection.sendall(pickle.dumps(replyDto));
+
+    def GetGame(connection, packet):
+
+        return;
 
     #endregion
 

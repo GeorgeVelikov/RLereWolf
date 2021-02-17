@@ -23,3 +23,11 @@ class Player():
     @property
     def Identifier(self):
         return self.__identifier;
+
+    @property
+    def IsAlive(self):
+        if not self.__role:
+            return None;
+
+        return self.__role.IsAlive;
+

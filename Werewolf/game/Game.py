@@ -14,6 +14,7 @@ import uuid;
 class Game():
     def __init__(self, name):
         self.__identifier = uuid.uuid4().hex;
+        self.__hasStarted = False;
         self.__name = name;
         self.__messages = set();
         self.__turn = int();
@@ -41,6 +42,10 @@ class Game():
     def Identifier(self):
         return self.__identifier;
 
+    @property
+    def HasStarted(self):
+        return self.__hasStarted;
+
     def Join(self, player):
         self.__players.add(player);
         return;
@@ -59,6 +64,7 @@ class Game():
             # TODO: add some warning
             return;
 
+        self.__hasStrated = True;
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
         self.__turnPhase = TurnPhaseTypeEnum.Introduction;

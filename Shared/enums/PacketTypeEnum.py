@@ -27,6 +27,7 @@ class PacketTypeEnum(Enum):
         else:
             raise Exception("Unknown packet type used.");
 
+    @staticmethod
     def Values():
         return [\
             PacketTypeEnum.GetGamesList,\
