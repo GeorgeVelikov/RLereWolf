@@ -44,9 +44,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="dtos\GamePlayerListDto.py" />
-    <Compile Include="dtos\GameWrapperDto.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="dtos\MessageDto.py" />
     <Compile Include="dtos\__init__.py">
       <SubType>Code</SubType>

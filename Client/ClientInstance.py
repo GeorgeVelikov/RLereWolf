@@ -26,7 +26,7 @@ class ClientInstance():
         super().__init__();
         self.__name = str();
         self.__connection = None;
-        self.__lastUpdateUtc = None;
+        self.__lastUpdatedUtc = None;
         self.__player = None;
         self.__game = None;
         self.__mainWindow = MainWindow(self);
@@ -111,7 +111,7 @@ class ClientInstance():
         if not self.GameIdentifier:
             return;
 
-        dto = PlayerGameDto(self.__player, self.GameIdentifier);
+        dto = PlayerGameDto(self.__player, self.GameIdentifier, self.__lastUpdatedUtc);
         packet = PacketUtility.GetLeaveGamePacket(dto)
 
         reply = self.Send(packet);
@@ -122,7 +122,7 @@ class ClientInstance():
         return reply;
 
     def JoinGame(self, gameIdentifier):
-        dto = PlayerGameDto(self.__player, gameIdentifier)
+        dto = PlayerGameDto(self.__player, gameIdentifier, self.__lastUpdatedUtc)
         packet = PacketUtility.GetJoinGamePacket(dto);
 
         reply = self.Send(packet);
@@ -135,7 +135,7 @@ class ClientInstance():
         if not self.GameIdentifier:
             return None;
 
-        dto = PlayerGameDto(self.__player, self.GameIdentifier);
+        dto = PlayerGameDto(self.__player, self.GameIdentifier, self.__lastUpdatedUtc);
         packet = PacketUtility.GetGameLobbyPacket(dto);
 
         reply = self.Send(packet);
