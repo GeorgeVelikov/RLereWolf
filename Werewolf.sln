@@ -11,6 +11,16 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Client", "Client\Client.pyp
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Shared", "Shared\Shared.pyproj", "{6A6AA1F8-07D6-417D-9A11-A2B24EE379CD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B9750280-FC01-4396-B8CB-5C696A944B13}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\ProjectPlan.pdf = Documentation\ProjectPlan.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{E3419164-3DB4-48A4-B805-623C99EF7DA1}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Misc\ProjectPlanGanttChart.pdf = Documentation\Misc\ProjectPlanGanttChart.pdf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +38,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E3419164-3DB4-48A4-B805-623C99EF7DA1} = {B9750280-FC01-4396-B8CB-5C696A944B13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6232C9A9-B222-44EC-9E2D-8F29ED72D3FC}
