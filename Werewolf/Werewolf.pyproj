@@ -63,7 +63,7 @@
     <Compile Include="roles\Guard.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="roles\Peasant.py">
+    <Compile Include="roles\Villager.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="roles\RoleBase.py">

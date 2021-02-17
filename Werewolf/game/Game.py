@@ -3,7 +3,7 @@ from Shared.enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 
 import Shared.constants.GameConstants as GameConstant;
 
-from Werewolf.roles.Peasant import Peasant;
+from Werewolf.roles.Villager import Villager;
 from Werewolf.roles.Seer import Seer;
 from Werewolf.roles.Guard import Guard;
 from Werewolf.roles.Werewolf import Werewolf;
@@ -60,7 +60,7 @@ class Game():
             return;
 
         for player in self.__players:
-            player.SetRole(Peasant(), self);
+            player.SetRole(Villager(), self);
             continue;
 
         self.__turn = 1;
