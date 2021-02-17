@@ -157,6 +157,10 @@ class ServerInstance():
             connection.sendall(pickle.dumps(True));
 
         game.Leave(dto.Player);
+
+        game.Messages.add(\
+            ServerUtility.CreateGameMessage(f"Player '{dto.Player.Name}' has left."));
+
         connection.sendall(pickle.dumps(True));
 
         return;

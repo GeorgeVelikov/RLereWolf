@@ -10,7 +10,7 @@ class MessageDto():
         self.__text = text;
 
     def __str__(self):
-        return f"[{self.TimeStampLocal}] {self.AuthorName} says: {self.Text}";
+        return self.TimeStampLocal + " " + self.Content;
 
     def __repr__(self):
         return str(self);
@@ -46,3 +46,7 @@ class MessageDto():
     @property
     def Text(self):
         return self.__text;
+
+    @property
+    def Content(self):
+        return self.AuthorName + " " + ("says: " if self.__author else str()) + self.Text;

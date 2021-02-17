@@ -7,4 +7,4 @@ ERROR = "[ERROR]";
 
 # Action specific, detailing
 REQUEST = "[REQUEST]";
-
+MESSAGE = "[MESSAGE]";

@@ -27,4 +27,6 @@ def Log(status, message):
     return;
 
 def CreateGameMessage(message):
-    return MessageDto(None, message);
+    dto = MessageDto(None, message);
+    Log(LogConstants.MESSAGE, dto.Content);
+    return dto;
