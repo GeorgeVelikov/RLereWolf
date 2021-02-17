@@ -9,6 +9,7 @@
     </layout>
     <child>
       <object class="tk.Listbox" id="GetGamesList">
+        <property name="activestyle">none</property>
         <property name="font">{Arial} 12 {}</property>
         <property name="selectforeground">#c8c8c8</property>
         <property name="setgrid">true</property>
