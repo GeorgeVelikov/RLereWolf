@@ -26,15 +26,6 @@
     <Compile Include="environment\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="game\communication\Message.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="game\communication\Presets.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="game\communication\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="game\Game.py">
       <SubType>Code</SubType>
     </Compile>
@@ -71,7 +62,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="game\communication\" />
     <Folder Include="roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />

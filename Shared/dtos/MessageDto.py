@@ -4,7 +4,7 @@ from datetime import datetime;
 
 import dateutil.tz;
 
-class Message():
+class MessageDto():
     def __init__(self, author, text):
         self.__timestampUtc = datetime.utcnow();
         self.__author = author;

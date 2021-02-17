@@ -29,6 +29,7 @@
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="constants\CommunicationPresetConstants.py" />
     <Compile Include="constants\GameConstants.py">
       <SubType>Code</SubType>
     </Compile>
@@ -40,6 +41,10 @@
     </Compile>
     <Compile Include="dtos\ClientGameDto.py" />
     <Compile Include="dtos\GamePlayerListDto.py" />
+    <Compile Include="dtos\GameWrapperDto.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="dtos\MessageDto.py" />
     <Compile Include="dtos\__init__.py">
       <SubType>Code</SubType>
     </Compile>
