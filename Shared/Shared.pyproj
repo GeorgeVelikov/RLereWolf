@@ -62,6 +62,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Packet.py" />
+    <Compile Include="utility\DateTimeUtility.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="utility\Helpers.py">
       <SubType>Code</SubType>
     </Compile>

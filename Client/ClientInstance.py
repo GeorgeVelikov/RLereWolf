@@ -1,9 +1,7 @@
 import Shared.constants.GameConstants as GameConstants;
 import Shared.constants.NetConstants as NetConstants;
-
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
-
 from Shared.Packet import Packet;
 from Shared.utility.Helpers import nameof;
 
@@ -14,7 +12,6 @@ import Client.utility.UIContext as UIContext;
 from Client.MainWindow import MainWindow;
 
 from datetime import datetime;
-
 import socket;
 import pickle;
 import threading;
@@ -126,7 +123,8 @@ class ClientInstance():
 
         reply = self.Send(packet);
 
-        self.__game = reply;
+        self.__game = reply.Entity;
+        self.__lastUpdatedUtc = reply.UpdatedUtc;
 
         return reply;
 
@@ -141,7 +139,10 @@ class ClientInstance():
 
         reply = self.Send(packet);
 
-        return reply;
+        self.__game = reply.Entity;
+        self.__lastUpdatedUtc = reply.UpdatedUtc;
+
+        return reply.Entity;
 
     #endregion
 

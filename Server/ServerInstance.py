@@ -1,7 +1,7 @@
 import Shared.constants.NetConstants as NetConstants;
 import Shared.constants.GameConstants as GameConstants;
-
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
+from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 
 from Werewolf.game.Game import Game;
 
@@ -10,7 +10,6 @@ import Server.utility.ServerUtility as ServerUtility;
 import Server.constants.LogConstants as LogConstants;
 
 from datetime import datetime;
-
 import threading;
 import socket;
 import pickle;
@@ -134,11 +133,18 @@ class ServerInstance():
 
         player = dto.Player;
 
+        lastUpdatedUtc = datetime.utcnow();
+
         game.Join(player);
 
-        gameDto = ConversionHelper.GameToDto(game, datetime.utcnow());
+        game.Messages.add(\
+            ServerUtility.CreateGameMessage(f"Player '{player.Name}' has joined."));
 
-        connection.sendall(pickle.dumps(gameDto));
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc);
+
+        updatedEntityDto = UpdatedEntityDto(gameDto, lastUpdatedUtc);
+
+        connection.sendall(pickle.dumps(updatedEntityDto));
 
         return;
 
@@ -169,7 +175,9 @@ class ServerInstance():
 
         gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc);
 
-        connection.sendall(pickle.dumps(gameDto));
+        updatedEntityDto = UpdatedEntityDto(gameDto, datetime.utcnow());
+
+        connection.sendall(pickle.dumps(updatedEntityDto));
 
         return;
 

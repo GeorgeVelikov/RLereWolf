@@ -1,12 +1,11 @@
 import Shared.constants.NetConstants as NetConstants;
+import Shared.utility.DateTimeUtility as DateTimeUtility
 
 from datetime import datetime;
 
-import dateutil.tz;
-
 class MessageDto():
     def __init__(self, author, text):
-        self.__timestampUtc = datetime.utcnow();
+        self.__timeUtc = datetime.utcnow();
         self.__author = author;
         self.__text = text;
 
@@ -17,13 +16,17 @@ class MessageDto():
         return str(self);
 
     @property
+    def TimeUtc(self):
+        return self.__timeUtc;
+
+    @property
     def TimeStampUtc(self):
-        return self.__timestampUtc\
+        return self.__timeUtc\
             .strftime(NetConstants.DATETIME_FORMAT);
 
     @property
     def TimeStampLocal(self):
-        return datetime.fromtimestamp(self.TimeStampUtc)\
+        return DateTimeUtility.UtcToLocal(self.__timeUtc)\
             .strftime(NetConstants.DATETIME_FORMAT);
 
     @property

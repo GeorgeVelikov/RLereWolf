@@ -1,4 +1,5 @@
 import Shared.constants.NetConstants as NetConstants;
+from Shared.dtos.MessageDto import MessageDto;
 
 import Server.constants.LogConstants as LogConstants;
 
@@ -24,3 +25,6 @@ def Log(status, message):
     log.close();
 
     return;
+
+def CreateGameMessage(message):
+    return MessageDto(None, message);

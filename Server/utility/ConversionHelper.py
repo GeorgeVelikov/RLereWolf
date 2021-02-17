@@ -9,7 +9,7 @@ def GameToDto(game, lastUpdatedUtc):
     messages = list();
 
     if lastUpdatedUtc:
-        messages = [m for m in messages if m.TimeStampUtc >= lastUpdatedUtc];
+        messages = [m for m in game.Messages if m.TimeUtc >= lastUpdatedUtc];
 
     return GameDto(game.Identifier,\
         game.HasStarted,\
