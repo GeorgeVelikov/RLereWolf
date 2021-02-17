@@ -2,15 +2,14 @@ import Shared.constants.GameConstants as GameConstants;
 import Shared.constants.NetConstants as NetConstants;
 
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
-from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
+from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 
 from Shared.Packet import Packet;
-import Shared.utility.PacketUtility as PacketUtility;
-
 from Shared.utility.Helpers import nameof;
 
 from Werewolf.game.Player import Player;
 
+import Client.utility.PacketUtility as PacketUtility;
 import Client.utility.UIContext as UIContext;
 from Client.MainWindow import MainWindow;
 
@@ -111,7 +110,7 @@ class ClientInstance():
         if not self.GameIdentifier:
             return;
 
-        dto = PlayerGameDto(self.__player, self.GameIdentifier, self.__lastUpdatedUtc);
+        dto = PlayerGameDto(self.__player, self.GameIdentifier);
         packet = PacketUtility.GetLeaveGamePacket(dto)
 
         reply = self.Send(packet);
@@ -122,7 +121,7 @@ class ClientInstance():
         return reply;
 
     def JoinGame(self, gameIdentifier):
-        dto = PlayerGameDto(self.__player, gameIdentifier, self.__lastUpdatedUtc)
+        dto = PlayerGameDto(self.__player, gameIdentifier)
         packet = PacketUtility.GetJoinGamePacket(dto);
 
         reply = self.Send(packet);
@@ -135,8 +134,10 @@ class ClientInstance():
         if not self.GameIdentifier:
             return None;
 
-        dto = PlayerGameDto(self.__player, self.GameIdentifier, self.__lastUpdatedUtc);
-        packet = PacketUtility.GetGameLobbyPacket(dto);
+        dto = PlayerGameDto(self.__player, self.GameIdentifier);
+        wrapperDto = UpdatedEntityDto(dto, self.__lastUpdatedUtc)
+
+        packet = PacketUtility.GetGameLobbyPacket(wrapperDto);
 
         reply = self.Send(packet);
 

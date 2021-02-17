@@ -1,28 +1,19 @@
 import Shared.constants.NetConstants as NetConstants;
 import Shared.constants.GameConstants as GameConstants;
 
-from Shared.dtos.PlayerGameDto import PlayerGameDto;
-from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
-
-from Shared.Packet import Packet;
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
-
-# Temporary reference!
-from Client.ClientInstance import ClientInstance;
 
 from Werewolf.game.Game import Game;
 
 import Server.utility.ConversionHelper as ConversionHelper;
-
-import constants.LogConstants as LogConstants;
+import Server.utility.ServerUtility as ServerUtility;
+import Server.constants.LogConstants as LogConstants;
 
 from datetime import datetime;
 
 import threading;
 import socket;
 import pickle;
-import sys;
-import os;
 
 class ServerInstance():
     def __init__(self):
@@ -34,7 +25,7 @@ class ServerInstance():
         self.CreateGame("Game 3");
         self.CreateGame("Game 4");
 
-        self.Log(LogConstants.INFORMATION, "Server start up");
+        ServerUtility.Log(LogConstants.INFORMATION, "Server start up");
 
         return;
 
@@ -46,18 +37,14 @@ class ServerInstance():
     def UtcNow(self):
         return datetime.utcnow();
 
-    @property
-    def UtcNowString(self):
-        return self.UtcNow.strftime(NetConstants.DATETIME_FORMAT);
-
     def ShowActiveConnections(self):
-        self.Log(LogConstants.INFORMATION, f"Active connections - {threading.activeCount() - 1}");
+        ServerUtility.Log(LogConstants.INFORMATION, f"Active connections - {threading.activeCount() - 1}");
 
     #region Server
 
     def ClientHandle(self, connection, address):
         connection.send(b"Hello client");
-        self.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
+        ServerUtility.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
         self.ShowActiveConnections();
 
         while True:
@@ -69,7 +56,7 @@ class ServerInstance():
                 if not packet:
                     break;
 
-                self.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
+                ServerUtility.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
 
                 validPacketTypes = PacketTypeEnum.Values()
 
@@ -77,10 +64,10 @@ class ServerInstance():
                     self.RedirectPacket(connection, packet);
 
             except Exception as error:
-                self.Log(LogConstants.ERROR, str(error));
+                ServerUtility.Log(LogConstants.ERROR, str(error));
                 break;
 
-        self.Log(LogConstants.INFORMATION, f"Lost connection to server - {address}");
+        ServerUtility.Log(LogConstants.INFORMATION, f"Lost connection to server - {address}");
         connection.close();
 
         return;
@@ -90,31 +77,16 @@ class ServerInstance():
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
 
-            self.Log(LogConstants.INFORMATION, \
+            ServerUtility.Log(LogConstants.INFORMATION, \
                 f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
 
             self.ShowActiveConnections();
         except socket.error as error:
-            self.Log(LogConstants.ERROR, str(error));
+            ServerUtility.Log(LogConstants.ERROR, str(error));
 
         while True:
             connection, address = self.__connection.accept();
             threading.Thread(target = self.ClientHandle, args = (connection, address)).start();
-        return;
-
-    def Log(self, status, message):
-        fileName = self.UtcNow.strftime("%d-%m-%Y");
-
-        if not os.path.exists(LogConstants.DIRECTORY_LOGS):
-            os.makedirs(LogConstants.DIRECTORY_LOGS);
-
-        logMessage = f"{self.UtcNowString} {status} {message}.";
-        print(logMessage);
-
-        log = open(f"{LogConstants.DIRECTORY_LOGS}{os.path.sep}{fileName}.txt", "a");
-        log.write("\n" + logMessage);
-        log.close();
-
         return;
 
     def RedirectPacket(self, connection, packet):
@@ -164,7 +136,7 @@ class ServerInstance():
 
         game.Join(player);
 
-        gameDto = ConversionHelper.GameToDto(game);
+        gameDto = ConversionHelper.GameToDto(game, datetime.utcnow());
 
         connection.sendall(pickle.dumps(gameDto));
 
@@ -187,28 +159,15 @@ class ServerInstance():
         # reuse the server-side call but encapsulate it with the connection and packet check
         raise NotImplementedError("Not implemented yet");
 
-    def GetPlayerList(self, connection, packet):
-        dto = packet.Data;
-
-        game = self.GetGameWithIdentifier(dto.GameIdentifier);
-
-        if not game:
-            connection.sendall(pickle.dumps(None));
-
-        playersByIdentifier = dict((player.Identifier, player.Name) for player in game.Players);
-
-        replyDto = GamePlayerListDto(dto.GameIdentifier, playersByIdentifier);
-
-        connection.sendall(pickle.dumps(replyDto));
-
-        return;
-
     def GetGameLobby(self, connection, packet):
-        dto = packet.Data;
+        wrapper = packet.Data;
 
-        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+        playerGameDto = wrapper.Entity;
+        lastUpdatedUtc = wrapper.UpdatedUtc;
 
-        gameDto = ConversionHelper.GameToDto(game);
+        game = self.GetGameWithIdentifier(playerGameDto.GameIdentifier);
+
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc);
 
         connection.sendall(pickle.dumps(gameDto));
 

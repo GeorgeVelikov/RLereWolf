@@ -28,10 +28,16 @@ class MessageDto():
 
     @property
     def AuthorIdentifier(self):
+        if not self.__author:
+            return "[SERVER]";
+
         return self.__author.Identifier;
 
     @property
     def AuthorName(self):
+        if not self.__author:
+            return "[SERVER]";
+
         return self.__author.Name;
 
     @property

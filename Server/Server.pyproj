@@ -33,6 +33,9 @@
     <Compile Include="utility\ConversionHelper.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="utility\ServerUtility.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="utility\__init__.py">
       <SubType>Code</SubType>
     </Compile>
