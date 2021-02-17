@@ -23,6 +23,7 @@ class GameLobbyScreen(ScreenBase):
         self.__threadGetPlayerList = threading.Thread(target = self.UpdatePlayerList);
         self.__threadGetPlayerList.start();
 
+    # TODO: have a "shared" game object which the server can toss to all clients
     def UpdatePlayerList(self):
         while self.__isRunningBackGroundTasks:
             self.__players = self.__client.GetPlayerList();
@@ -47,6 +48,32 @@ class GameLobbyScreen(ScreenBase):
         self.__threadGetPlayerList.join();
         return;
 
+    # General Controls
+    def Talk_Clicked(self):
+        return;
+
+    def Vote_Clicked(self):
+        return;
+
+    def Wait_Clicked(self):
+        return;
+
+    # Werewolf Controls
+    def Whisper_Clicked(self):
+        return;
+
+    def Attack_Clicked(self):
+        return;
+
+    # Seer Controls
+    def Divine_Clicked(self):
+        return;
+
+    # Guard Controls
+    def Guard_Clicked(self):
+        return;
+
+    # Misc
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
         self.__client.LeaveGame();

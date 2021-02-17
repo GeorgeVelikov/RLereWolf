@@ -23,15 +23,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="enums\PacketTypeEnum.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="enums\TurnPhaseTypeEnum.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="enums\TimeOfDayEnum.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="environment\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -42,12 +33,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\communication\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="enums\PlayerTypeEnum.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="enums\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\Game.py">
@@ -87,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="game\communication\" />
-    <Folder Include="enums\" />
     <Folder Include="roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />
