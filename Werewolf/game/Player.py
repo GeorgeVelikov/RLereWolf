@@ -5,11 +5,10 @@ import hashlib;
 import uuid;
 
 class Player():
-    def __init__(self):
+    def __init__(self, name = "", role = None):
         self.__identifier = uuid.uuid4().hex;
-        self.__name = str();
-        self.__role = None;
-        self.__gameIdentifier = None;
+        self.__name = name;
+        self.__role = role;
 
     def __str__(self):
         return self.__name;
@@ -24,27 +23,3 @@ class Player():
     @property
     def Identifier(self):
         return self.__identifier;
-
-    def SetName(self, name):
-        if (not isinstance(name, str)):
-            print("[ERROR] Name must be a string in order to create a player.")
-            return;
-
-        self.__name = name.strip();
-        return;
-
-    def SetRole(self, role, gameIdentifier):
-        # verify the game is changing our role and not something else
-        if not gameIdentifier == self.__game.Identifier:
-            return;
-
-        self.__role = role;
-        return;
-
-    def JoinGame(self, gameIdentifier):
-        if self.__gameIdentifier:
-            # can't join a game when already in one
-            return;
-
-        self.__gameIdentifier = gameIdentifier;
-        return;

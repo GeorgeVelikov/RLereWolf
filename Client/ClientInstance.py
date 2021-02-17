@@ -5,6 +5,7 @@ from Shared.dtos.ClientGameDto import ClientGameDto;
 from Shared.dtos.GamePlayerListDto import GamePlayerListDto;
 
 from Shared.Packet import Packet;
+import Shared.utility.PacketUtility as PacketUtility;
 
 from Shared.utility.Helpers import nameof;
 
@@ -23,8 +24,10 @@ import time;
 class ClientInstance(Player):
     def __init__(self):
         super().__init__();
+        self.__name = str();
         self.__connection = None;
         self.__lastUpdateUtc = None;
+        self.__gameIdentifier = None;
         self.__mainWindow = MainWindow(self);
 
     def __getstate__(self):
@@ -33,6 +36,14 @@ class ClientInstance(Player):
         return state;
 
     # TODO: Do we need to do __setstate__ as well? Will I ever override Client/Player?
+
+    @property
+    def Name(self):
+        return self.__name;
+
+    @property
+    def GameIdentifier(self):
+        return self.__gameIdentifier;
 
     #region Connection
 
@@ -85,7 +96,7 @@ class ClientInstance(Player):
     #region Calls
 
     def GetGamesList(self):
-        packet = Packet.GetGamesPacket();
+        packet = PacketUtility.GetGamesPacket();
 
         reply = self.Send(packet);
 
@@ -96,23 +107,22 @@ class ClientInstance(Player):
             return;
 
         dto = ClientGameDto(self, self.__gameIdentifier);
-        packet = Packet.GetLeaveGamePacket(dto)
+        packet = PacketUtility.GetLeaveGamePacket(dto)
 
         reply = self.Send(packet);
 
         if reply:
-            self.__gameIdentifier = None;
+            self.SetGame(None);
 
         return reply;
 
-
     def JoinGame(self, gameIdentifier):
         dto = ClientGameDto(self, gameIdentifier)
-        packet = Packet.GetJoinGamePacket(dto);
+        packet = PacketUtility.GetJoinGamePacket(dto);
 
         reply = self.Send(packet);
 
-        self.__gameIdentifier = reply;
+        self.SetGame(reply);
 
         return reply;
 
@@ -121,11 +131,39 @@ class ClientInstance(Player):
             return None;
 
         dto = GamePlayerListDto(self.__gameIdentifier);
-        packet = Packet.GetPlayersListPacket(dto);
+        packet = PacketUtility.GetPlayersListPacket(dto);
 
         reply = self.Send(packet);
 
         return reply.Players;
+
+    #endregion
+
+    #region Client
+
+    def SetName(self, name):
+        if (not isinstance(name, str)):
+            print("[ERROR] Name must be a string in order to create a player.")
+            return;
+
+        self.__name = name.strip();
+        return;
+
+    def SetRole(self, role):
+        # verify the game is changing our role and not something else
+        if not self.__gameIdentifier:
+            return;
+
+        self.__role = role;
+        return;
+
+    def SetGame(self, gameIdentifier):
+        if self.__gameIdentifier and gameIdentifier:
+            # can't join a game when already in one
+            return;
+
+        self.__gameIdentifier = gameIdentifier;
+        return;
 
     #endregion
 

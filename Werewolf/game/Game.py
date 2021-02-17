@@ -59,10 +59,6 @@ class Game():
             # TODO: add some warning
             return;
 
-        for player in self.__players:
-            player.SetRole(Villager(), self);
-            continue;
-
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
         self.__turnPhase = TurnPhaseTypeEnum.Introduction;
