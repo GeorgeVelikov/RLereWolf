@@ -97,6 +97,9 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     # Misc
+    def Ready_Clicked(self):
+        return;
+
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
         self.Client.LeaveGame();

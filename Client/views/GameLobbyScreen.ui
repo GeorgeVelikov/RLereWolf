@@ -262,6 +262,22 @@
               <property name="side">top</property>
             </layout>
             <child>
+              <object class="tk.Button" id="Ready">
+                <property name="idtocommand">false</property>
+                <property name="justify">center</property>
+                <property name="state">normal</property>
+                <property name="text" translatable="yes">Ready</property>
+                <property name="width">15</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="propagate">True</property>
+                  <property name="row">1</property>
+                  <property type="row" id="1" name="pad">0</property>
+                  <property type="row" id="4" name="pad">10</property>
+                </layout>
+              </object>
+            </child>
+            <child>
               <object class="tk.Button" id="Quit">
                 <property name="command">Quit_Clicked</property>
                 <property name="idtocommand">false</property>
@@ -270,9 +286,8 @@
                 <layout manager="grid">
                   <property name="column">0</property>
                   <property name="propagate">True</property>
-                  <property name="row">1</property>
+                  <property name="row">2</property>
                   <property name="sticky">s</property>
-                  <property type="col" id="0" name="pad">0</property>
                   <property type="row" id="1" name="pad">5</property>
                 </layout>
               </object>
