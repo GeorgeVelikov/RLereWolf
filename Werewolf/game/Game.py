@@ -17,6 +17,8 @@ class Game():
         self.__hasStarted = False;
         self.__name = name;
         self.__messages = set();
+        self.__turnVotes = dict();
+        self.__startVotes = set();
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
@@ -51,14 +53,26 @@ class Game():
         return self.__messages;
 
     @property
+    def TurnVotes(self):
+        return self.__turnVotes;
+
+    @property
     def Turn(self):
         return self.__turn;
+
+    @property
+    def StartVotes(self):
+        return self.__startVotes;
 
     @property
     def Players(self):
         return sorted(self.__players,\
             key = lambda p: p.Name, \
             reverse = False);
+
+    @property
+    def PlayerIdentifiers(self):
+        return [p.Identifier for p in self.__players];
 
     @property
     def TimeOfDay(self):
@@ -70,30 +84,60 @@ class Game():
 
     #endregion
 
+    #region Game calls
+
     def Join(self, player):
         self.__players.add(player);
         return;
 
     def Leave(self, player):
-        if (player.Identifier not in [p.Identifier for p in self.__players]):
+        if (player.Identifier not in self.PlayerIdentifiers):
             # TODO: raise some silent exception
             return;
 
         # no need to sort, already alphabetical
         self.__players\
-            .remove(next(p for p in self.__players if p.Identifier == player.Identifier));
+            .remove(self.GetPlayerByIdentifier(player.Identifier));
 
     def Start(self):
         if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
             # TODO: add some warning
             return;
 
+        self.__startVotes = dict();
         self.__hasStrated = True;
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
         self.__turnPhase = TurnPhaseTypeEnum.Introduction;
         return;
 
+    def Restart(self):
+        self.__hasStarted = False;
+        self.__turnVotes = dict();
+        self.__startVotes = set();
+        self.__turn = int();
+        self.__timeOfDay = TimeOfDayEnum._None;
+        self.__turnPhase = TurnPhaseTypeEnum._None;
+
     def NextPhase(self):
         self.__turnPhase.Next();
         return;
+
+    def NextPlayerTurn(self):
+        return;
+
+    def VoteStart(self, player):
+        if player.Identifier in self.__startVotes:
+            return;
+
+        self.__startVotes.add(player.Identifier);
+
+    #endregion
+
+    #region Helpers
+
+    def GetPlayerByIdentifier(self, playerIdentifier):
+        return next(p for p in self.__players\
+            if p.Identifier == playerIdentifier);
+
+    #endregion
