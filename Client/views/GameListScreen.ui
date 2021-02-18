@@ -61,9 +61,21 @@
                       <property type="col" id="2" name="weight">1</property>
                     </layout>
                     <child>
-                      <object class="ttk.Label" id="UserName">
-                        <property name="text" translatable="yes">UserName: &lt;placeholder&gt;</property>
-                        <layout manager="pack" />
+                      <object class="ttk.Label" id="NameLabel">
+                        <property name="text" translatable="yes">Username:</property>
+                        <layout manager="pack">
+                          <property name="side">left</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Label" id="Name">
+                        <property name="text" translatable="yes">&lt;placeholder&gt;</property>
+                        <property name="textvariable">string:Name</property>
+                        <layout manager="pack">
+                          <property name="propagate">True</property>
+                          <property name="side">top</property>
+                        </layout>
                       </object>
                     </child>
                   </object>
@@ -89,9 +101,21 @@
                       <property type="col" id="4" name="weight">1</property>
                     </layout>
                     <child>
+                      <object class="ttk.Label" id="IdentifierLabel">
+                        <property name="text" translatable="yes">Identifier:</property>
+                        <layout manager="pack">
+                          <property name="side">left</property>
+                        </layout>
+                      </object>
+                    </child>
+                    <child>
                       <object class="ttk.Label" id="Identifier">
-                        <property name="text" translatable="yes">Identifier: &lt;placeholder&gt;</property>
-                        <layout manager="pack" />
+                        <property name="text" translatable="yes">&lt;placeholder&gt;</property>
+                        <property name="textvariable">string:Identifier</property>
+                        <layout manager="pack">
+                          <property name="propagate">True</property>
+                          <property name="side">right</property>
+                        </layout>
                       </object>
                     </child>
                   </object>

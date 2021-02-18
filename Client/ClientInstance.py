@@ -16,11 +16,14 @@ import socket;
 import pickle;
 import threading;
 import time;
+import uuid;
+
 
 class ClientInstance():
     def __init__(self):
         super().__init__();
         self.__name = str();
+        self.__identifier = uuid.uuid4().hex;
         self.__connection = None;
         self.__lastUpdatedUtc = None;
         self.__player = None;
@@ -30,6 +33,10 @@ class ClientInstance():
     @property
     def Name(self):
         return self.__name;
+
+    @property
+    def Identifier(self):
+        return self.__identifier;
 
     @property
     def GameIdentifier(self):

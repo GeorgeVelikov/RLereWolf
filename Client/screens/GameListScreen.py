@@ -18,6 +18,12 @@ class GameListScreen(ScreenBase):
         self.__games = dict();
         self.__gamesListBox = self.GetObject(nameof(self.Client.GetGamesList));
 
+        self.__userName = self.GetVariable(nameof(self.Client.Name));
+        self.__userName.set(self.Client.Name);
+
+        self.__userIdentifier = self.GetVariable(nameof(self.Client.Identifier));
+        self.__userIdentifier.set(self.Client.Identifier);
+
         self.__threadGetGameList = threading.Thread(target = self.UpdateGamesList);
         self.__threadGetGameList.start();
 
