@@ -1,6 +1,5 @@
 appdirs==1.4.4
 executing==0.5.4
-future==0.18.2
 gym==0.17.2
 numpy==1.19.5
 pyglet==1.5.0
