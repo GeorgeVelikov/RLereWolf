@@ -1,9 +1,12 @@
 appdirs==1.4.4
 executing==0.5.4
-gym==0.17.3
+future==0.18.2
+gym==0.17.2
 numpy==1.19.5
+pyglet==1.5.0
 pygubu==0.10.4
 pygubu-designer==0.12
 python-dateutil==2.8.1
+scipy==1.6.1
 six==1.15.0
 varname==0.6.0

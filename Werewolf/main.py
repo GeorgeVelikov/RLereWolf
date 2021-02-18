@@ -21,4 +21,4 @@ def RunOpenAiGym():
 if __name__ == "__main__":
     main();
 
-    #RunOpenAiGym();
+    RunOpenAiGym();
