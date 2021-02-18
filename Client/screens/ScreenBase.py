@@ -19,6 +19,9 @@ class ScreenBase():
     def GetObject(self, objectId):
         return self.__builder.get_object(objectId);
 
+    def GetVariable(self, variableId):
+        return self.__builder.get_variable(variableId);
+
     @property
     def ClassName(self):
         return self.__class__.__name__;
