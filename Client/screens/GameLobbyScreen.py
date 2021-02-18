@@ -10,9 +10,7 @@ import time;
 
 class GameLobbyScreen(ScreenBase):
     def __init__(self, root, client):
-        super().__init__(root);
-        self.__root = root;
-        self.__client = client;
+        super().__init__(root, client);
         self.__isRunningBackGroundTasks = True;
 
         self.InitializeScreen();
@@ -30,7 +28,7 @@ class GameLobbyScreen(ScreenBase):
     def UpdateGameData(self):
         while self.__isRunningBackGroundTasks:
 
-            game = self.__client.GetGameLobby();
+            game = self.Client.GetGameLobby();
 
             self.UpdatePlayerList(game.Players);
 
@@ -101,6 +99,6 @@ class GameLobbyScreen(ScreenBase):
     # Misc
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
-        self.__client.LeaveGame();
-        UIContext.ShowGameList(self.__root);
+        self.Client.LeaveGame();
+        UIContext.ShowGameList(self.Root);
         return;

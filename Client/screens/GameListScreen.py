@@ -10,22 +10,20 @@ import time;
 
 class GameListScreen(ScreenBase):
     def __init__(self, root, client):
-        super().__init__(root);
-        self.__root = root;
-        self.__client = client;
+        super().__init__(root, client);
         self.__isRunningBackGroundTasks = True;
 
         self.InitializeScreen();
 
         self.__games = dict();
-        self.__gamesListBox = self.GetObject(nameof(self.__client.GetGamesList));
+        self.__gamesListBox = self.GetObject(nameof(self.Client.GetGamesList));
 
         self.__threadGetGameList = threading.Thread(target = self.UpdateGamesList);
         self.__threadGetGameList.start();
 
     def UpdateGamesList(self):
         while self.__isRunningBackGroundTasks:
-            self.__games = self.__client.GetGamesList();
+            self.__games = self.Client.GetGamesList();
 
             currentSelection = self.__gamesListBox.curselection();
 
@@ -49,8 +47,8 @@ class GameListScreen(ScreenBase):
 
     def Disconnect_Clicked(self):
         self.StopBackgroundCalls();
-        self.__client.Disconnect();
-        UIContext.ShowMainMenu(self.__root);
+        self.Client.Disconnect();
+        UIContext.ShowMainMenu(self.Root);
         return;
 
     def Join_Clicked(self):
@@ -64,7 +62,7 @@ class GameListScreen(ScreenBase):
         selectedGameIndex = selection[0];
         selectedGameIdentifier = list(self.__games)[selectedGameIndex];
 
-        self.__client.JoinGame(selectedGameIdentifier);
-        UIContext.ShowGameLobby(self.__root);
+        self.Client.JoinGame(selectedGameIdentifier);
+        UIContext.ShowGameLobby(self.Root);
 
         return;

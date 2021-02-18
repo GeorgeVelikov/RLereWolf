@@ -5,8 +5,9 @@ import tkinter.ttk as ttk;
 import pygubu;
 
 class ScreenBase():
-    def __init__(self, root):
+    def __init__(self, root, client):
         self.__root = root;
+        self.__client = client;
         self.__builder = pygubu.Builder();
         self.__content = None;
 
@@ -25,3 +26,11 @@ class ScreenBase():
     @property
     def Content(self):
         return self.__content;
+
+    @property
+    def Root(self):
+        return self.__root;
+
+    @property
+    def Client(self):
+        return self.__client;
