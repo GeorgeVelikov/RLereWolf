@@ -263,6 +263,7 @@
             </layout>
             <child>
               <object class="tk.Button" id="Ready">
+                <property name="command">Ready_Clicked</property>
                 <property name="idtocommand">false</property>
                 <property name="justify">center</property>
                 <property name="state">normal</property>
