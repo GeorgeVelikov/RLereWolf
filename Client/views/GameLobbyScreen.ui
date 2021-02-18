@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <interface version="1.0">
   <object class="ttk.Frame" id="GameLobbyScreen">
-    <property name="height">200</property>
-    <property name="width">200</property>
+    <property name="height">600</property>
+    <property name="width">800</property>
     <layout manager="pack">
-      <property name="propagate">True</property>
+      <property name="propagate">False</property>
       <property name="side">top</property>
     </layout>
     <child>

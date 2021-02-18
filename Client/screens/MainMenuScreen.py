@@ -13,11 +13,14 @@ class MainMenuScreen(ScreenBase):
         self.InitializeScreen();
 
         self.__connectButton = self.GetObject(nameof(self.Client.Connect));
+        self.__userName = self.GetVariable(nameof(self.Client.Name));
+
+        self.__userName.set(self.Client.Name);
 
         self.UpdateConnectButton();
 
     def UpdateConnectButton(self):
-        if not self.Client.Name:
+        if not self.Client.Name or self.Client.Name.isspace():
             self.__connectButton["state"] = tk.DISABLED;
             return;
 
@@ -34,10 +37,7 @@ class MainMenuScreen(ScreenBase):
         return;
 
     def SetName_Clicked(self):
-        # TODO: dialog to set name
-        userName = self.GetVariable(nameof(self.Client.Name));
-
-        self.Client.SetName(userName.get());
+        self.Client.SetName(self.__userName.get());
 
         # update button text
         self.UpdateConnectButton();
