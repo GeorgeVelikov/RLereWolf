@@ -30,6 +30,9 @@ class ClientInstance():
         self.__game = None;
         self.__mainWindow = MainWindow(self);
 
+        # we call this last as it blocks the UI thread
+        self.__mainWindow.mainloop();
+
     @property
     def Name(self):
         return self.__name;
@@ -154,6 +157,10 @@ class ClientInstance():
             return;
 
         self.__name = name.strip();
+        return;
+
+    def QuitGame(self):
+        self.__mainWindow.Close();
         return;
 
     #endregion

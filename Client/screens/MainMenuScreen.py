@@ -43,3 +43,7 @@ class MainMenuScreen(ScreenBase):
         self.UpdateConnectButton();
         self.Root.focus_set();
         return;
+
+    def QuitGame_Clicked(self):
+        self.Client.QuitGame();
+        return;

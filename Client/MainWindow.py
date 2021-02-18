@@ -14,14 +14,12 @@ class MainWindow(tk.Tk):
         self.title("Client");
         self.geometry("800x600");
         self.resizable(False, False);
-        self.protocol("WM_DELETE_WINDOW", self.OnWindowClose);
+        self.protocol("WM_DELETE_WINDOW", self.Close);
 
         self.DisplayMainMenu();
 
-        self.mainloop();
-
     #Override
-    def OnWindowClose(self):
+    def Close(self):
         if messagebox.askyesno("Exit", "Are you sure you want to exit the client?"):
             self.__client.Disconnect();
             self.destroy();
