@@ -3,10 +3,8 @@ executing==0.5.4
 gym==0.17.3
 numpy==1.19.5
 pygame==2.0.1
-pyglet==1.5.0
 pygubu==0.10.4
 pygubu-designer==0.12
-pytest==6.2.2
 python-dateutil==2.8.1
 six==1.15.0
 varname==0.6.0
