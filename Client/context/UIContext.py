@@ -3,6 +3,7 @@ import Shared.constants.GameConstants as GameConstants;
 from Client.screens.MainMenuScreen import MainMenuScreen;
 from Client.screens.GameListScreen import GameListScreen;
 from Client.screens.GameLobbyScreen import GameLobbyScreen;
+from Client.screens.ErrorDialog import ErrorDialog;
 from Client.MainWindow import MainWindow;
 
 import tkinter as tk
@@ -31,6 +32,8 @@ class UIContext():
             self.__context.ServiceContext.Disconnect();
         return;
 
+    #region Window screens
+
     def ShowMainMenu(self):
         self.__mainWindow.DisplayScreen(MainMenuScreen);
         return;
@@ -42,3 +45,12 @@ class UIContext():
     def ShowGameLobby(self):
         self.__mainWindow.DisplayScreen(GameLobbyScreen);
         return;
+
+    #endregion
+
+    #region Dialogs
+
+    def ShowErrorDialog(self, error):
+        ErrorDialog(None, self.__context, error);
+
+    #endregion

@@ -38,6 +38,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.py" />
+    <Compile Include="screens\ErrorDialog.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="screens\GameListScreen.py" />
     <Compile Include="screens\GameLobbyScreen.py">
       <SubType>Code</SubType>

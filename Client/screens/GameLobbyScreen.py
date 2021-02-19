@@ -14,12 +14,15 @@ class GameLobbyScreen(ScreenBase):
 
         self.InitializeScreen();
 
-        self.__players = dict();
         self.__playersListBox = self.GetObject("PlayerListBox");
 
         # don't need to keep track of messages, too much memory
         # would go into it with no gains to do it whatsoever.
         self.__messagesListBox = self.GetObject("MessagesListBox");
+
+        self.__isReadyButtonText = self.GetVariable(nameof(self.Client.Player.IsReady));
+
+        self.UpdateReadyButton();
 
         self.__threadUpdateGameData = threading.Thread(target = self.UpdateGameData);
         self.__threadUpdateGameData.start();
@@ -36,8 +39,6 @@ class GameLobbyScreen(ScreenBase):
             time.sleep(1);
 
     def UpdatePlayerList(self, players):
-        self.__players = dict((p.Identifier, p) for p in players);
-
         currentSelection = self.__playersListBox.curselection();
 
         self.__playersListBox.delete(int(), tk.END);
@@ -45,8 +46,17 @@ class GameLobbyScreen(ScreenBase):
         if not players:
             return;
 
-        for (identifier, player) in self.__players.items():
-            self.__playersListBox.insert(tk.END, player.Name);
+        for player in players:
+            readyStatus = str();
+            identifier = str();
+
+            if not self.Client.Game.HasStarted:
+                readyStatus = "+ " if player.IsReady else "- ";
+
+            if player.Identifier == self.Client.Player.Identifier:
+                identifier = " (You)";
+
+            self.__playersListBox.insert(tk.END, readyStatus + player.Name + identifier);
 
         if currentSelection:
             index = currentSelection[0];
@@ -63,6 +73,10 @@ class GameLobbyScreen(ScreenBase):
             self.__messagesListBox.insert(tk.END, str(message));
 
         return;
+
+    def UpdateReadyButton(self):
+        buttonText = ("Cancel" if self.Client.Player.IsReady else "Ready");
+        self.__isReadyButtonText.set(buttonText);
 
     def StopBackgroundCalls(self):
         self.__isRunningBackGroundTasks = False;
@@ -98,6 +112,7 @@ class GameLobbyScreen(ScreenBase):
     # Misc
     def Ready_Clicked(self):
         self.Context.ServiceContext.VoteStart();
+        self.UpdateReadyButton();
 
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
