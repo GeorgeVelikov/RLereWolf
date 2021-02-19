@@ -14,7 +14,7 @@ class GameListScreen(ScreenBase):
 
         self.InitializeScreen();
 
-        self.__gamesGrid = self.GetObject(nameof(self.Client.GetGamesList));
+        self.__gamesGrid = self.GetObject(nameof(self.Context.ServiceContext.GetGamesList));
 
         self.__userName = self.GetVariable(nameof(self.Client.Name));
         self.__userName.set(self.Client.Name);
@@ -27,7 +27,7 @@ class GameListScreen(ScreenBase):
 
     def UpdateGamesList(self):
         while self.__isRunningBackGroundTasks:
-            games = self.Client.GetGamesList();
+            games = self.Context.ServiceContext.GetGamesList();
 
             currentSelection = self.__gamesGrid.focus();
 
@@ -59,7 +59,7 @@ class GameListScreen(ScreenBase):
 
     def Disconnect_Clicked(self):
         self.StopBackgroundCalls();
-        self.Client.Disconnect();
+        self.Context.ServiceContext.Disconnect();
         self.Context.UIContext.ShowMainMenu();
         return;
 
@@ -74,7 +74,7 @@ class GameListScreen(ScreenBase):
 
         self.StopBackgroundCalls();
 
-        self.Client.JoinGame(gameIdentifier);
+        self.Context.ServiceContext.JoinGame(gameIdentifier);
         self.Context.UIContext.ShowGameLobby();
 
         return;

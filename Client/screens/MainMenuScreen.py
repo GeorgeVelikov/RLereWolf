@@ -11,7 +11,7 @@ class MainMenuScreen(ScreenBase):
 
         self.InitializeScreen();
 
-        self.__connectButton = self.GetObject(nameof(self.Client.Connect));
+        self.__connectButton = self.GetObject(nameof(self.Context.ServiceContext.Connect));
         self.__userName = self.GetVariable(nameof(self.Client.Name));
 
         self.__userName.set(self.Client.Name);
@@ -27,7 +27,7 @@ class MainMenuScreen(ScreenBase):
 
     def Connect_Clicked(self):
         try:
-            self.Client.Connect();
+            self.Context.ServiceContext.Connect();
             self.Context.UIContext.ShowGameList();
         except Exception as error:
             print("[ERROR] " + str(error));
@@ -44,5 +44,5 @@ class MainMenuScreen(ScreenBase):
         return;
 
     def QuitGame_Clicked(self):
-        self.Client.QuitGame();
+        self.Context.UIContext.CloseMainWindow();
         return;

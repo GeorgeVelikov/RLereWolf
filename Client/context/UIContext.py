@@ -28,7 +28,7 @@ class UIContext():
 
     def CloseMainWindow(self):
         if self.__mainWindow.Close():
-            self.__context.Client.Disconnect();
+            self.__context.ServiceContext.Disconnect();
         return;
 
     def ShowMainMenu(self):

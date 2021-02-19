@@ -27,7 +27,7 @@ class GameLobbyScreen(ScreenBase):
     def UpdateGameData(self):
         while self.__isRunningBackGroundTasks:
 
-            game = self.Client.GetGameLobby();
+            game = self.Context.ServiceContext.GetGameLobby();
 
             self.UpdatePlayerList(game.Players);
 
@@ -97,10 +97,10 @@ class GameLobbyScreen(ScreenBase):
 
     # Misc
     def Ready_Clicked(self):
-        self.Client.VoteStart();
+        self.Context.ServiceContext.VoteStart();
 
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
-        self.Client.LeaveGame();
+        self.Context.ServiceContext.LeaveGame();
         self.Context.UIContext.ShowGameList();
         return;
