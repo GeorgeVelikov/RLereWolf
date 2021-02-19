@@ -6,15 +6,18 @@ from enum import Enum;
 class PacketTypeEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;
-    GetGamesList = 1;
-    JoinGame = 2;
-    LeaveGame = 3;
-    GameLobby = 4;
-    VoteStart = 5;
+    Connect = 1;
+    GetGamesList = 2;
+    JoinGame = 3;
+    LeaveGame = 4;
+    GameLobby = 5;
+    VoteStart = 6;
 
     def __str__(self):
         if self.value == self._None.value:
             return str();
+        elif self.value == self.Connect.value:
+            return nameof(self.Connect);
         elif self.value == self.GetGamesList.value:
             return nameof(self.GetGamesList);
         elif self.value == self.JoinGame.value:
@@ -31,6 +34,7 @@ class PacketTypeEnum(Enum):
     @staticmethod
     def Values():
         return [\
+            PacketTypeEnum.Connect,\
             PacketTypeEnum.GetGamesList,\
             PacketTypeEnum.JoinGame,\
             PacketTypeEnum.LeaveGame,\

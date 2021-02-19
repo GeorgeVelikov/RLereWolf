@@ -1,10 +1,10 @@
 import uuid;
 
 class Player():
-    def __init__(self, name):
-        self.__identifier = uuid.uuid4().hex;
+    def __init__(self, name, identifier = None):
+        self.__identifier = (uuid.uuid4().hex if not identifier else identifier);
         self.__name = name;
-        self.__isReady = None;
+        self.__isReady = False;
         self.__role = None;
 
     def __str__(self):

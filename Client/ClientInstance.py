@@ -2,6 +2,7 @@ import Shared.constants.GameConstants as GameConstants;
 import Shared.constants.NetConstants as NetConstants;
 from Shared.dtos.PlayerGameIdentifierDto import PlayerGameIdentifierDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
+from Shared.dtos.ConnectDto import ConnectDto;
 from Shared.Packet import Packet;
 from Shared.utility.Helpers import nameof;
 
@@ -74,10 +75,13 @@ class ClientInstance():
             self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
             self.__connection.connect(NetConstants.ADDRESS);
 
-            data = self.__connection.recv(4 * NetConstants.KILOBYTE).decode();
+            dto = ConnectDto(self.Name, self.Identifier);
+            packet = PacketUtility.GetConnectPacket(dto);
 
-            self.__player = Player(self.__name);
-            return data;
+            reply = self.Send(packet);
+
+            self.__player = reply;
+            return reply;
         except Exception as error:
             print("[ERROR] " + str(error));
 

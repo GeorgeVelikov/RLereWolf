@@ -1,6 +1,9 @@
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 from Shared.Packet import Packet;
 
+def GetConnectPacket(data):
+    return Packet(PacketTypeEnum.Connect, data);
+
 def GetGamesPacket(data = None):
     return Packet(PacketTypeEnum.GetGamesList, data);
 

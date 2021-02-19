@@ -39,6 +39,9 @@
     <Compile Include="constants\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="dtos\ConnectDto.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="dtos\GameListDto.py">
       <SubType>Code</SubType>
     </Compile>

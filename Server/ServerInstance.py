@@ -5,6 +5,7 @@ from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
 
 from Werewolf.game.Game import Game;
+from Werewolf.game.Player import Player;
 
 import Server.utility.ConversionHelper as ConversionHelper;
 import Server.utility.ServerUtility as ServerUtility;
@@ -43,7 +44,6 @@ class ServerInstance():
     #region Server
 
     def ClientHandle(self, connection, address):
-        connection.send(b"Hello client");
         ServerUtility.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
         self.ShowActiveConnections();
 
@@ -58,7 +58,7 @@ class ServerInstance():
 
                 ServerUtility.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
 
-                validPacketTypes = PacketTypeEnum.Values()
+                validPacketTypes = PacketTypeEnum.Values();
 
                 if packet.PacketType in validPacketTypes:
                     self.RedirectPacket(connection, packet);
@@ -90,7 +90,11 @@ class ServerInstance():
         return;
 
     def RedirectPacket(self, connection, packet):
-        if packet.PacketType == PacketTypeEnum.GetGamesList:
+
+        if packet.PacketType == PacketTypeEnum.Connect:
+            self.Connect(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.GetGamesList:
             self.GetGamesList(connection, packet);
 
         elif packet.PacketType == PacketTypeEnum.JoinGame:
@@ -112,9 +116,11 @@ class ServerInstance():
     #region Game calls
 
     def Connect(self, connection, packet):
-        client = packet.Data;
+        dto = packet.Data;
 
-        connection.sendall(pickle.dumps(None));
+        player = Player(dto.ClientName, dto.ClientIdentifier)
+
+        connection.sendall(pickle.dumps(player));
 
         return;
 

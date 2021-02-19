@@ -150,7 +150,7 @@ class Game():
     #region Helpers
 
     def GetPlayerByIdentifier(self, playerIdentifier):
-        return next(p for p in self.__players\
-            if p.Identifier == playerIdentifier);
+        return next((p for p in self.__players\
+            if p.Identifier == playerIdentifier), None);
 
     #endregion
