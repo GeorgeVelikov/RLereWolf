@@ -102,6 +102,9 @@ class ServerInstance():
         elif packet.PacketType == PacketTypeEnum.GameLobby:
             self.GetGameLobby(connection, packet);
 
+        elif packet.PacketType == PacketTypeEnum.VoteStart:
+            self.VoteStart(connection, packet);
+
         return;
 
     #endregion
@@ -188,6 +191,25 @@ class ServerInstance():
 
         return;
 
+    def VoteStart(self, connection, packet):
+        wrapper = packet.Data;
+
+        playerGameIdentifierDto = wrapper.Entity;
+        lastUpdatedUtc = wrapper.UpdatedUtc;
+
+        game = self.GetGameWithIdentifier(playerGameIdentifierDto.GameIdentifier);
+        player = game.GetPlayerByIdentifier(playerGameIdentifierDto.Player.Identifier);
+
+        game.VoteStart(player);
+
+        dto = PlayerGameDto(player, ConversionHelper.GameToDto(game, lastUpdatedUtc));
+
+        updatedEntityDto = UpdatedEntityDto(dto, datetime.utcnow());
+
+        connection.sendall(pickle.dumps(updatedEntityDto));
+
+        return;
+
     #endregion
 
     #region Server only calls
@@ -205,6 +227,16 @@ class ServerInstance():
             return None;
 
         return self.__games[gameIdentifier];
+
+    def IsPlayerAlreadyInAGame(self, playerIdentifier):
+        for game in self.__games:
+            player = next(p for p in game.Players \
+                if p.Identifier == playerIdentifier);
+
+            if player:
+                return game.Identifier;
+
+        return None;
 
     #endregion
 

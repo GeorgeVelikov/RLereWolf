@@ -98,7 +98,7 @@ class GameLobbyScreen(ScreenBase):
 
     # Misc
     def Ready_Clicked(self):
-        return;
+        self.Client.VoteStart();
 
     def Quit_Clicked(self):
         self.StopBackgroundCalls();

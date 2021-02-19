@@ -159,10 +159,11 @@ class ClientInstance():
 
         reply = self.Send(packet);
 
+        self.__game = reply.Entity.Game;
         self.__player = reply.Entity.Player;
         self.__lastUpdatedUtc = reply.UpdatedUtc;
 
-        return;
+        return reply;
 
     #endregion
 

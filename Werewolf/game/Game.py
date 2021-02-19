@@ -136,7 +136,7 @@ class Game():
 
         player._Player__isReady = not player._Player__isReady;
 
-        isThereAnyNonReadyPlayers = next([p for p in self.__players if not p.IsReady]);
+        isThereAnyNonReadyPlayers = next((p for p in self.__players if not p.IsReady), None);
 
         if isThereAnyNonReadyPlayers:
             return;
