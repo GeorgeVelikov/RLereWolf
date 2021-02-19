@@ -1,17 +1,13 @@
+from Shared.utility.KillableThread import KillableThread;
 from Shared.utility.Helpers import nameof;
 
 from Client.screens.ScreenBase import ScreenBase;
 
 import tkinter as tk;
 
-import threading;
-import time;
-
 class GameLobbyScreen(ScreenBase):
     def __init__(self, root, context):
         super().__init__(root, context);
-        self.__isRunningBackGroundTasks = True;
-
         self.InitializeScreen();
 
         self.__playersListBox = self.GetObject("PlayerListBox");
@@ -25,20 +21,15 @@ class GameLobbyScreen(ScreenBase):
 
         self.UpdateButtons();
 
-        self.__threadUpdateGameData = threading.Thread(target = self.UpdateGameData);
-        self.__threadUpdateGameData.setDaemon(True);
+        self.__threadUpdateGameData = KillableThread(func = self.UpdateGameData);
         self.__threadUpdateGameData.start();
 
     def UpdateGameData(self):
-        while self.__isRunningBackGroundTasks:
+        game = self.Context.ServiceContext.GetGameLobby();
 
-            game = self.Context.ServiceContext.GetGameLobby();
+        self.UpdatePlayerList(game.Players);
 
-            self.UpdatePlayerList(game.Players);
-
-            self.UpdateMessagesList(game.Messages);
-
-            time.sleep(1);
+        self.UpdateMessagesList(game.Messages);
 
     def UpdatePlayerList(self, players):
         currentSelection = self.__playersListBox.curselection();
@@ -95,9 +86,7 @@ class GameLobbyScreen(ScreenBase):
         self.__isReadyButtonText.set(buttonText);
 
     def StopBackgroundCalls(self):
-        self.__isRunningBackGroundTasks = False;
-
-        self.__threadUpdateGameData.join();
+        self.__threadUpdateGameData.Kill();
         return;
 
     # General Controls
