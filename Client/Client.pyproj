@@ -60,6 +60,7 @@
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="views\ErrorDialog.ui" />
     <Content Include="views\GameListScreen.ui" />
     <Content Include="views\GameLobbyScreen.ui" />
     <Content Include="views\MainMenuScreen.ui" />
