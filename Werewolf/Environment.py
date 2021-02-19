@@ -1,8 +1,5 @@
 import gym;
 
-def main():
-    pass;
-
 def RunOpenAiGym():
     env = gym.make('CartPole-v0')
 
@@ -19,6 +16,4 @@ def RunOpenAiGym():
     env.close()
 
 if __name__ == "__main__":
-    main();
-
     RunOpenAiGym();
