@@ -23,6 +23,7 @@ class GameListScreen(ScreenBase):
         self.__userIdentifier.set(self.Client.Identifier);
 
         self.__threadGetGameList = threading.Thread(target = self.UpdateGamesList);
+        self.__threadGetGameList.setDaemon(True);
         self.__threadGetGameList.start();
 
     def UpdateGamesList(self):

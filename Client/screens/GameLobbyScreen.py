@@ -23,9 +23,10 @@ class GameLobbyScreen(ScreenBase):
         self.__isReadyButton = self.GetObject(nameof(self.Client.Player.IsReady));
         self.__isReadyButtonText = self.GetVariable(nameof(self.Client.Player.IsReady));
 
-        self.UpdateIsReadyButton();
+        self.UpdateButtons();
 
         self.__threadUpdateGameData = threading.Thread(target = self.UpdateGameData);
+        self.__threadUpdateGameData.setDaemon(True);
         self.__threadUpdateGameData.start();
 
     def UpdateGameData(self):
@@ -75,6 +76,13 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
+    def UpdateButtons(self):
+        self.UpdateGameControlButtons();
+        self.UpdateIsReadyButton();
+
+    def UpdateGameControlButtons(self):
+        return;
+
     def UpdateIsReadyButton(self):
         if self.Client.Game.HasStarted:
             self.__isReadyButton.grid_remove();
@@ -120,7 +128,7 @@ class GameLobbyScreen(ScreenBase):
     # Misc
     def Ready_Clicked(self):
         self.Context.ServiceContext.VoteStart();
-        self.UpdateIsReadyButton();
+        self.UpdateButtons();
 
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
