@@ -19,7 +19,6 @@ class Game():
         self.__name = name;
         self.__messages = set();
         self.__turnVotes = dict();
-        self.__startVotes = set();
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
@@ -62,10 +61,6 @@ class Game():
         return self.__turn;
 
     @property
-    def StartVotes(self):
-        return self.__startVotes;
-
-    @property
     def Players(self):
         return sorted(self.__players,\
             key = lambda p: p.Name, \
@@ -104,8 +99,10 @@ class Game():
     def Start(self):
         if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
             print(f"[ERROR] Cannot start game without having at least {GameConstant.MINIMAL_PLAYER_COUNT} players.");
-            # TODO: add some warning
             return;
+
+        for player in self.__players:
+            player._Player__isReady = False;
 
         self.__startVotes = dict();
         self.__hasStrated = True;
@@ -115,6 +112,10 @@ class Game():
         return;
 
     def Restart(self):
+        for player in self.__players:
+            player._Player__isReady = False;
+            player._Player__role = None;
+
         self.__hasStarted = False;
         self.__turnVotes = dict();
         self.__startVotes = set();
@@ -130,10 +131,19 @@ class Game():
         return;
 
     def VoteStart(self, player):
-        if player.Identifier in self.__startVotes:
+        if not player:
             return;
 
-        self.__startVotes.add(player.Identifier);
+        player._Player__isReady = not player._Player__isReady;
+
+        isThereAnyNonReadyPlayers = next([p for p in self.__players if not p.IsReady]);
+
+        if isThereAnyNonReadyPlayers:
+            return;
+
+        self.Start();
+
+        return;
 
     #endregion
 

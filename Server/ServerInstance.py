@@ -2,6 +2,7 @@ import Shared.constants.NetConstants as NetConstants;
 import Shared.constants.GameConstants as GameConstants;
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
+from Shared.dtos.PlayerGameDto import PlayerGameDto;
 
 from Werewolf.game.Game import Game;
 
@@ -173,14 +174,15 @@ class ServerInstance():
     def GetGameLobby(self, connection, packet):
         wrapper = packet.Data;
 
-        playerGameDto = wrapper.Entity;
+        playerGameIdentifierDto = wrapper.Entity;
         lastUpdatedUtc = wrapper.UpdatedUtc;
 
-        game = self.GetGameWithIdentifier(playerGameDto.GameIdentifier);
+        game = self.GetGameWithIdentifier(playerGameIdentifierDto.GameIdentifier);
+        player = game.GetPlayerByIdentifier(playerGameIdentifierDto.Player.Identifier)
 
-        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc);
+        dto = PlayerGameDto(player, ConversionHelper.GameToDto(game, lastUpdatedUtc));
 
-        updatedEntityDto = UpdatedEntityDto(gameDto, datetime.utcnow());
+        updatedEntityDto = UpdatedEntityDto(dto, datetime.utcnow());
 
         connection.sendall(pickle.dumps(updatedEntityDto));
 

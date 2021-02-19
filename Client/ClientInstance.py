@@ -1,6 +1,6 @@
 import Shared.constants.GameConstants as GameConstants;
 import Shared.constants.NetConstants as NetConstants;
-from Shared.dtos.PlayerGameDto import PlayerGameDto;
+from Shared.dtos.PlayerGameIdentifierDto import PlayerGameIdentifierDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.Packet import Packet;
 from Shared.utility.Helpers import nameof;
@@ -110,7 +110,7 @@ class ClientInstance():
         if not self.GameIdentifier:
             return;
 
-        dto = PlayerGameDto(self.__player, self.GameIdentifier);
+        dto = PlayerGameIdentifierDto(self.__player, self.GameIdentifier);
         packet = PacketUtility.GetLeaveGamePacket(dto)
 
         reply = self.Send(packet);
@@ -121,7 +121,7 @@ class ClientInstance():
         return reply;
 
     def JoinGame(self, gameIdentifier):
-        dto = PlayerGameDto(self.__player, gameIdentifier)
+        dto = PlayerGameIdentifierDto(self.__player, gameIdentifier)
         packet = PacketUtility.GetJoinGamePacket(dto);
 
         reply = self.Send(packet);
@@ -135,17 +135,34 @@ class ClientInstance():
         if not self.GameIdentifier:
             return None;
 
-        dto = PlayerGameDto(self.__player, self.GameIdentifier);
-        wrapperDto = UpdatedEntityDto(dto, self.__lastUpdatedUtc)
+        dto = PlayerGameIdentifierDto(self.__player, self.GameIdentifier);
+        wrapperDto = UpdatedEntityDto(dto, self.__lastUpdatedUtc);
 
         packet = PacketUtility.GetGameLobbyPacket(wrapperDto);
 
         reply = self.Send(packet);
 
-        self.__game = reply.Entity;
+        self.__game = reply.Entity.Game;
+        self.__player = reply.Entity.Player;
         self.__lastUpdatedUtc = reply.UpdatedUtc;
 
-        return reply.Entity;
+        return self.__game;
+
+    def VoteStart(self):
+        if not self.GameIdentifier:
+            return None;
+
+        dto = PlayerGameIdentifierDto(self.__player, self.GameIdentifier);
+        wrapperDto = UpdatedEntityDto(dto, self.__lastUpdatedUtc);
+
+        packet = PacketUtility.GetVoteGameStartPacket(wrapperDto);
+
+        reply = self.Send(packet);
+
+        self.__player = reply.Entity.Player;
+        self.__lastUpdatedUtc = reply.UpdatedUtc;
+
+        return;
 
     #endregion
 

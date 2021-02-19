@@ -23,7 +23,7 @@ class Player():
 
     @property
     def IsReady(self):
-        return __self.__isReady;
+        return self.__isReady;
 
     @property
     def Role(self):

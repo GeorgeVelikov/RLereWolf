@@ -15,3 +15,6 @@ def GetPlayersListPacket(data):
 
 def GetGameLobbyPacket(data):
     return Packet(PacketTypeEnum.GameLobby, data);
+
+def GetVoteGameStartPacket(data):
+    return Packet(PacketTypeEnum.VoteStart, data);
