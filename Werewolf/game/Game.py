@@ -103,7 +103,7 @@ class Game():
             player._Player__isReady = False;
 
         self.__startVotes = dict();
-        self.__hasStrated = True;
+        self.__hasStarted = True;
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
         self.__turnPhase = TurnPhaseTypeEnum.Introduction;

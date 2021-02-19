@@ -20,9 +20,10 @@ class GameLobbyScreen(ScreenBase):
         # would go into it with no gains to do it whatsoever.
         self.__messagesListBox = self.GetObject("MessagesListBox");
 
+        self.__isReadyButton = self.GetObject(nameof(self.Client.Player.IsReady));
         self.__isReadyButtonText = self.GetVariable(nameof(self.Client.Player.IsReady));
 
-        self.UpdateReadyButton();
+        self.UpdateIsReadyButton();
 
         self.__threadUpdateGameData = threading.Thread(target = self.UpdateGameData);
         self.__threadUpdateGameData.start();
@@ -74,7 +75,14 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
-    def UpdateReadyButton(self):
+    def UpdateIsReadyButton(self):
+        if self.Client.Game.HasStarted:
+            self.__isReadyButton.grid_remove();
+            return;
+
+        if not self.__isReadyButton.winfo_ismapped():
+            self.__isReadyButton.grid();
+
         buttonText = ("Cancel" if self.Client.Player.IsReady else "Ready");
         self.__isReadyButtonText.set(buttonText);
 
@@ -112,7 +120,7 @@ class GameLobbyScreen(ScreenBase):
     # Misc
     def Ready_Clicked(self):
         self.Context.ServiceContext.VoteStart();
-        self.UpdateReadyButton();
+        self.UpdateIsReadyButton();
 
     def Quit_Clicked(self):
         self.StopBackgroundCalls();

@@ -262,7 +262,7 @@
               <property name="side">top</property>
             </layout>
             <child>
-              <object class="tk.Button" id="Ready">
+              <object class="tk.Button" id="IsReady">
                 <property name="command">Ready_Clicked</property>
                 <property name="idtocommand">false</property>
                 <property name="justify">center</property>
