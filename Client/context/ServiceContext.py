@@ -5,3 +5,12 @@ class ServiceContext():
     @property
     def ViewModelContext(self):
         return self.__context;
+
+    @property
+    def Client(self):
+        if not self.__context:
+            return None;
+
+        return self.__context.Client;
+
+

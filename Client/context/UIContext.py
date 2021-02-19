@@ -22,6 +22,7 @@ class UIContext():
         return self.__mainWindow;
 
     def StartMainWindow(self):
+        self.ShowMainMenu();
         self.__mainWindow.mainloop();
         return;
 

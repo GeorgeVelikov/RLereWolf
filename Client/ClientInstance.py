@@ -31,7 +31,6 @@ class ClientInstance():
         self.__player = None;
         self.__game = None;
 
-        self.__context.UIContext.ShowMainMenu();
         self.__context.UIContext.StartMainWindow();
 
     @property
