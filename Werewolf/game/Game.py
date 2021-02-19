@@ -1,7 +1,6 @@
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 from Shared.exceptions.GameException import GameException;
-
 import Shared.constants.GameConstants as GameConstant;
 
 from Werewolf.roles.Villager import Villager;
@@ -9,7 +8,6 @@ from Werewolf.roles.Seer import Seer;
 from Werewolf.roles.Guard import Guard;
 from Werewolf.roles.Werewolf import Werewolf;
 
-import hashlib;
 import uuid;
 
 class Game():
