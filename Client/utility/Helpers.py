@@ -11,4 +11,5 @@ def PromptOption():
     try:
         return int(input("> "));
     except Exception as error:
+        print("[ERROR] " + str(error));
         return -1;

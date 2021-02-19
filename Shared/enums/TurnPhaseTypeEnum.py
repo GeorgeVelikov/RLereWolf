@@ -1,4 +1,5 @@
 from Shared.utility.Helpers import nameof;
+from Shared.exceptions.GameException import GameException;
 
 from enum import Enum;
 
@@ -25,7 +26,7 @@ class TurnPhaseTypeEnum(Enum):
         elif self.value == self.Voting.value:
             return nameof(self.Voting);
         else:
-            raise Exception("Unknown turn phase type used.");
+            raise GameException("Unknown turn phase type used.");
 
     def Next(self):
         if self.value == self.Introduction or self.value == self.Discussion:
@@ -37,7 +38,7 @@ class TurnPhaseTypeEnum(Enum):
         elif self.value == self.Voting:
             self.value = self.Discussion;
         else:
-            raise Exception("Turn phase " + str(self.value) + " has no next phase.");
+            raise GameException("Turn phase " + str(self.value) + " has no next phase.");
 
     @staticmethod
     def Values():

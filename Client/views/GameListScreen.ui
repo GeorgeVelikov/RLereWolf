@@ -169,11 +169,9 @@
               </object>
             </child>
             <child>
-              <object class="tk.Listbox" id="GetGamesList">
-                <property name="activestyle">none</property>
-                <property name="font">{Arial} 12 {}</property>
-                <property name="selectforeground">#c8c8c8</property>
-                <property name="setgrid">true</property>
+              <object class="ttk.Treeview" id="GetGamesList">
+                <property name="selectmode">browse</property>
+                <property name="show">headings</property>
                 <layout manager="pack">
                   <property name="anchor">center</property>
                   <property name="expand">true</property>
@@ -181,6 +179,30 @@
                   <property name="propagate">True</property>
                   <property name="side">top</property>
                 </layout>
+                <child>
+                  <object class="ttk.Treeview.Column" id="Name">
+                    <property name="column_anchor">w</property>
+                    <property name="heading_anchor">w</property>
+                    <property name="minwidth">20</property>
+                    <property name="stretch">true</property>
+                    <property name="text" translatable="yes">Name</property>
+                    <property name="tree_column">false</property>
+                    <property name="visible">true</property>
+                    <property name="width">200</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Treeview.Column" id="Players">
+                    <property name="column_anchor">w</property>
+                    <property name="heading_anchor">w</property>
+                    <property name="minwidth">20</property>
+                    <property name="stretch">false</property>
+                    <property name="text" translatable="yes">Players</property>
+                    <property name="tree_column">false</property>
+                    <property name="visible">true</property>
+                    <property name="width">100</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

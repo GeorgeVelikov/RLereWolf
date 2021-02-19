@@ -1,5 +1,6 @@
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
+from Shared.exceptions.GameException import GameException;
 
 import Shared.constants.GameConstants as GameConstant;
 
@@ -92,6 +93,7 @@ class Game():
 
     def Leave(self, player):
         if (player.Identifier not in self.PlayerIdentifiers):
+            print(f"[ERROR] Player {player.Identifier} is not in the game.");
             # TODO: raise some silent exception
             return;
 
@@ -101,6 +103,7 @@ class Game():
 
     def Start(self):
         if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
+            print(f"[ERROR] Cannot start game without having at least {GameConstant.MINIMAL_PLAYER_COUNT} players.");
             # TODO: add some warning
             return;
 

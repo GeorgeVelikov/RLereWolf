@@ -1,4 +1,5 @@
 from Shared.utility.Helpers import nameof;
+from Shared.exceptions.GameException import GameException;
 
 from enum import Enum;
 
@@ -22,7 +23,7 @@ class PlayerTypeEnum(Enum):
         elif self.value == self.Guard.value:
             return nameof(self.Guard);
         else:
-            raise Exception("Unknown player type used.");
+            raise GameException("Unknown player type used.");
 
     @staticmethod
     def Values():

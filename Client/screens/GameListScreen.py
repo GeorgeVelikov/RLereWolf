@@ -15,8 +15,7 @@ class GameListScreen(ScreenBase):
 
         self.InitializeScreen();
 
-        self.__games = dict();
-        self.__gamesListBox = self.GetObject(nameof(self.Client.GetGamesList));
+        self.__gamesGrid = self.GetObject(nameof(self.Client.GetGamesList));
 
         self.__userName = self.GetVariable(nameof(self.Client.Name));
         self.__userName.set(self.Client.Name);
@@ -29,19 +28,27 @@ class GameListScreen(ScreenBase):
 
     def UpdateGamesList(self):
         while self.__isRunningBackGroundTasks:
-            self.__games = self.Client.GetGamesList();
+            games = self.Client.GetGamesList();
 
-            currentSelection = self.__gamesListBox.curselection();
+            currentSelection = self.__gamesGrid.focus();
 
-            self.__gamesListBox.delete(int(), tk.END);
+            self.__gamesGrid.delete(*self.__gamesGrid.get_children());
 
-            for index, (identifier, name) in enumerate(self.__games.items()):
-                self.__gamesListBox.insert(tk.END, name);
+            for game in games:
+                # Store the identifier as "text", it's a hidden field anyways.
+                self.__gamesGrid.insert(str(), tk.END,\
+                    text = game.Identifier,\
+                    values = (game.Name, game.Players));
 
             if currentSelection:
-                index = currentSelection[0];
-                self.__gamesListBox.select_set(index);
-                self.__gamesListBox.activate(index);
+                # kind of a horrible hack to have  the current selection
+                # still selected and not interfere with the user.
+                # This is done because Tkinter indexes its items using capital
+                # hex numbers under the format "I<hex>" where <hex> has at least 3 digits, i.e. "00A"
+                intIndex = eval("0x" + currentSelection[1:]) + len(games);
+                index = f"I{intIndex:03x}".upper();
+                self.__gamesGrid.focus(index);
+                self.__gamesGrid.selection_set(index);
 
             time.sleep(1);
 
@@ -58,17 +65,17 @@ class GameListScreen(ScreenBase):
         return;
 
     def Join_Clicked(self):
-        selection = self.__gamesListBox.curselection();
+        selection = self.__gamesGrid.focus();
 
         if not selection:
             return;
 
+        item = self.__gamesGrid.item(selection);
+        gameIdentifier = item["text"];
+
         self.StopBackgroundCalls();
 
-        selectedGameIndex = selection[0];
-        selectedGameIdentifier = list(self.__games)[selectedGameIndex];
-
-        self.Client.JoinGame(selectedGameIdentifier);
+        self.Client.JoinGame(gameIdentifier);
         UIContext.ShowGameLobby(self.Root);
 
         return;

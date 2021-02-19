@@ -1,4 +1,5 @@
 from Shared.utility.Helpers import nameof;
+from Shared.exceptions.GameException import GameException;
 
 from enum import Enum;
 
@@ -22,7 +23,7 @@ class PacketTypeEnum(Enum):
         elif self.value == self.GameLobby.value:
             return nameof(self.GameLobby);
         else:
-            raise Exception("Unknown packet type used.");
+            raise GameException("Unknown packet type used.");
 
     @staticmethod
     def Values():

@@ -31,7 +31,7 @@ class MainMenuScreen(ScreenBase):
             self.Client.Connect();
             UIContext.ShowGameList(self.Root);
         except Exception as error:
-            # TODO: gracefully fail, some error dialog, perhaps?
+            print("[ERROR] " + str(error));
             pass;
 
         return;

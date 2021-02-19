@@ -115,9 +115,10 @@ class ServerInstance():
         return;
 
     def GetGamesList(self, connection, packet):
-        games = dict((identifier, game.Name)\
-            for (identifier, game) in self.__games.items() \
-                if not game.HasStarted);
+
+        games = [ConversionHelper.GameToListDto(game)\
+            for game in self.__games.values()\
+                if not game.HasStarted];
 
         connection.sendall(pickle.dumps(games));
 

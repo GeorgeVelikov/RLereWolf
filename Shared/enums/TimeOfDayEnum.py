@@ -1,4 +1,5 @@
 from Shared.utility.Helpers import nameof;
+from Shared.exceptions.GameException import GameException;
 
 from enum import Enum;
 
@@ -16,7 +17,7 @@ class TimeOfDayEnum(Enum):
         elif self.value == self.Night.value:
             return nameof(self.Night);
         else:
-            raise Exception("Unknown turn cycle type used.");
+            raise GameException("Unknown turn cycle type used.");
 
     @staticmethod
     def Values():

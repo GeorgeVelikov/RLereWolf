@@ -1,4 +1,5 @@
 from Shared.dtos.GameDto import GameDto;
+from Shared.dtos.GameListDto import GameListDto;
 from Werewolf.game.Game import Game;
 
 def GameToDto(game, lastUpdatedUtc):
@@ -18,3 +19,11 @@ def GameToDto(game, lastUpdatedUtc):
         game.Players,\
         game.TimeOfDay,\
         game.TurnPhase);
+
+def GameToListDto(game):
+    if not game:
+        return None;
+
+    return GameListDto(game.Identifier,\
+        game.Name,\
+        len(game.Players));
