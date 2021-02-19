@@ -5,9 +5,9 @@ import tkinter.ttk as ttk;
 import pygubu;
 
 class ScreenBase():
-    def __init__(self, root, client):
+    def __init__(self, root, context):
         self.__root = root;
-        self.__client = client;
+        self.__context = context;
         self.__builder = pygubu.Builder();
         self.__content = None;
 
@@ -27,13 +27,20 @@ class ScreenBase():
         return self.__class__.__name__;
 
     @property
-    def Content(self):
-        return self.__content;
-
-    @property
     def Root(self):
         return self.__root;
 
     @property
+    def Context(self):
+        return self.__context;
+
+    @property
     def Client(self):
-        return self.__client;
+        if not self.__context:
+            return None;
+
+        return self.__context.Client;
+
+    @property
+    def Content(self):
+        return self.__content;

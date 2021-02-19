@@ -1,4 +1,4 @@
-import Client.utility.UIContext as UIContext;
+import Client.context.UIContext as UIContext;
 
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -6,8 +6,8 @@ import tkinter.ttk as ttk
 from tkinter import messagebox;
 
 class MainWindow(tk.Tk):
-    def __init__(self, client):
-        self.__client = client;
+    def __init__(self, context):
+        self.__context = context;
         self.__content = None;
         super().__init__();
 
@@ -16,21 +16,18 @@ class MainWindow(tk.Tk):
         self.resizable(False, False);
         self.protocol("WM_DELETE_WINDOW", self.Close);
 
-        self.DisplayMainMenu();
-
     #Override
     def Close(self):
         if messagebox.askyesno("Exit", "Are you sure you want to exit the client?"):
-            self.__client.Disconnect();
             self.destroy();
+            return True;
+
+        return False;
 
     def DisplayScreen(self, screen):
-        newScreen = screen(self, self.__client);
+        newScreen = screen(self, self.__context);
 
         if self.__content is not None:
             self.__content.destroy();
 
         self.__content = newScreen.Content;
-
-    def DisplayMainMenu(self):
-        UIContext.ShowMainMenu(self);

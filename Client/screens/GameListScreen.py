@@ -1,6 +1,5 @@
 from Shared.utility.Helpers import nameof;
 
-import Client.utility.UIContext as UIContext;
 from Client.screens.ScreenBase import ScreenBase;
 
 import tkinter as tk;
@@ -9,8 +8,8 @@ import threading;
 import time;
 
 class GameListScreen(ScreenBase):
-    def __init__(self, root, client):
-        super().__init__(root, client);
+    def __init__(self, root, context):
+        super().__init__(root, context);
         self.__isRunningBackGroundTasks = True;
 
         self.InitializeScreen();
@@ -61,7 +60,7 @@ class GameListScreen(ScreenBase):
     def Disconnect_Clicked(self):
         self.StopBackgroundCalls();
         self.Client.Disconnect();
-        UIContext.ShowMainMenu(self.Root);
+        self.Context.UIContext.ShowMainMenu();
         return;
 
     def Join_Clicked(self):
@@ -76,6 +75,6 @@ class GameListScreen(ScreenBase):
         self.StopBackgroundCalls();
 
         self.Client.JoinGame(gameIdentifier);
-        UIContext.ShowGameLobby(self.Root);
+        self.Context.UIContext.ShowGameLobby();
 
         return;

@@ -28,6 +28,15 @@
     <Compile Include="constants\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="context\ServiceContext.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="context\ViewModelContext.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="context\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MainWindow.py" />
     <Compile Include="screens\GameListScreen.py" />
     <Compile Include="screens\GameLobbyScreen.py">
@@ -47,7 +56,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="utility\Helpers.py" />
-    <Compile Include="utility\UIContext.py" />
+    <Compile Include="context\UIContext.py" />
     <Compile Include="utility\__init__.py" />
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
@@ -55,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="constants\" />
+    <Folder Include="context\" />
     <Folder Include="views\" />
     <Folder Include="screens\" />
     <Folder Include="utility\" />

@@ -9,8 +9,7 @@ from Shared.utility.Helpers import nameof;
 from Werewolf.game.Player import Player;
 
 import Client.utility.PacketUtility as PacketUtility;
-import Client.utility.UIContext as UIContext;
-from Client.MainWindow import MainWindow;
+from Client.context.ViewModelContext import ViewModelContext;
 
 from datetime import datetime;
 import socket;
@@ -22,17 +21,22 @@ import uuid;
 
 class ClientInstance():
     def __init__(self):
-        super().__init__();
+        self.__context = ViewModelContext(self);
+
         self.__name = str();
         self.__identifier = uuid.uuid4().hex;
+
         self.__connection = None;
         self.__lastUpdatedUtc = None;
         self.__player = None;
         self.__game = None;
-        self.__mainWindow = MainWindow(self);
 
-        # we call this last as it blocks the UI thread
-        self.__mainWindow.mainloop();
+        self.__context.UIContext.ShowMainMenu();
+        self.__context.UIContext.StartMainWindow();
+
+    @property
+    def Context(self):
+        return self.__context;
 
     @property
     def Name(self):

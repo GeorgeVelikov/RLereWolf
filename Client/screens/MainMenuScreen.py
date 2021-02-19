@@ -1,14 +1,13 @@
 from Shared.utility.Helpers import nameof;
 
-import Client.utility.UIContext as UIContext;
 from Client.screens.ScreenBase import ScreenBase;
 
 import tkinter as tk;
 import tkinter.ttk as ttk;
 
 class MainMenuScreen(ScreenBase):
-    def __init__(self, root, client):
-        super().__init__(root, client);
+    def __init__(self, root, context):
+        super().__init__(root, context);
 
         self.InitializeScreen();
 
@@ -29,7 +28,7 @@ class MainMenuScreen(ScreenBase):
     def Connect_Clicked(self):
         try:
             self.Client.Connect();
-            UIContext.ShowGameList(self.Root);
+            self.Context.UIContext.ShowGameList();
         except Exception as error:
             print("[ERROR] " + str(error));
             pass;
