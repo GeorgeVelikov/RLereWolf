@@ -3,6 +3,8 @@ from Shared.utility.Helpers import nameof;
 
 from Client.screens.ScreenBase import ScreenBase;
 
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+
 import tkinter as tk;
 
 class GameLobbyScreen(ScreenBase):
@@ -15,6 +17,11 @@ class GameLobbyScreen(ScreenBase):
         # don't need to keep track of messages, too much memory
         # would go into it with no gains to do it whatsoever.
         self.__messagesListBox = self.GetObject("MessagesListBox");
+
+        self.__villagerButtons = self.GetObject(str(PlayerTypeEnum.Villager));
+        self.__werewolfButtons = self.GetObject(str(PlayerTypeEnum.Werewolf));
+        self.__seerButtons = self.GetObject(str(PlayerTypeEnum.Seer));
+        self.__guardButtons = self.GetObject(str(PlayerTypeEnum.Guard));
 
         self.__isReadyButton = self.GetObject(nameof(self.Client.Player.IsReady));
         self.__isReadyButtonText = self.GetVariable(nameof(self.Client.Player.IsReady));
@@ -72,6 +79,28 @@ class GameLobbyScreen(ScreenBase):
         self.UpdateIsReadyButton();
 
     def UpdateGameControlButtons(self):
+        if not self.Client.Game.HasStarted:
+            self.__villagerButtons.pack_forget();
+            self.__werewolfButtons.pack_forget();
+            self.__seerButtons.pack_forget();
+            self.__guardButtons.pack_forget();
+            return;
+
+        self.__villagerButtons.pack();
+
+        if not self.Client.Player.Role:
+            print("No Role in the game.");
+            return
+
+        if self.Client.Player.Role.Role == PlayerTypeEnum.Werewolf:
+            self.__werewolfButtons.pack();
+
+        elif self.Client.Player.Role.Role == PlayerTypeEnum.Seer:
+            self.__seerButtons.pack();
+
+        elif self.Client.Player.Role.Role == PlayerTypeEnum.Guard:
+            self.__guardButtons.pack();
+
         return;
 
     def UpdateIsReadyButton(self):

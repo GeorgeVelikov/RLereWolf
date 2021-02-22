@@ -7,6 +7,7 @@ from Werewolf.roles.Villager import Villager;
 from Werewolf.roles.Seer import Seer;
 from Werewolf.roles.Guard import Guard;
 from Werewolf.roles.Werewolf import Werewolf;
+import Werewolf.game.GameRules as GameRules;
 
 import uuid;
 
@@ -101,6 +102,8 @@ class Game():
 
         for player in self.__players:
             player._Player__isReady = False;
+
+        GameRules.DistributeRolesBaseGame(self.__players);
 
         self.__startVotes = dict();
         self.__hasStarted = True;
