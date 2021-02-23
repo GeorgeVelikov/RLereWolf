@@ -39,35 +39,54 @@ class GameLobbyScreen(ScreenBase):
         self.UpdateMessagesList(game.Messages);
 
     def UpdatePlayerList(self, players):
-        currentSelection = self.__playersListBox.curselection();
+        newPlayerIdentifiers = [player.Identifier for player in players];
 
-        position = self.__playersListBox.yview();
+        currentPlayerIndices = self.__playersListBox.get_children();
 
-        self.__playersListBox.delete(int(), tk.END);
+        for playerIndex in currentPlayerIndices:
+            item = self.__playersListBox.item(playerIndex);
+            playerIdentifier = item["text"];
 
-        if not players:
-            return;
+            if playerIdentifier not in newPlayerIdentifiers:
+                self.__playersListBox.delete(playerIndex);
+            else:
+                columns = item["values"];
+                player = next(player for player in players if player.Identifier == playerIdentifier)
+                players.remove(player);
+
+                newDisplayName = self.GetPlayerDisplayName(player);
+
+                if (columns[0] == newDisplayName):
+                    continue;
+
+                columns[0] = newDisplayName;
+
+                self.__playersListBox.delete(playerIndex);
+
+                self.__playersListBox.insert(str(), tk.END,\
+                text = playerIdentifier,\
+                values = columns);
 
         for player in players:
-            readyStatus = str();
-            identifier = str();
-
-            if not self.Client.Game.HasStarted:
-                readyStatus = "+ " if player.IsReady else "- ";
-
-            if player.Identifier == self.Client.Player.Identifier:
-                identifier = " (You)";
-
-            self.__playersListBox.insert(tk.END, readyStatus + player.Name + identifier);
-
-        if currentSelection:
-            index = currentSelection[0];
-            self.__playersListBox.select_set(index);
-            self.__playersListBox.activate(index);
-
-        self.__playersListBox.yview_moveto(position[0]);
+            # Store the identifier as "text", it's a hidden field anyways.
+            self.__playersListBox.insert(str(), tk.END,\
+                text = player.Identifier,\
+                values = (self.GetPlayerDisplayName(player)));
 
         return;
+
+    def GetPlayerDisplayName(self, player):
+        readyStatus = str();
+        identifier = str();
+
+        if not self.Client.Game.HasStarted:
+            readyStatus = "+" if player.IsReady else "-";
+
+        if player.Identifier == self.Client.Player.Identifier:
+            identifier = "(You)";
+
+        return readyStatus + player.Name + identifier;
+
 
     def UpdateMessagesList(self, messages):
         if not messages:

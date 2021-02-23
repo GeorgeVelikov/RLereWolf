@@ -1,5 +1,4 @@
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
-from Shared.enums.TurnPhaseTypeEnum import TurnPhaseTypeEnum;
 from Shared.exceptions.GameException import GameException;
 import Shared.constants.GameConstants as GameConstant;
 
@@ -21,7 +20,6 @@ class Game():
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
-        self.__turnPhase = TurnPhaseTypeEnum._None;
 
     def __str__(self):
         return self.__name + " - " + self.Identifier;
@@ -73,10 +71,6 @@ class Game():
     def TimeOfDay(self):
         return self.__timeOfDay;
 
-    @property
-    def TurnPhase(self):
-        return self.__turnPhase;
-
     #endregion
 
     #region Game calls
@@ -109,7 +103,6 @@ class Game():
         self.__hasStarted = True;
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
-        self.__turnPhase = TurnPhaseTypeEnum.Introduction;
         return;
 
     def Restart(self):
@@ -122,11 +115,6 @@ class Game():
         self.__startVotes = set();
         self.__turn = int();
         self.__timeOfDay = TimeOfDayEnum._None;
-        self.__turnPhase = TurnPhaseTypeEnum._None;
-
-    def NextPhase(self):
-        self.__turnPhase.Next();
-        return;
 
     def NextPlayerTurn(self):
         return;

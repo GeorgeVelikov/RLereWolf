@@ -17,8 +17,7 @@ def GameToDto(game, lastUpdatedUtc):
         game.Name,\
         messages,\
         game.Players,\
-        game.TimeOfDay,\
-        game.TurnPhase);
+        game.TimeOfDay);
 
 def GameToListDto(game):
     if not game:
