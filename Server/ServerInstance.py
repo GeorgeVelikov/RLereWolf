@@ -26,6 +26,12 @@ class ServerInstance():
         self.CreateGame("Game 3");
         self.CreateGame("Game 4");
 
+        lastGameIdentifier = list(self.__games.keys())[-1];
+        for i in range(0, 20):
+            player = Player(f"player_{i}");
+            player._Player__isReady = True;
+            self.__games[lastGameIdentifier].Join(player);
+
         ServerUtility.Log(LogConstants.INFORMATION, "Server start up");
 
         return;

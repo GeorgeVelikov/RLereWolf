@@ -41,6 +41,8 @@ class GameLobbyScreen(ScreenBase):
     def UpdatePlayerList(self, players):
         currentSelection = self.__playersListBox.curselection();
 
+        position = self.__playersListBox.yview();
+
         self.__playersListBox.delete(int(), tk.END);
 
         if not players:
@@ -62,6 +64,8 @@ class GameLobbyScreen(ScreenBase):
             index = currentSelection[0];
             self.__playersListBox.select_set(index);
             self.__playersListBox.activate(index);
+
+        self.__playersListBox.yview_moveto(position[0]);
 
         return;
 

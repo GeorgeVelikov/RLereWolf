@@ -11,19 +11,21 @@ import random;
 def DistributeRolesBaseGame(players):
     playerCount = len(players);
 
-    numberOfWerewolves = 1 + (playerCount // GameConstants.PLAYERS_PER_WEREWOLF);
-    numberOfSeers = 1 + (playerCount // GameConstants.PLAYERS_PER_SEER);
-    numberOfGuards = 1 + (playerCount // GameConstants.PLAYERS_PER_GUARD);
+    numberOfWerewolves = GetPlayerCountForRole(playerCount, GameConstants.PLAYERS_PER_WEREWOLF);
+    numberOfSeers = GetPlayerCountForRole(playerCount, GameConstants.PLAYERS_PER_SEER);
+    numberOfGuards = GetPlayerCountForRole(playerCount, GameConstants.PLAYERS_PER_GUARD);
 
     numberOfVillagers = playerCount \
         - numberOfWerewolves\
         - numberOfSeers\
         - numberOfGuards;
 
-    rolesBag = [numberOfWerewolves * str(PlayerTypeEnum.Werewolf),\
-        numberOfSeers * str(PlayerTypeEnum.Seer),\
-        numberOfGuards * str(PlayerTypeEnum.Guard),\
-        numberOfVillagers * str(PlayerTypeEnum.Villager)];
+    rolesBag = \
+        sum([\
+            numberOfWerewolves * [str(PlayerTypeEnum.Werewolf)],\
+            numberOfSeers * [str(PlayerTypeEnum.Seer)],\
+            numberOfGuards * [str(PlayerTypeEnum.Guard)],\
+            numberOfVillagers * [str(PlayerTypeEnum.Villager)]], []);
 
     for player in players:
         roleType = random.choice(rolesBag);
@@ -41,4 +43,10 @@ def DistributeRolesBaseGame(players):
         elif roleType == str(PlayerTypeEnum.Guard):
             player._Player__role = Guard(player.Name);
 
+        print(f"Player {player.Name} is a {player.Role.Role}.");
+
     return;
+
+
+def GetPlayerCountForRole(playerCount, playersToRoleRatio):
+    return 1 + ((playerCount - playersToRoleRatio) // playersToRoleRatio);
