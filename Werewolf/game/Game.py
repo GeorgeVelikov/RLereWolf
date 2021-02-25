@@ -9,6 +9,7 @@ from Werewolf.roles.Werewolf import Werewolf;
 import Werewolf.game.GameRules as GameRules;
 
 import uuid;
+from collections import Counter;
 
 class Game():
     def __init__(self, name):
@@ -16,7 +17,7 @@ class Game():
         self.__hasStarted = False;
         self.__name = name;
         self.__messages = set();
-        self.__turnVotes = dict();
+        self.__votes = set();
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
@@ -50,8 +51,8 @@ class Game():
         return self.__messages;
 
     @property
-    def TurnVotes(self):
-        return self.__turnVotes;
+    def Votes(self):
+        return self.__votes;
 
     @property
     def Turn(self):
@@ -99,8 +100,8 @@ class Game():
 
         GameRules.DistributeRolesBaseGame(self.__players);
 
-        self.__startVotes = dict();
         self.__hasStarted = True;
+        self.__votes = set();
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
         return;
@@ -111,13 +112,9 @@ class Game():
             player._Player__role = None;
 
         self.__hasStarted = False;
-        self.__turnVotes = dict();
-        self.__startVotes = set();
+        self.__votes = set();
         self.__turn = int();
         self.__timeOfDay = TimeOfDayEnum._None;
-
-    def NextPlayerTurn(self):
-        return;
 
     def VoteStart(self, player):
         if not player:
@@ -132,6 +129,44 @@ class Game():
 
         self.Start();
 
+        return;
+
+    def Vote(self, vote):
+        if not vote:
+            return;
+
+        playerIdentifiers = self.PlayerIdentifiers;
+
+        if not vote.Player.Identifier in playerIdentifiers or\
+            not vote.VotedPlayer.Identifier in playerIdentifiers:
+            # players not in the game, error
+            print("Invalid vote, one of the players is not in the game");
+            return;
+
+        self.Votes.add(vote);
+
+        if len(self.Votes) == len(playerIdentifiers):
+            self.CountVotes();
+
+        return;
+
+    def CountVotes(self):
+        votedPlayerIdentifiers = [vote.VotedPlayer.Identifier for vote in self.__votes];
+        counter = Counter(votedPlayerIdentifiers);
+
+        (mostVotedPlayerIdentifier, times) = counter.most_common(1);
+
+        playerToExecute = GetPlayerByIdentifier(mostVotedPlayerIdentifier);
+
+        self.Execute(playerToExecute);
+        self.Votes = set();
+        return;
+
+    def Execute(self, player):
+        if player not in self.Players:
+            return;
+
+        player._Player__isAlive = False;
         return;
 
     #endregion

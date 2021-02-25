@@ -13,6 +13,7 @@
     <RootNamespace>Werewolf</RootNamespace>
     <InterpreterId>Global|PythonCore|3.9</InterpreterId>
     <TestFramework>Pytest</TestFramework>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +24,25 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="agents\dummy\DummyPlayer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="agents\dummy\DummyVillager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="agents\dummy\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="agents\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="environment\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\actions\Vote.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\actions\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game\Game.py">
@@ -65,6 +84,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="agents\" />
+    <Folder Include="agents\dummy\" />
+    <Folder Include="game\actions\" />
     <Folder Include="roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />

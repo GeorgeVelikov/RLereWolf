@@ -149,4 +149,50 @@ class ServiceContext():
 
         return reply;
 
+    # Villager / Common
+    def Talk(self, message):
+        return;
+
+    def Vote(self, player):
+        return;
+
+    def Wait(self):
+        return;
+
+    # Werewolf
+    def Whisper(self, message):
+        return;
+
+    def Attack(self, player):
+        if not self.Client.Game:
+            return;
+
+        if not player:
+            print("You must selected a player.");
+            return;
+
+        return
+
+    # Seer
+    def Divine(self, player):
+        if not self.Client.Game:
+            return;
+
+        if not player:
+            print("You must selected a player.");
+            return;
+
+        return;
+
+    # Guard
+    def Guard(self, player):
+        if not self.Client.Game:
+            return;
+
+        if not player:
+            print("You must selected a player.");
+            return;
+
+        return;
+
     #endregion
