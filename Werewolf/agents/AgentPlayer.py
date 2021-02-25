@@ -1,6 +1,6 @@
 from Werewolf.game.Player import Player;
 
-class DummyPlayer(Player):
+class AgentPlayer(Player):
     def __init__(self, name, game):
         super().__init__(name);
         self.__game = game;

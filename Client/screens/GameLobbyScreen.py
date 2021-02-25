@@ -75,19 +75,6 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
-    def GetPlayerDisplayName(self, player):
-        readyStatus = str();
-        identifier = str();
-
-        if not self.Client.Game.HasStarted:
-            readyStatus = "+" if player.IsReady else "-";
-
-        if player.Identifier == self.Client.Player.Identifier:
-            identifier = "(You)";
-
-        return readyStatus + player.Name + identifier;
-
-
     def UpdateMessagesList(self, messages):
         if not messages:
             return;
@@ -115,13 +102,13 @@ class GameLobbyScreen(ScreenBase):
             print("No Role in the game.");
             return
 
-        if self.Client.Player.Role.Role == PlayerTypeEnum.Werewolf:
+        if self.Client.Player.Role == PlayerTypeEnum.Werewolf:
             self.__werewolfButtons.pack();
 
-        elif self.Client.Player.Role.Role == PlayerTypeEnum.Seer:
+        elif self.Client.Player.Role == PlayerTypeEnum.Seer:
             self.__seerButtons.pack();
 
-        elif self.Client.Player.Role.Role == PlayerTypeEnum.Guard:
+        elif self.Client.Player.Role == PlayerTypeEnum.Guard:
             self.__guardButtons.pack();
 
         return;
@@ -137,9 +124,28 @@ class GameLobbyScreen(ScreenBase):
         buttonText = ("Cancel" if self.Client.Player.IsReady else "Ready");
         self.__isReadyButtonText.set(buttonText);
 
+    #region Helpers
+
     def StopBackgroundCalls(self):
         self.__threadUpdateGameData.Kill();
         return;
+
+    def GetPlayerDisplayName(self, player):
+        readyStatus = str();
+        identifier = str();
+        deadStatus = str();
+
+        if not self.Client.Game.HasStarted:
+            readyStatus = "+" if player.IsReady else "-";
+        elif self.Client.Game.HasStarted and not player.IsAlive:
+            deadStatus = "[Dead]";
+
+        if player.Identifier == self.Client.Player.Identifier:
+            identifier = "(You)";
+
+        return readyStatus + deadStatus + player.Name + identifier;
+
+    #endregion
 
     # General Controls
     def Talk_Clicked(self):

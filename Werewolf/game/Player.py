@@ -1,3 +1,4 @@
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 import uuid;
 
 class Player():
@@ -5,7 +6,8 @@ class Player():
         self.__identifier = (uuid.uuid4().hex if not identifier else identifier);
         self.__name = name;
         self.__isReady = False;
-        self.__role = None;
+        self.__role = PlayerTypeEnum._None;
+        self.__isAlive = True;
 
     def __str__(self):
         return self.__name;
@@ -31,7 +33,4 @@ class Player():
 
     @property
     def IsAlive(self):
-        if not self.__role:
-            return None;
-
-        return self.__role.IsAlive;
+        return self.__isAlive;

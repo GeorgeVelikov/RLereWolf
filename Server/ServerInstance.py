@@ -6,6 +6,7 @@ from Shared.dtos.PlayerGameDto import PlayerGameDto;
 
 from Werewolf.game.Game import Game;
 from Werewolf.game.Player import Player;
+from Werewolf.agents.DummyPlayer import DummyPlayer;
 
 import Server.utility.ConversionHelper as ConversionHelper;
 import Server.utility.ServerUtility as ServerUtility;
@@ -26,11 +27,11 @@ class ServerInstance():
         self.CreateGame("Game 3");
         self.CreateGame("Game 4");
 
-        lastGameIdentifier = list(self.__games.keys())[-1];
+        lastGame = list(self.__games.values())[-1];
         for i in range(0, 20):
-            player = Player(f"player_{i}");
+            player = DummyPlayer(f"player_{i}", lastGame);
             player._Player__isReady = True;
-            self.__games[lastGameIdentifier].Join(player);
+            lastGame.Join(player);
 
         ServerUtility.Log(LogConstants.INFORMATION, "Server start up");
 

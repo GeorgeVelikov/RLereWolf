@@ -24,10 +24,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="agents\dummy\DummyPlayer.py">
+    <Compile Include="agents\AgentPlayer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="agents\dummy\DummyVillager.py">
+    <Compile Include="agents\DummyPlayer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="agents\dummy\__init__.py">
@@ -58,24 +58,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Environment.py" />
-    <Compile Include="roles\Guard.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="roles\Villager.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="roles\RoleBase.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="roles\Seer.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="roles\Werewolf.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="roles\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="environment\WerewolfEnvironment.py">
       <SubType>Code</SubType>
     </Compile>
@@ -87,7 +69,6 @@
     <Folder Include="agents\" />
     <Folder Include="agents\dummy\" />
     <Folder Include="game\actions\" />
-    <Folder Include="roles\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />
   </ItemGroup>

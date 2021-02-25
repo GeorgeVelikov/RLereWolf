@@ -2,11 +2,9 @@ from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.exceptions.GameException import GameException;
 import Shared.constants.GameConstants as GameConstant;
 
-from Werewolf.roles.Villager import Villager;
-from Werewolf.roles.Seer import Seer;
-from Werewolf.roles.Guard import Guard;
-from Werewolf.roles.Werewolf import Werewolf;
 import Werewolf.game.GameRules as GameRules;
+
+from Werewolf.agents.AgentPlayer import AgentPlayer;
 
 import uuid;
 from collections import Counter;
@@ -72,6 +70,16 @@ class Game():
     def TimeOfDay(self):
         return self.__timeOfDay;
 
+    @property
+    def HasAgentPlayers(self):
+        return any(player for player in self.__players \
+            if issubclass(type(player), AgentPlayer));
+
+    @property
+    def AgentPlayers(self):
+        return [player for player in self.__players \
+            if issubclass(type(player), AgentPlayer)];
+
     #endregion
 
     #region Game calls
@@ -104,6 +112,10 @@ class Game():
         self.__votes = set();
         self.__turn = 1;
         self.__timeOfDay == TimeOfDayEnum.Day;
+
+        for agent in self.AgentPlayers:
+            agent.ActDay();
+
         return;
 
     def Restart(self):
@@ -122,7 +134,7 @@ class Game():
 
         player._Player__isReady = not player._Player__isReady;
 
-        isThereAnyNonReadyPlayers = next((p for p in self.__players if not p.IsReady), None);
+        isThereAnyNonReadyPlayers = any(p for p in self.__players if not p.IsReady);
 
         if isThereAnyNonReadyPlayers:
             return;
@@ -144,6 +156,7 @@ class Game():
             return;
 
         self.Votes.add(vote);
+        print(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}");
 
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotes();
@@ -154,12 +167,12 @@ class Game():
         votedPlayerIdentifiers = [vote.VotedPlayer.Identifier for vote in self.__votes];
         counter = Counter(votedPlayerIdentifiers);
 
-        (mostVotedPlayerIdentifier, times) = counter.most_common(1);
+        (mostVotedPlayerIdentifier, times) = counter.most_common(1)[0];
 
-        playerToExecute = GetPlayerByIdentifier(mostVotedPlayerIdentifier);
+        playerToExecute = self.GetPlayerByIdentifier(mostVotedPlayerIdentifier);
 
         self.Execute(playerToExecute);
-        self.Votes = set();
+        self.__votes = set();
         return;
 
     def Execute(self, player):
@@ -167,6 +180,7 @@ class Game():
             return;
 
         player._Player__isAlive = False;
+        print(f"{player.Name} is executed");
         return;
 
     #endregion
