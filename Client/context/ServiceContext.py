@@ -1,4 +1,3 @@
-import Shared.constants.GameConstants as GameConstants;
 import Shared.constants.NetConstants as NetConstants;
 from Shared.dtos.PlayerGameIdentifierDto import PlayerGameIdentifierDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;

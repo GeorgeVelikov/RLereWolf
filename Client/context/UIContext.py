@@ -1,5 +1,3 @@
-import Shared.constants.GameConstants as GameConstants;
-
 from Client.screens.MainMenuScreen import MainMenuScreen;
 from Client.screens.GameListScreen import GameListScreen;
 from Client.screens.GameLobbyScreen import GameLobbyScreen;

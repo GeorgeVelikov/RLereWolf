@@ -1,6 +1,5 @@
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.exceptions.GameException import GameException;
-import Shared.constants.GameConstants as GameConstant;
 
 import Werewolf.game.GameRules as GameRules;
 

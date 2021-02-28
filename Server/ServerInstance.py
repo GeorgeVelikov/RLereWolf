@@ -1,5 +1,4 @@
 import Shared.constants.NetConstants as NetConstants;
-import Shared.constants.GameConstants as GameConstants;
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
