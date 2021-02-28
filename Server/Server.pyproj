@@ -21,19 +21,11 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="constants\" />
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="constants\LogConstants.py" />
-    <Compile Include="constants\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ServerInstance.py" />
     <Compile Include="utility\ConversionHelper.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="utility\ServerUtility.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="utility\__init__.py">

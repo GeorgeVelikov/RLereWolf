@@ -31,6 +31,8 @@ class GameLobbyScreen(ScreenBase):
         self.__threadUpdateGameData = KillableThread(func = self.UpdateGameData);
         self.__threadUpdateGameData.start();
 
+    #region Game Loop updates
+
     def UpdateGameData(self):
         game = self.Context.ServiceContext.GetGameLobby();
 
@@ -45,7 +47,7 @@ class GameLobbyScreen(ScreenBase):
 
         for playerIndex in currentPlayerIndices:
             item = self.__playersListBox.item(playerIndex);
-            playerIdentifier = item["text"];
+            playerIdentifier = self.GetPlayerIdentifierFromIndex(playerIndex);
 
             if playerIdentifier not in newPlayerIdentifiers:
                 self.__playersListBox.delete(playerIndex);
@@ -124,6 +126,8 @@ class GameLobbyScreen(ScreenBase):
         buttonText = ("Cancel" if self.Client.Player.IsReady else "Ready");
         self.__isReadyButtonText.set(buttonText);
 
+    #endregion
+
     #region Helpers
 
     def StopBackgroundCalls(self):
@@ -145,6 +149,19 @@ class GameLobbyScreen(ScreenBase):
 
         return readyStatus + deadStatus + player.Name + identifier;
 
+    def GetSelectedPlayerIdentifierFromTreeView(self):
+        selectedPlayerIndex = self.__playersListBox.focus();
+
+        if not selectedPlayerIndex or selectedPlayerIndex.isspace():
+            return None;
+
+        return self.GetPlayerIdentifierFromIndex(selectedPlayerIndex);
+
+    def GetPlayerIdentifierFromIndex(self, index):
+        playerItem = self.__playersListBox.item(index);
+
+        return playerItem["text"];
+
     #endregion
 
     # General Controls
@@ -152,6 +169,12 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Vote_Clicked(self):
+        selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
+
+        if not selectedPlayerIdentifier:
+            return;
+
+        self.Context.ServiceContext.Vote(selectedPlayerIdentifier);
         return;
 
     def Wait_Clicked(self):

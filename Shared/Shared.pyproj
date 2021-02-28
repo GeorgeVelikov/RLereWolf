@@ -33,6 +33,7 @@
     <Compile Include="constants\GameConstants.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="constants\LogConstants.py" />
     <Compile Include="constants\NetConstants.py">
       <SubType>Code</SubType>
     </Compile>
@@ -83,6 +84,7 @@
     <Compile Include="utility\KillableThread.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="utility\LogUtility.py" />
     <Compile Include="utility\__init__.py">
       <SubType>Code</SubType>
     </Compile>

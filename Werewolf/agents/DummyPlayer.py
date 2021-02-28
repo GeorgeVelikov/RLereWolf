@@ -1,7 +1,8 @@
 from Werewolf.agents.AgentPlayer import AgentPlayer;
 from Werewolf.game.actions.Vote import Vote;
 
-from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum
+import Shared.utility.LogUtility as LogUtility;
 
 import random;
 
@@ -49,6 +50,8 @@ class DummyPlayer(AgentPlayer):
 
         self.Game.Vote(vote);
 
+        LogUtility.CreateGameMessage(f"Player {self.Name} voted to execute {playerToVoteFor.Name}.", self.Game);
+
         return;
 
     def ActDayWerewolf(self):
@@ -65,6 +68,8 @@ class DummyPlayer(AgentPlayer):
         vote = Vote(self, playerToVoteFor)
 
         self.Game.Vote(vote);
+
+        LogUtility.CreateGameMessage(f"Player {self.Name} voted to execute {playerToVoteFor.Name}.", self.Game);
 
         return;
 

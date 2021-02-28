@@ -1,21 +1,21 @@
 class GameActionDto():
-    def __init__(self, player, targetPlayer, actionType, additionalData = None):
+    def __init__(self, gameIdentifier, player, targetPlayerIdentifier, additionalData = None):
+        self.__gameIdentifier = gameIdentifier;
         self.__player = player;
-        self.__targetPlayer = targetPlayer;
-        self.__actionType = actionType;
+        self.__targetPlayerIdentifier = targetPlayerIdentifier;
         self.__additionalData = additionalData;
+
+    @property
+    def GameIdentifier(self):
+        return self.__gameIdentifier;
 
     @property
     def Player(self):
         return self.__player;
 
     @property
-    def TargetPlayer(self):
-        return self.__targetPlayer;
-
-    @property
-    def ActionType(self):
-        return self.__actionType;
+    def TargetPlayerIdentifier(self):
+        return self.__targetPlayerIdentifier;
 
     @property
     def AdditionalData(self):

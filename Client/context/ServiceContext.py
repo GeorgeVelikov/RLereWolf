@@ -2,6 +2,7 @@ import Shared.constants.NetConstants as NetConstants;
 from Shared.dtos.PlayerGameIdentifierDto import PlayerGameIdentifierDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.ConnectDto import ConnectDto;
+from Shared.dtos.GameActionDto import GameActionDto;
 from Shared.Packet import Packet;
 
 import Client.utility.PacketUtility as PacketUtility;
@@ -152,8 +153,20 @@ class ServiceContext():
     def Talk(self, message):
         return;
 
-    def Vote(self, player):
-        return;
+    def Vote(self, targetPlayerIdentifier):
+        if not self.Client or\
+            not self.Client.GameIdentifier or\
+            not self.Client.Player or\
+            not targetPlayerIdentifier:
+            # null check both the current player and the target player
+            return;
+
+        dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
+        packet = PacketUtility.GetVotePlayerPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     def Wait(self):
         return;
@@ -167,7 +180,7 @@ class ServiceContext():
             return;
 
         if not player:
-            print("You must selected a player.");
+            print("You must select a player.");
             return;
 
         return
@@ -178,7 +191,7 @@ class ServiceContext():
             return;
 
         if not player:
-            print("You must selected a player.");
+            print("You must select a player.");
             return;
 
         return;
@@ -189,7 +202,7 @@ class ServiceContext():
             return;
 
         if not player:
-            print("You must selected a player.");
+            print("You must select a player.");
             return;
 
         return;

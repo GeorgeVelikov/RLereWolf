@@ -2,14 +2,16 @@ import Shared.constants.NetConstants as NetConstants;
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
+import Shared.utility.LogUtility as LogUtility;
+import Shared.constants.LogConstants as LogConstants;
 
 from Werewolf.game.Game import Game;
 from Werewolf.game.Player import Player;
 from Werewolf.agents.DummyPlayer import DummyPlayer;
 
+from Werewolf.game.actions.Vote import Vote;
+
 import Server.utility.ConversionHelper as ConversionHelper;
-import Server.utility.ServerUtility as ServerUtility;
-import Server.constants.LogConstants as LogConstants;
 
 from datetime import datetime;
 import threading;
@@ -32,7 +34,7 @@ class ServerInstance():
             player._Player__isReady = True;
             lastGame.Join(player);
 
-        ServerUtility.Log(LogConstants.INFORMATION, "Server start up");
+        LogUtility.Log(LogConstants.INFORMATION, "Server start up");
 
         return;
 
@@ -45,12 +47,12 @@ class ServerInstance():
         return datetime.utcnow();
 
     def ShowActiveConnections(self):
-        ServerUtility.Log(LogConstants.INFORMATION, f"Active connections - {threading.activeCount() - 1}");
+        LogUtility.Log(LogConstants.INFORMATION, f"Active connections - {threading.activeCount() - 1}");
 
     #region Server
 
     def ClientHandle(self, connection, address):
-        ServerUtility.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
+        LogUtility.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
         self.ShowActiveConnections();
 
         while True:
@@ -62,7 +64,7 @@ class ServerInstance():
                 if not packet:
                     break;
 
-                ServerUtility.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
+                LogUtility.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
 
                 validPacketTypes = PacketTypeEnum.Values();
 
@@ -70,10 +72,10 @@ class ServerInstance():
                     self.RedirectPacket(connection, packet);
 
             except Exception as error:
-                ServerUtility.Log(LogConstants.ERROR, str(error));
+                LogUtility.Log(LogConstants.ERROR, str(error));
                 break;
 
-        ServerUtility.Log(LogConstants.INFORMATION, f"Lost connection to server - {address}");
+        LogUtility.Log(LogConstants.INFORMATION, f"Lost connection to server - {address}");
         connection.close();
 
         return;
@@ -83,12 +85,12 @@ class ServerInstance():
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
 
-            ServerUtility.Log(LogConstants.INFORMATION, \
+            LogUtility.Log(LogConstants.INFORMATION, \
                 f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
 
             self.ShowActiveConnections();
         except socket.error as error:
-            ServerUtility.Log(LogConstants.ERROR, str(error));
+            LogUtility.Log(LogConstants.ERROR, str(error));
 
         while True:
             connection, address = self.__connection.accept();
@@ -114,6 +116,9 @@ class ServerInstance():
 
         elif packet.PacketType == PacketTypeEnum.VoteStart:
             self.VoteStart(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.VotePlayer:
+            self.VotePlayer(connection, packet);
 
         return;
 
@@ -147,6 +152,7 @@ class ServerInstance():
 
         if not game:
             connection.sendall(pickle.dumps(None));
+            return;
 
         player = dto.Player;
 
@@ -154,8 +160,7 @@ class ServerInstance():
 
         game.Join(player);
 
-        game.Messages.add(\
-            ServerUtility.CreateGameMessage(f"Player '{player.Name}' has joined."));
+        LogUtility.CreateGameMessage(f"Player '{player.Name}' has joined.", game);
 
         gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc);
 
@@ -172,11 +177,10 @@ class ServerInstance():
 
         if not game:
             connection.sendall(pickle.dumps(True));
+            return;
 
         game.Leave(dto.Player);
-
-        game.Messages.add(\
-            ServerUtility.CreateGameMessage(f"Player '{dto.Player.Name}' has left."));
+        LogUtility.CreateGameMessage(f"Player '{dto.Player.Name}' has left.", game);
 
         connection.sendall(pickle.dumps(True));
 
@@ -222,6 +226,36 @@ class ServerInstance():
 
         return;
 
+    def VotePlayer(self, connection, packet):
+        dto = packet.Data;
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+
+        if not game.Identifier == self.IsPlayerAlreadyInAGame(dto.Player.Identifier):
+            LogUtility.Log(LogConstants.ERROR, \
+                f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
+            connection.sendall(pickle.dumps(False));
+            return;
+
+        if not game.Identifier == self.IsPlayerAlreadyInAGame(dto.TargetPlayerIdentifier):
+            LogUtility.Log(LogConstants.ERROR, f"Target player id {dto.TargetPlayerIdentifier} is not in game", game);
+            connection.sendall(pickle.dumps(False));
+            return;
+
+        player = game.GetPlayerByIdentifier(dto.Player.Identifier);
+        targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
+
+        if game.HasPlayerVotedAlready(player.Identifier):
+            LogUtility.Log(LogConstants.ERROR, f"Player {player.Name} - {player.Identifier} has voted already", game);
+            connection.sendall(pickle.dumps(False));
+            return;
+
+        vote = Vote(player, targetPlayer);
+        game.Vote(vote);
+        LogUtility.CreateGameMessage(f"Player {player.Name} voted to execute {targetPlayer.Name}.", game);
+
+        connection.sendall(pickle.dumps(True));
+        return;
+
     #endregion
 
     #region Server only calls
@@ -241,7 +275,10 @@ class ServerInstance():
         return self.__games[gameIdentifier];
 
     def IsPlayerAlreadyInAGame(self, playerIdentifier):
-        for game in self.__games:
+        for game in self.__games.values():
+            if not game.Players:
+                continue;
+
             player = next(p for p in game.Players \
                 if p.Identifier == playerIdentifier);
 

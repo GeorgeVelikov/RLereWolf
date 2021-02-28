@@ -1,3 +1,5 @@
+import Shared.constants.GameConstants as GameConstants;
+import Shared.utility.LogUtility as LogUtility;
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.exceptions.GameException import GameException;
 
@@ -20,10 +22,10 @@ class Game():
         self.__timeOfDay = TimeOfDayEnum._None;
 
     def __str__(self):
-        return self.__name + " - " + self.Identifier;
+        return self.Name + " - " + self.Identifier;
 
     def __repr__(self):
-        return self.__name + " - " + self.Identifier;
+        return self.Name + " - " + self.Identifier;
 
     #region properties
 
@@ -98,8 +100,8 @@ class Game():
             .remove(self.GetPlayerByIdentifier(player.Identifier));
 
     def Start(self):
-        if (len(self.__players) < GameConstant.MINIMAL_PLAYER_COUNT):
-            print(f"[ERROR] Cannot start game without having at least {GameConstant.MINIMAL_PLAYER_COUNT} players.");
+        if (len(self.__players) < GameConstants.MINIMAL_PLAYER_COUNT):
+            print(f"[ERROR] Cannot start game without having at least {GameConstants.MINIMAL_PLAYER_COUNT} players.");
             return;
 
         for player in self.__players:
@@ -170,6 +172,8 @@ class Game():
 
         playerToExecute = self.GetPlayerByIdentifier(mostVotedPlayerIdentifier);
 
+        LogUtility.CreateGameMessage(f"{playerToExecute.Name} has the most votes to get executed - {times}.", self);
+
         self.Execute(playerToExecute);
         self.__votes = set();
         return;
@@ -179,7 +183,8 @@ class Game():
             return;
 
         player._Player__isAlive = False;
-        print(f"{player.Name} is executed");
+        LogUtility.CreateGameMessage(f"{player.Name} is executed.", self);
+
         return;
 
     #endregion
@@ -189,5 +194,9 @@ class Game():
     def GetPlayerByIdentifier(self, playerIdentifier):
         return next((p for p in self.__players\
             if p.Identifier == playerIdentifier), None);
+
+    def HasPlayerVotedAlready(self, playerIdentifier):
+        return any(v for v in self.__votes \
+            if v.Player.Identifier == playerIdentifier);
 
     #endregion
