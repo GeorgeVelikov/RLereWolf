@@ -125,9 +125,8 @@
                 <property name="selectmode">single</property>
                 <property name="setgrid">true</property>
                 <property name="takefocus">false</property>
-                <property name="width">60</property>
+                <property name="width">62</property>
                 <layout manager="pack">
-                  <property name="padx">10</property>
                   <property name="pady">0</property>
                   <property name="propagate">True</property>
                   <property name="side">top</property>
@@ -144,13 +143,14 @@
               <property name="column">2</property>
               <property name="propagate">True</property>
               <property name="row">2</property>
-              <property name="rowspan">2</property>
+              <property name="rowspan">1</property>
             </layout>
             <child>
               <object class="ttk.Treeview" id="PlayerListBox">
-                <property name="height">23</property>
+                <property name="height">21</property>
                 <property name="selectmode">browse</property>
                 <property name="show">headings</property>
+                <property name="width">61</property>
                 <layout manager="pack">
                   <property name="expand">true</property>
                   <property name="fill">both</property>
@@ -167,51 +167,6 @@
                     <property name="tree_column">false</property>
                     <property name="visible">true</property>
                     <property name="width">200</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="tk.Frame" id="ButtonGroup">
-                <property name="height">200</property>
-                <property name="padx">25</property>
-                <property name="pady">10</property>
-                <property name="width">200</property>
-                <layout manager="pack">
-                  <property name="propagate">True</property>
-                  <property name="side">top</property>
-                </layout>
-                <child>
-                  <object class="tk.Button" id="IsReady">
-                    <property name="command">Ready_Clicked</property>
-                    <property name="idtocommand">false</property>
-                    <property name="justify">center</property>
-                    <property name="state">normal</property>
-                    <property name="text" translatable="yes">Ready</property>
-                    <property name="textvariable">string:IsReady</property>
-                    <property name="width">15</property>
-                    <layout manager="grid">
-                      <property name="column">0</property>
-                      <property name="propagate">True</property>
-                      <property name="row">1</property>
-                      <property type="row" id="1" name="pad">0</property>
-                      <property type="row" id="4" name="pad">10</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="tk.Button" id="Quit">
-                    <property name="command">Quit_Clicked</property>
-                    <property name="idtocommand">false</property>
-                    <property name="text" translatable="yes">Quit</property>
-                    <property name="width">15</property>
-                    <layout manager="grid">
-                      <property name="column">0</property>
-                      <property name="propagate">True</property>
-                      <property name="row">2</property>
-                      <property name="sticky">s</property>
-                      <property type="row" id="1" name="pad">5</property>
-                    </layout>
                   </object>
                 </child>
               </object>
@@ -371,6 +326,51 @@
                     </child>
                   </object>
                 </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Frame" id="ButtonGroup">
+            <property name="height">200</property>
+            <property name="padx">25</property>
+            <property name="pady">10</property>
+            <property name="width">200</property>
+            <layout manager="grid">
+              <property name="column">2</property>
+              <property name="row">3</property>
+            </layout>
+            <child>
+              <object class="tk.Button" id="IsReady">
+                <property name="command">Ready_Clicked</property>
+                <property name="idtocommand">false</property>
+                <property name="justify">center</property>
+                <property name="state">normal</property>
+                <property name="text" translatable="yes">Ready</property>
+                <property name="textvariable">string:IsReady</property>
+                <property name="width">15</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="propagate">True</property>
+                  <property name="row">1</property>
+                  <property type="row" id="1" name="pad">0</property>
+                  <property type="row" id="4" name="pad">10</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="tk.Button" id="Quit">
+                <property name="command">Quit_Clicked</property>
+                <property name="idtocommand">false</property>
+                <property name="text" translatable="yes">Quit</property>
+                <property name="width">15</property>
+                <layout manager="grid">
+                  <property name="column">0</property>
+                  <property name="propagate">True</property>
+                  <property name="row">2</property>
+                  <property name="sticky">s</property>
+                  <property type="row" id="1" name="pad">5</property>
+                </layout>
               </object>
             </child>
           </object>
