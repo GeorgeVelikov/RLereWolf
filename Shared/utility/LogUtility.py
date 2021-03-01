@@ -7,25 +7,25 @@ import os;
 from pathlib import Path
 
 SHARED_PATH = Path(os.path.dirname(os.path.dirname(__file__)));
-LOGS_PATH = str(SHARED_PATH.parent) + "/Logs";
+LOGS_PATH = str(SHARED_PATH.parent) + os.path.sep + "Logs"\
 
 def Log(status, message, game = None):
     utcNow = datetime.utcnow();
 
-    fileName = utcNow.strftime("%d-%m-%Y");
+    filePath = LOGS_PATH \
+        + os.path.sep + datetime.utcnow().strftime("%d-%m-%Y");
 
-    if game:
-        fileName += "-" + str(game);
+    fileName =  "server" if not game else str(game);
 
-    if not os.path.exists(LOGS_PATH):
-        os.makedirs(LOGS_PATH);
+    if not os.path.exists(filePath):
+        os.makedirs(filePath);
 
     utcNowFormatted = utcNow.strftime(NetConstants.DATETIME_FORMAT);
 
     logMessage = f"{utcNowFormatted} {status} {message}.";
     print(logMessage);
 
-    log = open(f"{LOGS_PATH}{os.path.sep}{fileName}.txt", "a");
+    log = open(f"{filePath}{os.path.sep}{fileName}.txt", "a");
     log.write("\n" + logMessage);
     log.close();
 
