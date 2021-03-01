@@ -238,15 +238,8 @@ class ServerInstance():
         dto = packet.Data;
         game = self.GetGameWithIdentifier(dto.GameIdentifier);
 
-        if not game.Identifier == self.IsPlayerAlreadyInAGame(dto.Player.Identifier):
-            LogUtility.Error(f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
+        if not self.IsGameActionValid(game, dto):
             connection.sendall(pickle.dumps(False));
-            return;
-
-        if not game.Identifier == self.IsPlayerAlreadyInAGame(dto.TargetPlayerIdentifier):
-            LogUtility.Error(f"Target player id {dto.TargetPlayerIdentifier} is not in game", game);
-            connection.sendall(pickle.dumps(False));
-            return;
 
         player = game.GetPlayerByIdentifier(dto.Player.Identifier);
         targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
@@ -264,14 +257,56 @@ class ServerInstance():
         return;
 
     def AttackPlayer(self, connection, packet):
+        dto = packet.Data;
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+
+        if not self.IsGameActionValid(game, dto):
+            connection.sendall(pickle.dumps(False));
+
+        player = game.GetPlayerByIdentifier(dto.Player.Identifier);
+        targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
+
+        if game.HasPlayerVotedAlready(player.Identifier):
+            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has attacked already", game);
+            connection.sendall(pickle.dumps(False));
+            return;
+
         connection.sendall(pickle.dumps(True));
         return;
 
     def DivinePlayer(self, connection, packet):
+        dto = packet.Data;
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+
+        if not self.IsGameActionValid(game, dto):
+            connection.sendall(pickle.dumps(False));
+
+        player = game.GetPlayerByIdentifier(dto.Player.Identifier);
+        targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
+
+        if game.HasPlayerVotedAlready(player.Identifier):
+            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has divined already", game);
+            connection.sendall(pickle.dumps(False));
+            return;
+
         connection.sendall(pickle.dumps(True));
         return;
 
     def GuardPlayer(self, connection, packet):
+        dto = packet.Data;
+        game = self.GetGameWithIdentifier(dto.GameIdentifier);
+
+        if not self.IsGameActionValid(game, dto):
+            connection.sendall(pickle.dumps(False));
+
+        player = game.GetPlayerByIdentifier(dto.Player.Identifier);
+        targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
+
+        if game.HasPlayerVotedAlready(player.Identifier):
+            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has guarded already", game);
+            connection.sendall(pickle.dumps(False));
+            return;
+
         connection.sendall(pickle.dumps(True));
         return;
 
@@ -305,6 +340,17 @@ class ServerInstance():
                 return game.Identifier;
 
         return None;
+
+    def IsGameActionValid(self, game, gameActionDto):
+        if not game.Identifier == self.IsPlayerAlreadyInAGame(gameActionDto.Player.Identifier):
+            LogUtility.Error(f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
+            return False;
+
+        if not game.Identifier == self.IsPlayerAlreadyInAGame(gameActionDto.TargetPlayerIdentifier):
+            LogUtility.Error(f"Target player id {dto.TargetPlayerIdentifier} is not in game", game);
+            return False;
+
+        return True;
 
     #endregion
 

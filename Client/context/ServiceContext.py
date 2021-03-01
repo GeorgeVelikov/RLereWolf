@@ -183,7 +183,12 @@ class ServiceContext():
             # null check both the current player and the target player
             return;
 
-        return
+        dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
+        packet = PacketUtility.GetVotePlayerPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     # Seer
     def Divine(self, targetPlayerIdentifier):
@@ -194,7 +199,12 @@ class ServiceContext():
             # null check both the current player and the target player
             return;
 
-        return;
+        dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
+        packet = PacketUtility.GetVotePlayerPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     # Guard
     def Guard(self, targetPlayerIdentifier):
@@ -205,6 +215,11 @@ class ServiceContext():
             # null check both the current player and the target player
             return;
 
-        return;
+        dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
+        packet = PacketUtility.GetVotePlayerPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     #endregion

@@ -54,6 +54,24 @@
     <Compile Include="game\Player.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="game\roles\Guard.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\roles\Role.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\roles\Seer.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\roles\Villager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\roles\Werewolf.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="game\roles\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -71,6 +89,7 @@
     <Folder Include="game\actions\" />
     <Folder Include="game\" />
     <Folder Include="environment\" />
+    <Folder Include="game\roles\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.9" />

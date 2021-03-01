@@ -26,3 +26,12 @@ def GetVoteGameStartPacket(data):
 
 def GetVotePlayerPacket(data):
     return Packet(PacketTypeEnum.VotePlayer, data);
+
+def GetAttackPlayerPacket(data):
+    return Packet(PacketTypeEnum.AttackPlayer, data);
+
+def GetDivinePlayerPacket(data):
+    return Packet(PacketTypeEnum.DivinePlayer, data);
+
+def GetGuardPlayerPacket(data):
+    return Packet(PacketTypeEnum.GuardPlayer, data);

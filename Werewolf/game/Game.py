@@ -201,6 +201,9 @@ class Game():
 
         return;
 
+    def Attack(self, player):
+        return;
+
     def WerewolfKill(self, player):
         if player not in self.Players:
             LogUtility.Error(f"Cannot kill {player.Name} as they are not in the game {self.Name}", self);
@@ -209,6 +212,12 @@ class Game():
         player._Player__isAlive = False;
         LogUtility.CreateGameMessage(f"{player.Name} is killed by the werewolves.", self);
 
+        return;
+
+    def Guard(self, player):
+        return;
+
+    def Divine(self, player):
         return;
 
     #endregion

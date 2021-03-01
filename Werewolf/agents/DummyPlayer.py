@@ -11,25 +11,25 @@ class DummyPlayer(AgentPlayer):
         super().__init__(name, game);
 
     def ActDay(self):
-        if self.Role == PlayerTypeEnum.Villager:
+        if self.Role.Type == PlayerTypeEnum.Villager:
             self.ActDayVillager();
-        elif self.Role == PlayerTypeEnum.Werewolf:
+        elif self.Role.Type == PlayerTypeEnum.Werewolf:
             self.ActDayWerewolf();
-        elif self.Role == PlayerTypeEnum.Seer:
+        elif self.Role.Type == PlayerTypeEnum.Seer:
             self.ActDayVillager();
-        elif self.Role == PlayerTypeEnum.Guard:
+        elif self.Role.Type == PlayerTypeEnum.Guard:
             self.ActDayVillager();
 
         return;
 
     def ActNight(self):
-        if self.Role == PlayerTypeEnum.Villager:
+        if self.Role.Type == PlayerTypeEnum.Villager:
             self.ActNightVillager();
-        elif self.Role == PlayerTypeEnum.Werewolf:
+        elif self.Role.Type == PlayerTypeEnum.Werewolf:
             self.ActNightWerewolf();
-        elif self.Role == PlayerTypeEnum.Seer:
+        elif self.Role.Type == PlayerTypeEnum.Seer:
             self.ActNightSeer();
-        elif self.Role == PlayerTypeEnum.Guard:
+        elif self.Role.Type == PlayerTypeEnum.Guard:
             self.ActNightGuard();
 
         return;
