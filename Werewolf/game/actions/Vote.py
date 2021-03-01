@@ -10,3 +10,7 @@ class Vote():
     @property
     def VotedPlayer(self):
         return self.__votedPlayer;
+
+    @property
+    def PlayerType(self):
+        self.Player.Role.Type;

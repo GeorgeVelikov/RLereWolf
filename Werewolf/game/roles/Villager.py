@@ -16,4 +16,3 @@ class Villager(Role):
     @property
     def HasNightAction(self):
         return False;
-

@@ -57,6 +57,9 @@ class Game():
     def Turn(self):
         return self.__turn;
 
+    # Currently in the base game, this is interchangeable with DayPlayers
+    # There isn't really any roles that cannot vote during the day as
+    # that would effectively "out" them as being a specific role
     @property
     def Players(self):
         return sorted(self.__players,\
@@ -66,6 +69,15 @@ class Game():
     @property
     def PlayerIdentifiers(self):
         return [p.Identifier for p in self.__players];
+
+    @property
+    def NightPlayers(self):
+        return [p for p in self.__players if p.Role.HasNightAction];
+
+    @property
+    def NightPlayerIdentifiers(self):
+        # don't reference self.NightPlayers, that's an extra list comprehension
+        return [p.Identifier for p in self.__players if p.Role.HasNightAction];
 
     @property
     def TimeOfDay(self):
@@ -108,7 +120,7 @@ class Game():
         for player in self.__players:
             player._Player__isReady = False;
 
-        GameRules.DistributeRolesBaseGame(self.__players);
+        GameRules.DistributeRolesBaseGame(self);
 
         self.__hasStarted = True;
         self.__turn = 1;
@@ -132,7 +144,7 @@ class Game():
 
     def StartDay(self):
         self.__votes = set();
-        self.__timeOfDay == TimeOfDayEnum.Day;
+        self.__timeOfDay = TimeOfDayEnum.Day;
 
         for agent in self.AgentPlayers:
             agent.ActDay();
@@ -164,9 +176,22 @@ class Game():
         return;
 
     def Vote(self, vote):
-        if not vote or self.TimeOfDay != TimeOfDayEnum.Day:
+        if not vote:
+            LogUtility.Error("Vote cannot be casted, it is null.", self);
             return;
 
+        if self.TimeOfDay == TimeOfDayEnum.Day:
+            self.VoteDay(vote);
+            return;
+
+        if self.TimeOfDay == TimeOfDayEnum.Night:
+            self.VoteNight(vote);
+            return;
+
+        LogUtility.Error("Time of day is not Day/Night", self);
+        return;
+
+    def VoteDay(self, vote):
         playerIdentifiers = self.PlayerIdentifiers;
 
         if not vote.Player.Identifier in playerIdentifiers or\
@@ -181,6 +206,24 @@ class Game():
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotesExecute();
 
+        return;
+
+    def VoteNight(self, vote):
+        playerIdentifiers = self.NightPlayerIdentifiers;
+
+        if not vote.Player.Identifier in playerIdentifiers or\
+            not vote.VotedPlayer.Identifier in playerIdentifiers:
+            # players not in the game, error
+            LogUtility.Error("Invalid vote, one of the players is not in the game", self);
+            return;
+
+        self.Votes.add(vote);
+        LogUtility.Information(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}", self);
+
+        if len(self.Votes) == len(playerIdentifiers):
+            self.CountVotesExecute();
+
+        return;
         return;
 
     def CountVotesExecute(self):

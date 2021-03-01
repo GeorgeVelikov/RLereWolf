@@ -10,7 +10,6 @@ SHARED_PATH = Path(os.path.dirname(os.path.dirname(__file__)));
 LOGS_PATH = str(SHARED_PATH.parent) + "/Logs";
 
 def Log(status, message, game = None):
-
     utcNow = datetime.utcnow();
 
     fileName = utcNow.strftime("%d-%m-%Y");
