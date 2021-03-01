@@ -91,7 +91,7 @@ class Game():
 
     def Leave(self, player):
         if (player.Identifier not in self.PlayerIdentifiers):
-            print(f"[ERROR] Player {player.Identifier} is not in the game.");
+            LogUtility.Error(f"Player {player.Identifier} is not in the game.", self);
             # TODO: raise some silent exception
             return;
 
@@ -101,7 +101,8 @@ class Game():
 
     def Start(self):
         if (len(self.__players) < GameConstants.MINIMAL_PLAYER_COUNT):
-            print(f"[ERROR] Cannot start game without having at least {GameConstants.MINIMAL_PLAYER_COUNT} players.");
+            LogUtility.Error(
+                f"Cannot start game without having at least {GameConstants.MINIMAL_PLAYER_COUNT} players.", self);
             return;
 
         for player in self.__players:
@@ -163,7 +164,7 @@ class Game():
         return;
 
     def Vote(self, vote):
-        if not vote:
+        if not vote or self.TimeOfDay != TimeOfDayEnum.Day:
             return;
 
         playerIdentifiers = self.PlayerIdentifiers;
@@ -171,11 +172,11 @@ class Game():
         if not vote.Player.Identifier in playerIdentifiers or\
             not vote.VotedPlayer.Identifier in playerIdentifiers:
             # players not in the game, error
-            print("Invalid vote, one of the players is not in the game");
+            LogUtility.Error("Invalid vote, one of the players is not in the game", self);
             return;
 
         self.Votes.add(vote);
-        print(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}");
+        LogUtility.Information(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}", self);
 
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotesExecute();
