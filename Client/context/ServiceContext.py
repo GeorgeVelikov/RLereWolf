@@ -175,34 +175,34 @@ class ServiceContext():
     def Whisper(self, message):
         return;
 
-    def Attack(self, player):
-        if not self.Client.Game:
-            return;
-
-        if not player:
-            print("You must select a player.");
+    def Attack(self, targetPlayerIdentifier):
+        if not self.Client or\
+            not self.Client.GameIdentifier or\
+            not self.Client.Player or\
+            not targetPlayerIdentifier:
+            # null check both the current player and the target player
             return;
 
         return
 
     # Seer
-    def Divine(self, player):
-        if not self.Client.Game:
-            return;
-
-        if not player:
-            print("You must select a player.");
+    def Divine(self, targetPlayerIdentifier):
+        if not self.Client or\
+            not self.Client.GameIdentifier or\
+            not self.Client.Player or\
+            not targetPlayerIdentifier:
+            # null check both the current player and the target player
             return;
 
         return;
 
     # Guard
-    def Guard(self, player):
-        if not self.Client.Game:
-            return;
-
-        if not player:
-            print("You must select a player.");
+    def Guard(self, targetPlayerIdentifier):
+        if not self.Client or\
+            not self.Client.GameIdentifier or\
+            not self.Client.Player or\
+            not targetPlayerIdentifier:
+            # null check both the current player and the target player
             return;
 
         return;

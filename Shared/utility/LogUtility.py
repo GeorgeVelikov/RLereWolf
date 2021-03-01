@@ -37,3 +37,15 @@ def CreateGameMessage(message, game):
     Log(LogConstants.MESSAGE, dto.Content, game);
     game.Messages.add(dto);
     return dto;
+
+def Error(message, game = None):
+    Log(LogConstants.ERROR, message, game);
+
+def Warning(message, game = None):
+    Log(LogConstants.WARNING, message, game);
+
+def Information(message, game = None):
+    Log(LogConstants.INFORMATION, message, game);
+
+def Request(message, game = None):
+    Log(LogConstants.REQUEST, message, game);

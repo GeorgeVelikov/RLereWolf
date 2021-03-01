@@ -110,12 +110,9 @@ class Game():
         GameRules.DistributeRolesBaseGame(self.__players);
 
         self.__hasStarted = True;
-        self.__votes = set();
         self.__turn = 1;
-        self.__timeOfDay == TimeOfDayEnum.Day;
 
-        for agent in self.AgentPlayers:
-            agent.ActDay();
+        self.StartDay();
 
         return;
 
@@ -124,10 +121,31 @@ class Game():
             player._Player__isReady = False;
             player._Player__role = None;
 
+        for agent in self.AgentPlayers:
+            agent._Player__isReady = True;
+
         self.__hasStarted = False;
         self.__votes = set();
         self.__turn = int();
         self.__timeOfDay = TimeOfDayEnum._None;
+
+    def StartDay(self):
+        self.__votes = set();
+        self.__timeOfDay == TimeOfDayEnum.Day;
+
+        for agent in self.AgentPlayers:
+            agent.ActDay();
+
+        return;
+
+    def StartNight(self):
+        self.__votes = set();
+        self.__timeOfDay == TimeOfDayEnum.Night;
+
+        for agent in self.AgentPlayers:
+            agent.ActNight();
+
+        return;
 
     def VoteStart(self, player):
         if not player:
@@ -160,26 +178,22 @@ class Game():
         print(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}");
 
         if len(self.Votes) == len(playerIdentifiers):
-            self.CountVotes();
+            self.CountVotesExecute();
 
         return;
 
-    def CountVotes(self):
-        votedPlayerIdentifiers = [vote.VotedPlayer.Identifier for vote in self.__votes];
-        counter = Counter(votedPlayerIdentifiers);
+    def CountVotesExecute(self):
+        (player, times) = self.GetPlayerAndTimesVoted();
 
-        (mostVotedPlayerIdentifier, times) = counter.most_common(1)[0];
+        LogUtility.CreateGameMessage(f"{player.Name} has the most votes to get executed - {times}.", self);
 
-        playerToExecute = self.GetPlayerByIdentifier(mostVotedPlayerIdentifier);
-
-        LogUtility.CreateGameMessage(f"{playerToExecute.Name} has the most votes to get executed - {times}.", self);
-
-        self.Execute(playerToExecute);
-        self.__votes = set();
+        self.Execute(player);
+        self.StartNight();
         return;
 
     def Execute(self, player):
         if player not in self.Players:
+            LogUtility.Error(f"Cannot execute {player.Name} as they are not in the game {self.Name}", self);
             return;
 
         player._Player__isAlive = False;
@@ -187,9 +201,29 @@ class Game():
 
         return;
 
+    def WerewolfKill(self, player):
+        if player not in self.Players:
+            LogUtility.Error(f"Cannot kill {player.Name} as they are not in the game {self.Name}", self);
+            return;
+
+        player._Player__isAlive = False;
+        LogUtility.CreateGameMessage(f"{player.Name} is killed by the werewolves.", self);
+
+        return;
+
     #endregion
 
     #region Helpers
+
+    def GetPlayerAndTimesVoted(self):
+        votedPlayerIdentifiers = [vote.VotedPlayer.Identifier for vote in self.__votes];
+        counter = Counter(votedPlayerIdentifiers);
+
+        (mostVotedPlayerIdentifier, times) = counter.most_common(1)[0];
+
+        player = self.GetPlayerByIdentifier(mostVotedPlayerIdentifier);
+
+        return (player, times);
 
     def GetPlayerByIdentifier(self, playerIdentifier):
         return next((p for p in self.__players\

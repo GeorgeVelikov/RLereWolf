@@ -34,7 +34,7 @@ class ServerInstance():
             player._Player__isReady = True;
             lastGame.Join(player);
 
-        LogUtility.Log(LogConstants.INFORMATION, "Server start up");
+        LogUtility.Information("Server start up");
 
         return;
 
@@ -47,12 +47,12 @@ class ServerInstance():
         return datetime.utcnow();
 
     def ShowActiveConnections(self):
-        LogUtility.Log(LogConstants.INFORMATION, f"Active connections - {threading.activeCount() - 1}");
+        LogUtility.Information(f"Active connections - {threading.activeCount() - 1}");
 
     #region Server
 
     def ClientHandle(self, connection, address):
-        LogUtility.Log(LogConstants.INFORMATION, f"Connected to server - {address}");
+        LogUtility.Information(f"Connected to server - {address}");
         self.ShowActiveConnections();
 
         while True:
@@ -64,7 +64,7 @@ class ServerInstance():
                 if not packet:
                     break;
 
-                LogUtility.Log(LogConstants.REQUEST, f"Packet type - {str(packet.PacketType)}");
+                LogUtility.Request(f"Packet type - {str(packet.PacketType)}");
 
                 validPacketTypes = PacketTypeEnum.Values();
 
@@ -72,10 +72,10 @@ class ServerInstance():
                     self.RedirectPacket(connection, packet);
 
             except Exception as error:
-                LogUtility.Log(LogConstants.ERROR, str(error));
+                LogUtility.Error(str(error));
                 break;
 
-        LogUtility.Log(LogConstants.INFORMATION, f"Lost connection to server - {address}");
+        LogUtility.Information(f"Lost connection to server - {address}");
         connection.close();
 
         return;
@@ -85,12 +85,11 @@ class ServerInstance():
             self.__connection.bind(NetConstants.ADDRESS);
             self.__connection.listen();
 
-            LogUtility.Log(LogConstants.INFORMATION, \
-                f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
+            LogUtility.Information(f"Server successfully started at {NetConstants.IP}:{NetConstants.PORT}");
 
             self.ShowActiveConnections();
         except socket.error as error:
-            LogUtility.Log(LogConstants.ERROR, str(error));
+            LogUtility.Error(str(error));
 
         while True:
             connection, address = self.__connection.accept();
@@ -119,6 +118,15 @@ class ServerInstance():
 
         elif packet.PacketType == PacketTypeEnum.VotePlayer:
             self.VotePlayer(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.AttackPlayer:
+            self.AttackPlayer(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.DivinePlayer:
+            self.DivinePlayer(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.GuardPlayer:
+            self.GuardPlayer(connection, packet);
 
         return;
 
@@ -231,13 +239,12 @@ class ServerInstance():
         game = self.GetGameWithIdentifier(dto.GameIdentifier);
 
         if not game.Identifier == self.IsPlayerAlreadyInAGame(dto.Player.Identifier):
-            LogUtility.Log(LogConstants.ERROR, \
-                f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
+            LogUtility.Error(f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
             connection.sendall(pickle.dumps(False));
             return;
 
         if not game.Identifier == self.IsPlayerAlreadyInAGame(dto.TargetPlayerIdentifier):
-            LogUtility.Log(LogConstants.ERROR, f"Target player id {dto.TargetPlayerIdentifier} is not in game", game);
+            LogUtility.Error(f"Target player id {dto.TargetPlayerIdentifier} is not in game", game);
             connection.sendall(pickle.dumps(False));
             return;
 
@@ -245,7 +252,7 @@ class ServerInstance():
         targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
 
         if game.HasPlayerVotedAlready(player.Identifier):
-            LogUtility.Log(LogConstants.ERROR, f"Player {player.Name} - {player.Identifier} has voted already", game);
+            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has voted already", game);
             connection.sendall(pickle.dumps(False));
             return;
 
@@ -253,6 +260,18 @@ class ServerInstance():
         game.Vote(vote);
         LogUtility.CreateGameMessage(f"Player {player.Name} voted to execute {targetPlayer.Name}.", game);
 
+        connection.sendall(pickle.dumps(True));
+        return;
+
+    def AttackPlayer(self, connection, packet):
+        connection.sendall(pickle.dumps(True));
+        return;
+
+    def DivinePlayer(self, connection, packet):
+        connection.sendall(pickle.dumps(True));
+        return;
+
+    def GuardPlayer(self, connection, packet):
         connection.sendall(pickle.dumps(True));
         return;
 

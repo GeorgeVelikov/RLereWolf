@@ -92,26 +92,26 @@ class GameLobbyScreen(ScreenBase):
 
     def UpdateGameControlButtons(self):
         if not self.Client.Game.HasStarted:
-            self.__villagerButtons.pack_forget();
-            self.__werewolfButtons.pack_forget();
-            self.__seerButtons.pack_forget();
-            self.__guardButtons.pack_forget();
+            self.__villagerButtons.grid_remove();
+            self.__werewolfButtons.grid_remove();
+            self.__seerButtons.grid_remove();
+            self.__guardButtons.grid_remove();
             return;
 
-        self.__villagerButtons.pack();
+        self.__villagerButtons.grid();
 
         if not self.Client.Player.Role:
             print("No Role in the game.");
             return
 
         if self.Client.Player.Role == PlayerTypeEnum.Werewolf:
-            self.__werewolfButtons.pack();
+            self.__werewolfButtons.grid();
 
         elif self.Client.Player.Role == PlayerTypeEnum.Seer:
-            self.__seerButtons.pack();
+            self.__seerButtons.grid();
 
         elif self.Client.Player.Role == PlayerTypeEnum.Guard:
-            self.__guardButtons.pack();
+            self.__guardButtons.grid();
 
         return;
 
@@ -185,14 +185,41 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Attack_Clicked(self):
+        if self.Client.Player.Role != PlayerTypeEnum.Werewolf:
+            return;
+
+        selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
+
+        if not selectedPlayerIdentifier:
+            return;
+
+        self.Context.ServiceContext.Attack(selectedPlayerIdentifier);
         return;
 
     # Seer Controls
     def Divine_Clicked(self):
+        if self.Client.Player.Role != PlayerTypeEnum.Seer:
+            return;
+
+        selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
+
+        if not selectedPlayerIdentifier:
+            return;
+
+        self.Context.ServiceContext.Divine(selectedPlayerIdentifier);
         return;
 
     # Guard Controls
     def Guard_Clicked(self):
+        if self.Client.Player.Role != PlayerTypeEnum.Guard:
+            return;
+
+        selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
+
+        if not selectedPlayerIdentifier:
+            return;
+
+        self.Context.ServiceContext.Guard(selectedPlayerIdentifier);
         return;
 
     # Misc
