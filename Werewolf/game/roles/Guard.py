@@ -10,5 +10,13 @@ class Guard(Role):
         return PlayerTypeEnum.Guard;
 
     @property
+    def HasDayAction(self):
+        return True;
+
+    @property
+    def HasNightAction(self):
+        return self.CanGuard;
+
+    @property
     def CanGuard(self):
         return self.__canGuardTimes > 0;

@@ -8,3 +8,12 @@ class Villager(Role):
     @property
     def Type(self):
         return PlayerTypeEnum.Villager;
+
+    @property
+    def HasDayAction(self):
+        return True;
+
+    @property
+    def HasNightAction(self):
+        return False;
+

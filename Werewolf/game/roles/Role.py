@@ -7,3 +7,11 @@ class Role():
     @property
     def Type(self):
         return PlayerTypeEnum._None;
+
+    @property
+    def HasDayAction(self):
+        return False;
+
+    @property
+    def HasNightAction(self):
+        return False;

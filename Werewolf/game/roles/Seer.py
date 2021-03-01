@@ -10,5 +10,13 @@ class Seer(Role):
         return PlayerTypeEnum.Seer;
 
     @property
+    def HasDayAction(self):
+        return True;
+
+    @property
+    def HasNightAction(self):
+        return self.CanDivine;
+
+    @property
     def CanDivine(self):
         return self.__canDivineTimes > 0;
