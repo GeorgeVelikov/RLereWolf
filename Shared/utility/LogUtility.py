@@ -25,7 +25,7 @@ def Log(status, message, game = None):
     logMessage = f"{utcNowFormatted} {status} {message}.";
     print(logMessage);
 
-    log = open(f"{filePath}{os.path.sep}{fileName}.txt", "a");
+    log = open(filePath + os.path.sep + fileName + ".txt", "a");
     log.write("\n" + logMessage);
     log.close();
 

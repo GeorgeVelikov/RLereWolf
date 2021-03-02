@@ -13,10 +13,17 @@ class GameLobbyScreen(ScreenBase):
         self.InitializeScreen();
 
         self.__playersListBox = self.GetObject("PlayerListBox");
+        self.__playersScrollBar = self.GetObject("PlayersScrollbar");
 
-        # don't need to keep track of messages, too much memory
+        self.__playersListBox.config(yscrollcommand = self.__playersScrollBar.set);
+        self.__playersScrollBar.config(command = self.__playersListBox.yview);
+
         # would go into it with no gains to do it whatsoever.
         self.__messagesListBox = self.GetObject("MessagesListBox");
+        self.__messagesScrollBar = self.GetObject("MessagesScrollbar");
+
+        self.__messagesListBox.config(yscrollcommand = self.__messagesScrollBar.set);
+        self.__messagesScrollBar.config(command = self.__messagesListBox.yview);
 
         self.__villagerButtons = self.GetObject(str(PlayerTypeEnum.Villager));
         self.__werewolfButtons = self.GetObject(str(PlayerTypeEnum.Werewolf));
@@ -81,8 +88,12 @@ class GameLobbyScreen(ScreenBase):
         if not messages:
             return;
 
+        self.__messagesListBox.config(state = tk.NORMAL);
+
         for message in messages:
-            self.__messagesListBox.insert(tk.END, str(message));
+            self.__messagesListBox.insert(tk.END, str(message) + "\n");
+
+        self.__messagesListBox.config(state = tk.DISABLED);
 
         return;
 
@@ -139,6 +150,8 @@ class GameLobbyScreen(ScreenBase):
         identifier = str();
         deadStatus = str();
 
+        self.ToggleButtonsInLayout(self.__villagerButtons);
+
         if not self.Client.Game.HasStarted:
             readyStatus = "+" if player.IsReady else "-";
         elif self.Client.Game.HasStarted and not player.IsAlive:
@@ -161,6 +174,18 @@ class GameLobbyScreen(ScreenBase):
         playerItem = self.__playersListBox.item(index);
 
         return playerItem["text"];
+
+    def ToggleButtonsInLayout(self, layout):
+        buttons = layout.winfo_children();
+
+        disabledStatus = "disabled";
+        enabledStatus = "normal";
+
+        for button in buttons:
+            state = button["state"];
+            button["state"] = disabledStatus if state == enabledStatus else enabledStatus;
+
+        return;
 
     #endregion
 

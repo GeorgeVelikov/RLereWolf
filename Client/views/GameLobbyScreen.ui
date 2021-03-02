@@ -13,23 +13,21 @@
       <object class="ttk.Frame" id="Game">
         <property name="height">600</property>
         <property name="width">800</property>
-        <layout manager="grid">
-          <property name="column">1</property>
-          <property name="propagate">False</property>
-          <property name="row">1</property>
-          <property type="col" id="1" name="pad">0</property>
-          <property type="row" id="1" name="pad">0</property>
+        <layout manager="pack">
+          <property name="expand">true</property>
+          <property name="fill">both</property>
+          <property name="propagate">True</property>
+          <property name="side">top</property>
         </layout>
         <child>
           <object class="ttk.Frame" id="GameHeader">
             <property name="height">200</property>
             <property name="width">200</property>
-            <layout manager="grid">
-              <property name="column">1</property>
+            <layout manager="pack">
+              <property name="expand">true</property>
+              <property name="fill">both</property>
               <property name="propagate">True</property>
-              <property name="row">1</property>
-              <property type="col" id="1" name="pad">25</property>
-              <property type="row" id="1" name="pad">10</property>
+              <property name="side">top</property>
             </layout>
             <child>
               <object class="ttk.Frame" id="GameCell">
@@ -40,10 +38,21 @@
                   <property name="propagate">True</property>
                   <property name="row">1</property>
                   <property type="col" id="1" name="weight">1</property>
+                  <property type="row" id="1" name="weight">1</property>
                 </layout>
                 <child>
                   <object class="ttk.Label" id="GameNameLabel">
-                    <property name="text" translatable="yes">Game</property>
+                    <property name="text" translatable="yes">Game:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">left</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="GameName">
+                    <property name="text" translatable="yes">GameName</property>
+                    <property name="textvariable">string:GameName</property>
                     <layout manager="pack">
                       <property name="propagate">True</property>
                       <property name="side">top</property>
@@ -60,10 +69,21 @@
                   <property name="column">2</property>
                   <property name="row">1</property>
                   <property type="col" id="2" name="weight">1</property>
+                  <property type="row" id="1" name="weight">1</property>
                 </layout>
                 <child>
                   <object class="ttk.Label" id="TurnLabel">
-                    <property name="text" translatable="yes">Turn</property>
+                    <property name="text" translatable="yes">Turn:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">left</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="GameTurn">
+                    <property name="text" translatable="yes">GameTurn</property>
+                    <property name="textvariable">string:GameTurn</property>
                     <layout manager="pack">
                       <property name="propagate">True</property>
                       <property name="side">top</property>
@@ -81,10 +101,21 @@
                   <property name="propagate">True</property>
                   <property name="row">1</property>
                   <property type="col" id="3" name="weight">1</property>
+                  <property type="row" id="1" name="weight">1</property>
                 </layout>
                 <child>
                   <object class="ttk.Label" id="TimeLabel">
-                    <property name="text" translatable="yes">Time</property>
+                    <property name="text" translatable="yes">Time:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">left</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="GameTime">
+                    <property name="text" translatable="yes">GameTime</property>
+                    <property name="textvariable">string:GameTime</property>
                     <layout manager="pack">
                       <property name="propagate">True</property>
                       <property name="side">top</property>
@@ -96,61 +127,84 @@
           </object>
         </child>
         <child>
-          <object class="ttk.Frame" id="MessagesControls">
-            <property name="height">200</property>
-            <property name="width">200</property>
-            <layout manager="grid">
-              <property name="column">1</property>
-              <property name="propagate">True</property>
-              <property name="row">2</property>
-              <property type="col" id="1" name="pad">25</property>
+          <object class="ttk.Separator" id="SeparatorHeaderGame">
+            <property name="orient">horizontal</property>
+            <layout manager="pack">
+              <property name="fill">both</property>
+              <property name="padx">15</property>
             </layout>
-            <child>
-              <object class="ttk.Label" id="MessagesLabel">
-                <property name="text" translatable="yes">Messages</property>
-                <layout manager="pack">
-                  <property name="propagate">True</property>
-                  <property name="side">top</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="tk.Listbox" id="MessagesListBox">
-                <property name="activestyle">none</property>
-                <property name="exportselection">false</property>
-                <property name="font">{Arial} 12 {}</property>
-                <property name="height">22</property>
-                <property name="relief">flat</property>
-                <property name="selectforeground">#c8c8c8</property>
-                <property name="selectmode">single</property>
-                <property name="setgrid">true</property>
-                <property name="takefocus">false</property>
-                <property name="width">62</property>
-                <layout manager="pack">
-                  <property name="pady">0</property>
-                  <property name="propagate">True</property>
-                  <property name="side">top</property>
-                </layout>
-              </object>
-            </child>
           </object>
         </child>
         <child>
-          <object class="ttk.Frame" id="LobbyControls">
+          <object class="ttk.Frame" id="GameMain">
             <property name="height">200</property>
+            <property name="padding">10</property>
             <property name="width">200</property>
-            <layout manager="grid">
-              <property name="column">2</property>
+            <layout manager="pack">
+              <property name="anchor">center</property>
+              <property name="expand">true</property>
+              <property name="fill">both</property>
+              <property name="padx">5</property>
               <property name="propagate">True</property>
-              <property name="row">2</property>
-              <property name="rowspan">1</property>
+              <property name="side">top</property>
             </layout>
             <child>
-              <object class="ttk.Treeview" id="PlayerListBox">
-                <property name="height">21</property>
-                <property name="selectmode">browse</property>
-                <property name="show">headings</property>
-                <property name="width">61</property>
+              <object class="ttk.Frame" id="MessagesControls">
+                <property name="height">200</property>
+                <property name="width">200</property>
+                <layout manager="pack">
+                  <property name="expand">true</property>
+                  <property name="fill">both</property>
+                  <property name="propagate">True</property>
+                  <property name="side">left</property>
+                </layout>
+                <child>
+                  <object class="tk.Text" id="MessagesListBox">
+                    <property name="autoseparators">true</property>
+                    <property name="blockcursor">false</property>
+                    <property name="exportselection">false</property>
+                    <property name="height">24</property>
+                    <property name="relief">flat</property>
+                    <property name="setgrid">true</property>
+                    <property name="state">disabled</property>
+                    <property name="width">20</property>
+                    <property name="wrap">word</property>
+                    <layout manager="pack">
+                      <property name="expand">true</property>
+                      <property name="fill">both</property>
+                      <property name="propagate">True</property>
+                      <property name="side">left</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Scrollbar" id="MessagesScrollbar">
+                    <property name="orient">vertical</property>
+                    <layout manager="pack">
+                      <property name="expand">true</property>
+                      <property name="fill">both</property>
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Separator" id="SeparatorMessagesPlayers">
+                <property name="orient">vertical</property>
+                <layout manager="pack">
+                  <property name="fill">both</property>
+                  <property name="padx">7</property>
+                  <property name="propagate">True</property>
+                  <property name="side">left</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="ttk.Frame" id="LobbyControls">
+                <property name="height">200</property>
+                <property name="width">200</property>
                 <layout manager="pack">
                   <property name="expand">true</property>
                   <property name="fill">both</property>
@@ -158,219 +212,309 @@
                   <property name="side">top</property>
                 </layout>
                 <child>
-                  <object class="ttk.Treeview.Column" id="PlayersColumn">
-                    <property name="column_anchor">w</property>
-                    <property name="heading_anchor">center</property>
-                    <property name="minwidth">20</property>
-                    <property name="stretch">true</property>
-                    <property name="text" translatable="yes">Players</property>
-                    <property name="tree_column">false</property>
-                    <property name="visible">true</property>
-                    <property name="width">200</property>
+                  <object class="ttk.Treeview" id="PlayerListBox">
+                    <property name="selectmode">browse</property>
+                    <property name="show">headings</property>
+                    <property name="width">61</property>
+                    <layout manager="pack">
+                      <property name="expand">true</property>
+                      <property name="fill">both</property>
+                      <property name="propagate">True</property>
+                      <property name="side">left</property>
+                    </layout>
+                    <child>
+                      <object class="ttk.Treeview.Column" id="PlayersColumn">
+                        <property name="column_anchor">w</property>
+                        <property name="heading_anchor">center</property>
+                        <property name="minwidth">20</property>
+                        <property name="stretch">true</property>
+                        <property name="text" translatable="yes">Players</property>
+                        <property name="tree_column">false</property>
+                        <property name="visible">true</property>
+                        <property name="width">200</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Scrollbar" id="PlayersScrollbar">
+                    <property name="orient">vertical</property>
+                    <layout manager="pack">
+                      <property name="expand">true</property>
+                      <property name="fill">both</property>
+                      <property name="propagate">True</property>
+                      <property name="side">left</property>
+                    </layout>
                   </object>
                 </child>
               </object>
             </child>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Separator" id="SeparatorGameControls">
+            <property name="orient">horizontal</property>
+            <layout manager="pack">
+              <property name="fill">both</property>
+              <property name="padx">15</property>
+              <property name="propagate">True</property>
+              <property name="side">top</property>
+            </layout>
           </object>
         </child>
         <child>
           <object class="ttk.Frame" id="Controls">
             <property name="height">200</property>
             <property name="width">200</property>
-            <layout manager="grid">
-              <property name="column">1</property>
+            <layout manager="pack">
+              <property name="expand">true</property>
+              <property name="fill">both</property>
               <property name="propagate">True</property>
-              <property name="row">3</property>
-              <property type="col" id="1" name="pad">25</property>
+              <property name="side">top</property>
             </layout>
             <child>
-              <object class="ttk.Frame" id="GameControls">
+              <object class="ttk.Frame" id="ControlsGroup">
                 <property name="height">200</property>
-                <property name="padding">20</property>
-                <property name="width">600</property>
-                <layout manager="pack">
-                  <property name="expand">true</property>
-                  <property name="fill">both</property>
-                  <property name="propagate">True</property>
-                </layout>
-                <child>
-                  <object class="ttk.Labelframe" id="Villager">
-                    <property name="height">200</property>
-                    <property name="text" translatable="yes">General</property>
-                    <property name="width">200</property>
-                    <layout manager="grid">
-                      <property name="column">1</property>
-                      <property name="propagate">True</property>
-                      <property name="row">1</property>
-                      <property name="sticky">n</property>
-                      <property type="col" id="1" name="weight">1</property>
-                    </layout>
-                    <child>
-                      <object class="ttk.Button" id="Talk">
-                        <property name="command">Talk_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Talk</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="ttk.Button" id="Vote">
-                        <property name="command">Vote_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Vote</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="ttk.Button" id="Wait">
-                        <property name="command">Wait_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Wait</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="ttk.Labelframe" id="Werewolf">
-                    <property name="height">200</property>
-                    <property name="text" translatable="yes">Werewolf</property>
-                    <property name="width">200</property>
-                    <layout manager="grid">
-                      <property name="column">2</property>
-                      <property name="propagate">True</property>
-                      <property name="row">1</property>
-                      <property name="sticky">n</property>
-                      <property type="col" id="2" name="weight">1</property>
-                    </layout>
-                    <child>
-                      <object class="ttk.Button" id="Whisper">
-                        <property name="command">Whisper_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Whisper</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="ttk.Button" id="Attack">
-                        <property name="command">Attack_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Attack</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="ttk.Labelframe" id="Seer">
-                    <property name="height">200</property>
-                    <property name="text" translatable="yes">Seer</property>
-                    <property name="width">200</property>
-                    <layout manager="grid">
-                      <property name="column">3</property>
-                      <property name="propagate">True</property>
-                      <property name="row">1</property>
-                      <property name="sticky">n</property>
-                      <property type="col" id="3" name="weight">1</property>
-                    </layout>
-                    <child>
-                      <object class="ttk.Button" id="Divine">
-                        <property name="command">Divine_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Divine</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="ttk.Labelframe" id="Guard">
-                    <property name="height">200</property>
-                    <property name="text" translatable="yes">Guard</property>
-                    <property name="width">200</property>
-                    <layout manager="grid">
-                      <property name="column">4</property>
-                      <property name="propagate">True</property>
-                      <property name="row">1</property>
-                      <property name="sticky">n</property>
-                      <property type="col" id="4" name="weight">1</property>
-                    </layout>
-                    <child>
-                      <object class="ttk.Button" id="GuardAction">
-                        <property name="command">Guard_Clicked</property>
-                        <property name="idtocommand">false</property>
-                        <property name="text" translatable="yes">Guard</property>
-                        <layout manager="pack">
-                          <property name="propagate">True</property>
-                          <property name="side">top</property>
-                        </layout>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="tk.Frame" id="ButtonGroup">
-            <property name="height">200</property>
-            <property name="padx">25</property>
-            <property name="pady">10</property>
-            <property name="width">200</property>
-            <layout manager="grid">
-              <property name="column">2</property>
-              <property name="row">3</property>
-            </layout>
-            <child>
-              <object class="tk.Button" id="IsReady">
-                <property name="command">Ready_Clicked</property>
-                <property name="idtocommand">false</property>
-                <property name="justify">center</property>
-                <property name="state">normal</property>
-                <property name="text" translatable="yes">Ready</property>
-                <property name="textvariable">string:IsReady</property>
-                <property name="width">15</property>
+                <property name="width">200</property>
                 <layout manager="grid">
-                  <property name="column">0</property>
+                  <property name="column">1</property>
+                  <property name="padx">5</property>
                   <property name="propagate">True</property>
                   <property name="row">1</property>
-                  <property type="row" id="1" name="pad">0</property>
-                  <property type="row" id="4" name="pad">10</property>
+                  <property type="col" id="1" name="weight">2</property>
                 </layout>
+                <child>
+                  <object class="ttk.Frame" id="PlayerDetails">
+                    <property name="height">200</property>
+                    <property name="width">200</property>
+                    <layout manager="pack">
+                      <property name="expand">true</property>
+                      <property name="fill">both</property>
+                      <property name="pady">5</property>
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                    <child>
+                      <object class="ttk.Frame" id="RoleCell">
+                        <property name="height">200</property>
+                        <property name="width">200</property>
+                        <layout manager="pack">
+                          <property name="propagate">True</property>
+                          <property name="side">top</property>
+                        </layout>
+                        <child>
+                          <object class="ttk.Label" id="RoleLabel">
+                            <property name="text" translatable="yes">Role:</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">left</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="ttk.Label" id="label_5">
+                            <property name="text" translatable="yes">RoleType</property>
+                            <property name="textvariable">string:RoleType</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Frame" id="GameControls">
+                    <property name="height">200</property>
+                    <property name="padding">0</property>
+                    <property name="width">600</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                    <child>
+                      <object class="ttk.Labelframe" id="Villager">
+                        <property name="height">200</property>
+                        <property name="text" translatable="yes">General</property>
+                        <property name="width">200</property>
+                        <layout manager="grid">
+                          <property name="column">1</property>
+                          <property name="propagate">True</property>
+                          <property name="row">1</property>
+                          <property name="sticky">n</property>
+                          <property type="col" id="1" name="pad">20</property>
+                        </layout>
+                        <child>
+                          <object class="ttk.Button" id="Talk">
+                            <property name="command">Talk_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Talk</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="ttk.Button" id="Vote">
+                            <property name="command">Vote_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Vote</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="ttk.Button" id="Wait">
+                            <property name="command">Wait_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Wait</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Labelframe" id="Werewolf">
+                        <property name="height">200</property>
+                        <property name="text" translatable="yes">Werewolf</property>
+                        <property name="width">200</property>
+                        <layout manager="grid">
+                          <property name="column">2</property>
+                          <property name="propagate">True</property>
+                          <property name="row">1</property>
+                          <property name="sticky">n</property>
+                          <property type="col" id="2" name="pad">20</property>
+                        </layout>
+                        <child>
+                          <object class="ttk.Button" id="Whisper">
+                            <property name="command">Whisper_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Whisper</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="ttk.Button" id="Attack">
+                            <property name="command">Attack_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Attack</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Labelframe" id="Seer">
+                        <property name="height">200</property>
+                        <property name="text" translatable="yes">Seer</property>
+                        <property name="width">200</property>
+                        <layout manager="grid">
+                          <property name="column">3</property>
+                          <property name="propagate">True</property>
+                          <property name="row">1</property>
+                          <property name="sticky">n</property>
+                          <property type="col" id="3" name="pad">20</property>
+                        </layout>
+                        <child>
+                          <object class="ttk.Button" id="Divine">
+                            <property name="command">Divine_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Divine</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Labelframe" id="Guard">
+                        <property name="height">200</property>
+                        <property name="text" translatable="yes">Guard</property>
+                        <property name="width">200</property>
+                        <layout manager="grid">
+                          <property name="column">4</property>
+                          <property name="propagate">True</property>
+                          <property name="row">1</property>
+                          <property name="sticky">n</property>
+                          <property type="col" id="4" name="pad">20</property>
+                        </layout>
+                        <child>
+                          <object class="ttk.Button" id="GuardAction">
+                            <property name="command">Guard_Clicked</property>
+                            <property name="idtocommand">false</property>
+                            <property name="text" translatable="yes">Guard</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
-              <object class="tk.Button" id="Quit">
-                <property name="command">Quit_Clicked</property>
-                <property name="idtocommand">false</property>
-                <property name="text" translatable="yes">Quit</property>
-                <property name="width">15</property>
+              <object class="tk.Frame" id="ButtonGroup">
+                <property name="height">200</property>
+                <property name="padx">5</property>
+                <property name="width">200</property>
                 <layout manager="grid">
-                  <property name="column">0</property>
+                  <property name="column">2</property>
                   <property name="propagate">True</property>
-                  <property name="row">2</property>
-                  <property name="sticky">s</property>
-                  <property type="row" id="1" name="pad">5</property>
+                  <property name="row">1</property>
+                  <property type="col" id="2" name="pad">0</property>
+                  <property type="col" id="2" name="weight">1</property>
                 </layout>
+                <child>
+                  <object class="tk.Button" id="IsReady">
+                    <property name="command">Ready_Clicked</property>
+                    <property name="idtocommand">false</property>
+                    <property name="justify">center</property>
+                    <property name="state">normal</property>
+                    <property name="text" translatable="yes">Ready</property>
+                    <property name="textvariable">string:IsReady</property>
+                    <property name="width">15</property>
+                    <layout manager="grid">
+                      <property name="column">0</property>
+                      <property name="propagate">True</property>
+                      <property name="row">1</property>
+                      <property type="row" id="1" name="pad">0</property>
+                      <property type="row" id="4" name="pad">10</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="tk.Button" id="Quit">
+                    <property name="command">Quit_Clicked</property>
+                    <property name="idtocommand">false</property>
+                    <property name="text" translatable="yes">Quit</property>
+                    <property name="width">15</property>
+                    <layout manager="grid">
+                      <property name="column">0</property>
+                      <property name="propagate">True</property>
+                      <property name="row">2</property>
+                      <property type="row" id="1" name="pad">5</property>
+                    </layout>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

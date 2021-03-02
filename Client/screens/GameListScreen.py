@@ -11,6 +11,11 @@ class GameListScreen(ScreenBase):
         self.InitializeScreen();
 
         self.__gamesGrid = self.GetObject(nameof(self.Context.ServiceContext.GetGamesList));
+        self.__gamesGridScrollBar = self.GetObject(\
+            nameof(self.Context.ServiceContext.GetGamesList) + "Scrollbar");
+
+        self.__gamesGrid.config(yscrollcommand = self.__gamesGridScrollBar.set);
+        self.__gamesGridScrollBar.config(command = self.__gamesGrid.yview);
 
         self.__userName = self.GetVariable(nameof(self.Client.Name));
         self.__userName.set(self.Client.Name);
