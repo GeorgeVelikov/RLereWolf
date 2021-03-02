@@ -22,6 +22,11 @@ class GameLobbyScreen(ScreenBase):
         self.__messagesListBox = self.GetObject("MessagesListBox");
         self.__messagesScrollBar = self.GetObject("MessagesScrollbar");
 
+        self.__gameTurn = self.GetVariable("GameTurn");
+        self.__gameTime = self.GetVariable("GameTime");
+        self.__playerRole = self.GetVariable("RoleType");
+        self.__playerRoleState = self.GetVariable("RoleState");
+
         self.__messagesListBox.config(yscrollcommand = self.__messagesScrollBar.set);
         self.__messagesScrollBar.config(command = self.__messagesListBox.yview);
 
@@ -46,6 +51,8 @@ class GameLobbyScreen(ScreenBase):
         self.UpdatePlayerList(game.Players);
 
         self.UpdateMessagesList(game.Messages);
+
+        self.UpdateGameHeader(game);
 
     def UpdatePlayerList(self, players):
         newPlayerIdentifiers = [player.Identifier for player in players];
@@ -95,6 +102,13 @@ class GameLobbyScreen(ScreenBase):
 
         self.__messagesListBox.config(state = tk.DISABLED);
 
+        return;
+
+    def UpdateGameHeader(self, game):
+        self.__gameTurn.set(self.Client.Game.Turn);
+        self.__gameTime.set(self.Client.Game.TimeOfDay);
+        self.__playerRole.set(self.Client.Player.Role.Type);
+        self.__playerRoleState.set("Alive" if self.Client.Player.IsAlive else "Dead");
         return;
 
     def UpdateButtons(self):
@@ -150,8 +164,6 @@ class GameLobbyScreen(ScreenBase):
         identifier = str();
         deadStatus = str();
 
-        self.ToggleButtonsInLayout(self.__villagerButtons);
-
         if not self.Client.Game.HasStarted:
             readyStatus = "+" if player.IsReady else "-";
         elif self.Client.Game.HasStarted and not player.IsAlive:
@@ -178,12 +190,9 @@ class GameLobbyScreen(ScreenBase):
     def ToggleButtonsInLayout(self, layout):
         buttons = layout.winfo_children();
 
-        disabledStatus = "disabled";
-        enabledStatus = "normal";
-
         for button in buttons:
             state = button["state"];
-            button["state"] = disabledStatus if state == enabledStatus else enabledStatus;
+            button.config(state = tk.DISABLED if state == tk.NORMAL else tk.NORMAL);
 
         return;
 

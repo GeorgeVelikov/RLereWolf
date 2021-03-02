@@ -30,7 +30,7 @@
               <property name="side">top</property>
             </layout>
             <child>
-              <object class="ttk.Frame" id="GameCell">
+              <object class="ttk.Frame" id="GameName">
                 <property name="height">200</property>
                 <property name="width">200</property>
                 <layout manager="grid">
@@ -50,7 +50,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Label" id="GameName">
+                  <object class="ttk.Label" id="GameNameVariable">
                     <property name="text" translatable="yes">GameName</property>
                     <property name="textvariable">string:GameName</property>
                     <layout manager="pack">
@@ -62,7 +62,7 @@
               </object>
             </child>
             <child>
-              <object class="ttk.Frame" id="TurnCell">
+              <object class="ttk.Frame" id="GameTurn">
                 <property name="height">200</property>
                 <property name="width">200</property>
                 <layout manager="grid">
@@ -81,7 +81,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Label" id="GameTurn">
+                  <object class="ttk.Label" id="GameTurnVariable">
                     <property name="text" translatable="yes">GameTurn</property>
                     <property name="textvariable">string:GameTurn</property>
                     <layout manager="pack">
@@ -93,7 +93,7 @@
               </object>
             </child>
             <child>
-              <object class="ttk.Frame" id="TimeCell">
+              <object class="ttk.Frame" id="GameTime">
                 <property name="height">200</property>
                 <property name="width">200</property>
                 <layout manager="grid">
@@ -113,7 +113,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Label" id="GameTime">
+                  <object class="ttk.Label" id="GameTimeVariable">
                     <property name="text" translatable="yes">GameTime</property>
                     <property name="textvariable">string:GameTime</property>
                     <layout manager="pack">
@@ -295,12 +295,14 @@
                       <property name="side">top</property>
                     </layout>
                     <child>
-                      <object class="ttk.Frame" id="RoleCell">
+                      <object class="ttk.Frame" id="RoleType">
                         <property name="height">200</property>
                         <property name="width">200</property>
-                        <layout manager="pack">
+                        <layout manager="grid">
+                          <property name="column">1</property>
                           <property name="propagate">True</property>
-                          <property name="side">top</property>
+                          <property name="row">1</property>
+                          <property type="col" id="1" name="weight">1</property>
                         </layout>
                         <child>
                           <object class="ttk.Label" id="RoleLabel">
@@ -312,9 +314,40 @@
                           </object>
                         </child>
                         <child>
-                          <object class="ttk.Label" id="label_5">
+                          <object class="ttk.Label" id="RoleTypeVariable">
                             <property name="text" translatable="yes">RoleType</property>
                             <property name="textvariable">string:RoleType</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">top</property>
+                            </layout>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ttk.Frame" id="RoleState">
+                        <property name="height">200</property>
+                        <property name="width">200</property>
+                        <layout manager="grid">
+                          <property name="column">2</property>
+                          <property name="propagate">True</property>
+                          <property name="row">1</property>
+                          <property type="col" id="2" name="weight">1</property>
+                        </layout>
+                        <child>
+                          <object class="ttk.Label" id="RoleStateLabel">
+                            <property name="text" translatable="yes">State:</property>
+                            <layout manager="pack">
+                              <property name="propagate">True</property>
+                              <property name="side">left</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="ttk.Label" id="RoleStateVariable">
+                            <property name="text" translatable="yes">RoleState</property>
+                            <property name="textvariable">string:RoleState</property>
                             <layout manager="pack">
                               <property name="propagate">True</property>
                               <property name="side">top</property>
