@@ -22,6 +22,7 @@ class GameLobbyScreen(ScreenBase):
         self.__messagesListBox = self.GetObject("MessagesListBox");
         self.__messagesScrollBar = self.GetObject("MessagesScrollbar");
 
+        self.__gameName = self.GetVariable("GameName");
         self.__gameTurn = self.GetVariable("GameTurn");
         self.__gameTime = self.GetVariable("GameTime");
         self.__playerRole = self.GetVariable("RoleType");
@@ -105,10 +106,20 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def UpdateGameHeader(self, game):
-        self.__gameTurn.set(self.Client.Game.Turn);
-        self.__gameTime.set(self.Client.Game.TimeOfDay);
-        self.__playerRole.set(self.Client.Player.Role.Type);
-        self.__playerRoleState.set("Alive" if self.Client.Player.IsAlive else "Dead");
+        self.__gameName.set(self.Client.Game.Name);
+
+        if self.Client.Game.HasStarted:
+            self.__gameTurn.set(self.Client.Game.Turn);
+            self.__gameTime.set(self.Client.Game.TimeOfDay);
+            self.__playerRole.set(self.Client.Player.Role.Type);
+            self.__playerRoleState.set("Alive" if self.Client.Player.IsAlive else "Dead");
+
+        else:
+            self.__gameTurn.set("0");
+            self.__gameTime.set("N/A");
+            self.__playerRole.set("N/A");
+            self.__playerRoleState.set("N/A");
+
         return;
 
     def UpdateButtons(self):
@@ -129,13 +140,13 @@ class GameLobbyScreen(ScreenBase):
             print("No Role in the game.");
             return
 
-        if self.Client.Player.Role == PlayerTypeEnum.Werewolf:
+        if self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf:
             self.__werewolfButtons.grid();
 
-        elif self.Client.Player.Role == PlayerTypeEnum.Seer:
+        elif self.Client.Player.Role.Type == PlayerTypeEnum.Seer:
             self.__seerButtons.grid();
 
-        elif self.Client.Player.Role == PlayerTypeEnum.Guard:
+        elif self.Client.Player.Role.Type == PlayerTypeEnum.Guard:
             self.__guardButtons.grid();
 
         return;

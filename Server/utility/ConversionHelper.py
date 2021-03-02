@@ -17,6 +17,7 @@ def GameToDto(game, lastUpdatedUtc):
         game.Name,\
         messages,\
         game.Players,\
+        game.Turn,\
         game.TimeOfDay);
 
 def GameToListDto(game):

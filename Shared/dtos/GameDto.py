@@ -1,10 +1,11 @@
 class GameDto():
-    def __init__(self, identifier, hasStarted, name, messages, players, timeOfDay):
+    def __init__(self, identifier, hasStarted, name, messages, players, turn, timeOfDay):
         self.__identifier = identifier
         self.__hasStarted = hasStarted;
         self.__name = name;
         self.__messages = messages;
         self.__players = players;
+        self.__turn = turn;
         self.__timeOfDay = timeOfDay;
 
     @property
@@ -26,6 +27,10 @@ class GameDto():
     @property
     def Players(self):
         return self.__players;
+
+    @property
+    def Turn(self):
+        return self.__turn;
 
     @property
     def TimeOfDay(self):

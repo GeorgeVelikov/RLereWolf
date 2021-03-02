@@ -153,7 +153,7 @@ class Game():
 
     def StartNight(self):
         self.__votes = set();
-        self.__timeOfDay == TimeOfDayEnum.Night;
+        self.__timeOfDay = TimeOfDayEnum.Night;
 
         for agent in self.AgentPlayers:
             agent.ActNight();
@@ -223,7 +223,6 @@ class Game():
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotesExecute();
 
-        return;
         return;
 
     def CountVotesExecute(self):
