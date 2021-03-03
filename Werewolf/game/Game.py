@@ -20,6 +20,7 @@ class Game():
         self.__turn = int();
         self.__players = set();
         self.__timeOfDay = TimeOfDayEnum._None;
+        self.__playersWhoCanActThisNight = set();
 
     def __str__(self):
         return self.Name + " - " + self.Identifier;
@@ -159,6 +160,8 @@ class Game():
         self.__votes = set();
         self.__timeOfDay = TimeOfDayEnum.Night;
 
+        self.__playersWhoCanActThisNight = set([np.Identifier for np in self.NightPlayers if np.IsAlive]);
+
         for agent in self.AgentPlayers:
             agent.ActNight();
 
@@ -207,9 +210,11 @@ class Game():
             LogUtility.Error("Invalid vote, one of the players is not alive in the game", self);
             return;
 
-        self.Votes.add(vote);
-
-        LogUtility.CreateGameMessage(f"Player {vote.Player.Name} voted to execute {vote.VotedPlayer.Name}.", self);
+        if not vote.VotedPlayer:
+            LogUtility.CreateGameMessage(f"Player {vote.Player.Name} does not vote.", self);
+        else:
+            self.Votes.add(vote);
+            LogUtility.CreateGameMessage(f"Player {vote.Player.Name} voted to execute {vote.VotedPlayer.Name}.", self);
 
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotesExecute();
@@ -217,7 +222,10 @@ class Game():
         return;
 
     def CountVotesExecute(self):
-        (player, times) = self.GetPlayerAndTimesVoted(self.Votes);
+        # remove the "wait" calls
+        actualVotes = [v for v in self.Votes if v.VotedPlayer];
+
+        (player, times) = self.GetPlayerAndTimesVoted(actualVotes);
 
         LogUtility.CreateGameMessage(f"{player.Name} has the most votes to get executed - {times}.", self);
 
@@ -241,9 +249,8 @@ class Game():
 
     def VoteNight(self, vote):
         playerIdentifiers = self.PlayerIdentifiers;
-        playersWhoCanActAtNight = self.NightPlayerIdentifiers;
 
-        if not vote.Player.Identifier in playersWhoCanActAtNight:
+        if not vote.Player.Identifier in self.__playersWhoCanActThisNight:
             playerDetails = vote.Player.Name + " - " +  vote.Player.Identifier;
             LogUtility.Error(f"Player {playerDetails} cannot act in the night.", self);
             return;
@@ -270,34 +277,47 @@ class Game():
 
         self.Votes.add(vote);
 
-        if len(self.Votes) == len(playersWhoCanActAtNight):
+        if len(self.Votes) == len(self.__playersWhoCanActThisNight):
             self.CountNightVotesAndEvents();
+            self.__playersWhoCanActThisNight = set();
 
         return;
 
     def Attack(self, werewolf, player):
+        if not player:
+            return;
+
         LogUtility.Information(f"Werewolf {werewolf.Name} attacks {player.Name}.", self);
         return;
 
     def Guard(self, guard, player):
+        if not player:
+            return;
+
         guard.Role._Guard__canGuardTimes -= 1;
         LogUtility.Information(f"Guard {guard.Name} guards {player.Name}.", self);
         return;
 
     def Divine(self, seer, player):
+        if not player:
+            return;
+
         seer.Role._Seer__canDivineTimes -= 1;
         LogUtility.Information(f"Seer {seer.Name} divines {player.Name}.", self);
         return;
 
     def CountNightVotesAndEvents(self):
+        # remove the "wait" calls
+        actualVotes = [v for v in self.Votes if v.VotedPlayer];
+
         # actual votes
-        votesToKill = [v for v in self.Votes if v.PlayerType == PlayerTypeEnum.Werewolf];
+        votesToKill = [v for v in actualVotes if v.PlayerType == PlayerTypeEnum.Werewolf];
 
         (playerToKill, werewolfAttackTimes) = self.GetPlayerAndTimesVoted(votesToKill);
 
         # independent actions
-        votesToGuard = [v for v in self.Votes if v.PlayerType == PlayerTypeEnum.Guard];
-        votesToDivine = [v for v in self.Votes if v.PlayerType == PlayerTypeEnum.Seer];
+        votesToGuard = [v for v in actualVotes if v.PlayerType == PlayerTypeEnum.Guard];
+        votesToDivine = [v for v in actualVotes if v.PlayerType == PlayerTypeEnum.Seer];
 
         # we only want to make the fact known that someone was guarded if an attack on them
         # had occurred during the night. Otherwise it would advantage the werewolves.
@@ -308,7 +328,7 @@ class Game():
             self.WerewolfKill(playerToKill);
         else:
             LogUtility.CreateGameMessage("Player" + playerToKill.Name +\
-                "was attacked by werewolves in the night but was guarded and lives to see another day.");
+                "was attacked by werewolves in the night but was guarded and lives to see another day.", self);
 
         # Get votes for seer (these are independent from everything else)
 

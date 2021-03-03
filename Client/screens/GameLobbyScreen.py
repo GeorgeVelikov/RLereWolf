@@ -56,7 +56,11 @@ class GameLobbyScreen(ScreenBase):
 
         self.UpdateMessagesList(game.Messages);
 
-        self.UpdateGameHeader(game);
+        self.UpdateGameHeader();
+
+        self.UpdateButtons();
+
+        return;
 
     def UpdatePlayerList(self, players):
         newPlayerIdentifiers = [player.Identifier for player in players];
@@ -108,7 +112,7 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
-    def UpdateGameHeader(self, game):
+    def UpdateGameHeader(self):
         self.__gameName.set(self.Client.Game.Name);
 
         if self.Client.Game.HasStarted:
@@ -235,6 +239,7 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Wait_Clicked(self):
+        self.Context.ServiceContext.Wait();
         return;
 
     # Werewolf Controls

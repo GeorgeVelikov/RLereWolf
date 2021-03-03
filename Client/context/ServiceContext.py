@@ -169,7 +169,18 @@ class ServiceContext():
         return reply;
 
     def Wait(self):
-        return;
+        if not self.Client or\
+            not self.Client.GameIdentifier or\
+            not self.Client.Player:
+
+            return;
+
+        dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, None);
+        packet = PacketUtility.GetVotePlayerPacket(dto);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     # Werewolf
     def Whisper(self, message):
@@ -184,7 +195,7 @@ class ServiceContext():
             return;
 
         dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
-        packet = PacketUtility.GetVotePlayerPacket(dto);
+        packet = PacketUtility.GetAttackPlayerPacket(dto);
 
         reply = self.Send(packet);
 
@@ -200,7 +211,7 @@ class ServiceContext():
             return;
 
         dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
-        packet = PacketUtility.GetVotePlayerPacket(dto);
+        packet = PacketUtility.GetDivinePlayerPacket(dto);
 
         reply = self.Send(packet);
 
@@ -216,7 +227,7 @@ class ServiceContext():
             return;
 
         dto = GameActionDto(self.Client.GameIdentifier, self.Client.Player, targetPlayerIdentifier);
-        packet = PacketUtility.GetVotePlayerPacket(dto);
+        packet = PacketUtility.GetGuardPlayerPacket(dto);
 
         reply = self.Send(packet);
 
