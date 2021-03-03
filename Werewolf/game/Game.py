@@ -267,7 +267,7 @@ class Game():
             LogUtility.Error(f"Player {playerDetails} cannot act in the night.", self);
             return;
 
-        if not vote.VotedPlayer.Identifier in playerIdentifiers:
+        if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
             playerDetails = vote.VotedPlayer.Name + " - " +  vote.VotedPlayer.Identifier;
             LogUtility.Error(f"Invalid vote, target player {playerDetails} is not in the game", self);
             return;
@@ -297,14 +297,14 @@ class Game():
 
     def Attack(self, werewolf, player):
         if not player:
-            return;
+            LogUtility.Information(f"Werewolf {vote.Player.Name} waits.", self);
 
         LogUtility.Information(f"Werewolf {werewolf.Name} attacks {player.Name}.", self);
         return;
 
     def Guard(self, guard, player):
         if not player:
-            return;
+            LogUtility.Information(f"Guard {vote.Player.Name} waits.", self);
 
         guard.Role._Guard__canGuardTimes -= 1;
         LogUtility.Information(f"Guard {guard.Name} guards {player.Name}.", self);
@@ -312,7 +312,7 @@ class Game():
 
     def Divine(self, seer, player):
         if not player:
-            return;
+            LogUtility.Information(f"Seer {vote.Player.Name} waits.", self);
 
         seer.Role._Seer__canDivineTimes -= 1;
         LogUtility.Information(f"Seer {seer.Name} divines {player.Name}.", self);
