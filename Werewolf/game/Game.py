@@ -145,13 +145,23 @@ class Game():
 
     def CheckWinCondition(self):
         # this will be defined in GameRules.py
-        return;
+        if GameRules.DoVillagersWin(self):
+            LogUtility.CreateGameMessage("Villagers win!", self);
+            self.Restart();
+            return True;
+
+        if GameRules.DoWerewolvesWin(self):
+            LogUtility.CreateGameMessage("Werewolves win!", self);
+            self.Restart();
+            return True;
+
+        return False;
 
     def StartDay(self):
         self.__votes = set();
         self.__timeOfDay = TimeOfDayEnum.Day;
 
-        for agent in self.AgentPlayers:
+        for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
             agent.ActDay();
 
         return;
@@ -162,7 +172,7 @@ class Game():
 
         self.__playersWhoCanActThisNight = set([np.Identifier for np in self.NightPlayers if np.IsAlive]);
 
-        for agent in self.AgentPlayers:
+        for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
             agent.ActNight();
 
         return;
@@ -205,7 +215,7 @@ class Game():
         playerIdentifiers = [p.Identifier for p in alivePlayers];
 
         if not vote.Player.Identifier in playerIdentifiers or\
-            not vote.VotedPlayer.Identifier in playerIdentifiers:
+            (vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers):
             # players not in the game, error
             LogUtility.Error("Invalid vote, one of the players is not alive in the game", self);
             return;
@@ -213,8 +223,9 @@ class Game():
         if not vote.VotedPlayer:
             LogUtility.CreateGameMessage(f"Player {vote.Player.Name} does not vote.", self);
         else:
-            self.Votes.add(vote);
             LogUtility.CreateGameMessage(f"Player {vote.Player.Name} voted to execute {vote.VotedPlayer.Name}.", self);
+
+        self.Votes.add(vote);
 
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotesExecute();
@@ -241,6 +252,7 @@ class Game():
         player._Player__isAlive = False;
         LogUtility.CreateGameMessage(f"{player.Name} is executed.", self);
 
+        self.CheckWinCondition();
         return;
 
     #endregion
@@ -332,8 +344,10 @@ class Game():
 
         # Get votes for seer (these are independent from everything else)
 
-        self.__turn += 1;
-        self.StartDay();
+        if not self.CheckWinCondition():
+            self.__turn += 1;
+            self.StartDay();
+
         return;
 
     def WerewolfKill(self, player):

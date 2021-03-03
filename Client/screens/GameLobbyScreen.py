@@ -230,6 +230,9 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Vote_Clicked(self):
+        if self.Client.Game.TimeOfDay != TimeOfDayEnum.Day:
+            return;
+
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
 
         if not selectedPlayerIdentifier:
@@ -247,7 +250,8 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Attack_Clicked(self):
-        if self.Client.Player.Role != PlayerTypeEnum.Werewolf:
+        if self.Client.Game.TimeOfDay != TimeOfDayEnum.Night or\
+            self.Client.Player.Role != PlayerTypeEnum.Werewolf:
             return;
 
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
@@ -260,7 +264,8 @@ class GameLobbyScreen(ScreenBase):
 
     # Seer Controls
     def Divine_Clicked(self):
-        if self.Client.Player.Role != PlayerTypeEnum.Seer:
+        if self.Client.Game.TimeOfDay != TimeOfDayEnum.Night or\
+            self.Client.Player.Role != PlayerTypeEnum.Seer:
             return;
 
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
@@ -273,7 +278,8 @@ class GameLobbyScreen(ScreenBase):
 
     # Guard Controls
     def Guard_Clicked(self):
-        if self.Client.Player.Role != PlayerTypeEnum.Guard:
+        if self.Client.Game.TimeOfDay != TimeOfDayEnum.Night or\
+            self.Client.Player.Role != PlayerTypeEnum.Guard:
             return;
 
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();

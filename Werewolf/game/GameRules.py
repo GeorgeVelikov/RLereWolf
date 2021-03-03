@@ -44,6 +44,24 @@ def DistributeRolesBaseGame(game):
 
     return;
 
+def DoWerewolvesWin(game):
+    werewolves = [w for w in game._Game__players if w.IsAlive\
+        and w.Role.Type == PlayerTypeEnum.Werewolf];
+
+    villagers = [w for w in game._Game__players if w.IsAlive\
+        and w.Role.Type != PlayerTypeEnum.Werewolf];
+
+    return len(werewolves) >= len(villagers);
+
+def DoVillagersWin(game):
+    werewolves = [w for w in game._Game__players if w.IsAlive\
+        and w.Role.Type == PlayerTypeEnum.Werewolf]
+
+    if werewolves:
+        return False;
+
+    # if all werewolves are dead, the villagers win
+    return True;
 
 def GetPlayerCountForRole(playerCount, playersToRoleRatio):
     return 1 + ((playerCount - playersToRoleRatio) // playersToRoleRatio);

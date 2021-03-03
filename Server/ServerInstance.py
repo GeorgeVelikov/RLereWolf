@@ -251,8 +251,6 @@ class ServerInstance():
 
         vote = Vote(player, targetPlayer);
         game.Vote(vote);
-        LogUtility.CreateGameMessage(f"Player {player.Name} voted to execute {targetPlayer.Name}.", game);
-
         connection.sendall(pickle.dumps(True));
         return;
 
@@ -354,6 +352,10 @@ class ServerInstance():
         if not game.Identifier == self.IsPlayerAlreadyInAGame(gameActionDto.Player.Identifier):
             LogUtility.Error(f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
             return False;
+
+        if not gameActionDto.TargetPlayerIdentifier:
+            # this is probably okay as it could be a wait call
+            return True;
 
         if not game.Identifier == self.IsPlayerAlreadyInAGame(gameActionDto.TargetPlayerIdentifier):
             LogUtility.Error(f"Target player id {dto.TargetPlayerIdentifier} is not in game", game);
