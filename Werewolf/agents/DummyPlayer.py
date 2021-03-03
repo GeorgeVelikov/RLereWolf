@@ -11,6 +11,9 @@ class DummyPlayer(AgentPlayer):
         super().__init__(name, game);
 
     def ActDay(self):
+        if not self.IsAlive:
+            return;
+
         if self.Role.Type == PlayerTypeEnum.Villager:
             self.ActDayVillager();
         elif self.Role.Type == PlayerTypeEnum.Werewolf:
@@ -23,6 +26,9 @@ class DummyPlayer(AgentPlayer):
         return;
 
     def ActNight(self):
+        if not self.IsAlive:
+            return;
+
         if self.Role.Type == PlayerTypeEnum.Villager:
             self.ActNightVillager();
         elif self.Role.Type == PlayerTypeEnum.Werewolf:
