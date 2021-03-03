@@ -97,7 +97,8 @@ class DummyPlayer(AgentPlayer):
         return;
 
     def ActNightSeer(self):
-        viablePlayersToDivine = [player for player in self.Game.Players];
+        viablePlayersToDivine = [player for player in self.Game.Players\
+            if player.Identifier != self.Identifier];
 
         if not viablePlayersToDivine:
             return;
