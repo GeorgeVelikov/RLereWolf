@@ -27,7 +27,6 @@ class PacketTypeEnum(Enum):
     DivinePlayer = 11;
     GuardPlayer = 12;
 
-
     def __str__(self):
         if self.value == self._None.value:
             return str();
@@ -49,6 +48,16 @@ class PacketTypeEnum(Enum):
             return nameof(self.VoteStart);
         elif self.value == self.VotePlayer.value:
             return nameof(self.VotePlayer);
+        elif self.value == self.Talk.value:
+            return nameof(self.Talk);
+        elif self.value == self.Whisper.value:
+            return nameof(self.Whisper);
+        elif self.value == self.AttackPlayer.value:
+            return nameof(self.AttackPlayer);
+        elif self.value == self.DivinePlayer.value:
+            return nameof(self.DivinePlayer);
+        elif self.value == self.GuardPlayer.value:
+            return nameof(self.GuardPlayer);
         else:
             raise GameException("Unknown packet type used.");
 
@@ -58,10 +67,15 @@ class PacketTypeEnum(Enum):
             PacketTypeEnum.Connect,\
 
             PacketTypeEnum.GetGamesList,\
-
             PacketTypeEnum.JoinGame,\
             PacketTypeEnum.LeaveGame,\
+
             PacketTypeEnum.GameLobby,\
 
             PacketTypeEnum.VoteStart,\
-            PacketTypeEnum.VotePlayer];
+            PacketTypeEnum.VotePlayer,\
+            PacketTypeEnum.Talk,\
+            PacketTypeEnum.Whisper,\
+            PacketTypeEnum.AttackPlayer,\
+            PacketTypeEnum.DivinePlayer,\
+            PacketTypeEnum.GuardPlayer];

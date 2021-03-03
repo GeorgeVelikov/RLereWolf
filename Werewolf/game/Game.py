@@ -339,8 +339,8 @@ class Game():
         if not guardsForAttackedPlayer:
             self.WerewolfKill(playerToKill);
         else:
-            LogUtility.CreateGameMessage("Player" + playerToKill.Name +\
-                "was attacked by werewolves in the night but was guarded and lives to see another day.", self);
+            LogUtility.CreateGameMessage("Player " + playerToKill.Name +\
+                " was attacked by werewolves in the night but was guarded and lives to see another day.", self);
 
         # Get votes for seer (these are independent from everything else)
 

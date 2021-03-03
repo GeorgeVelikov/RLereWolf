@@ -51,7 +51,11 @@ def DoWerewolvesWin(game):
     villagers = [w for w in game._Game__players if w.IsAlive\
         and w.Role.Type != PlayerTypeEnum.Werewolf];
 
-    return len(werewolves) >= len(villagers);
+    # this just makes debugging easier since this gets called many times
+    if len(werewolves) >= len(villagers):
+        return True;
+
+    return False;
 
 def DoVillagersWin(game):
     werewolves = [w for w in game._Game__players if w.IsAlive\
