@@ -63,6 +63,10 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def UpdatePlayerList(self, players):
+        players = sorted(players,\
+            key = lambda p: p.Name, \
+            reverse = False);
+
         newPlayerIdentifiers = [player.Identifier for player in players];
 
         currentPlayerIndices = self.__playersListBox.get_children();

@@ -45,10 +45,10 @@ def DistributeRolesBaseGame(game):
     return;
 
 def DoWerewolvesWin(game):
-    werewolves = [w for w in game._Game__players if w.IsAlive\
+    werewolves = [w for w in game.Players if w.IsAlive\
         and w.Role.Type == PlayerTypeEnum.Werewolf];
 
-    villagers = [w for w in game._Game__players if w.IsAlive\
+    villagers = [w for w in game.Players if w.IsAlive\
         and w.Role.Type != PlayerTypeEnum.Werewolf];
 
     # this just makes debugging easier since this gets called many times
@@ -58,7 +58,7 @@ def DoWerewolvesWin(game):
     return False;
 
 def DoVillagersWin(game):
-    werewolves = [w for w in game._Game__players if w.IsAlive\
+    werewolves = [w for w in game.Players if w.IsAlive\
         and w.Role.Type == PlayerTypeEnum.Werewolf]
 
     if werewolves:

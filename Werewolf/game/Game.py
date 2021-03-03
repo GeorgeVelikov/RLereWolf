@@ -63,22 +63,20 @@ class Game():
     # that would effectively "out" them as being a specific role
     @property
     def Players(self):
-        return sorted(self.__players,\
-            key = lambda p: p.Name, \
-            reverse = False);
+        return self.__players;
 
     @property
     def PlayerIdentifiers(self):
-        return [p.Identifier for p in self.__players];
+        return [p.Identifier for p in self.Players];
 
     @property
     def NightPlayers(self):
-        return [p for p in self.__players if p.Role.HasNightAction];
+        return [p for p in self.Players if p.Role.HasNightAction];
 
     @property
     def NightPlayerIdentifiers(self):
         # don't reference self.NightPlayers, that's an extra list comprehension
-        return [p.Identifier for p in self.__players if p.Role.HasNightAction];
+        return [p.Identifier for p in self.Players if p.Role.HasNightAction];
 
     @property
     def TimeOfDay(self):
@@ -86,12 +84,12 @@ class Game():
 
     @property
     def HasAgentPlayers(self):
-        return any(player for player in self.__players \
+        return any(player for player in self.Players \
             if issubclass(type(player), AgentPlayer));
 
     @property
     def AgentPlayers(self):
-        return [player for player in self.__players \
+        return [player for player in self.Players \
             if issubclass(type(player), AgentPlayer)];
 
     #endregion
@@ -211,7 +209,7 @@ class Game():
     #region Day
 
     def VoteDay(self, vote):
-        alivePlayers = [ap for ap in self.__players if ap.IsAlive];
+        alivePlayers = [ap for ap in self.Players if ap.IsAlive];
         playerIdentifiers = [p.Identifier for p in alivePlayers];
 
         if not vote.Player.Identifier in playerIdentifiers or\
@@ -377,7 +375,7 @@ class Game():
         return (player, times);
 
     def GetPlayerByIdentifier(self, playerIdentifier):
-        return next((p for p in self.__players\
+        return next((p for p in self.Players\
             if p.Identifier == playerIdentifier), None);
 
     def HasPlayerVotedAlready(self, playerIdentifier):

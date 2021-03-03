@@ -21,7 +21,7 @@ import pickle;
 class ServerInstance():
     def __init__(self):
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
-        self.__connections = set();
+        self.__connections = dict();
         self.__games = dict();
         self.CreateGame("Game 1");
         self.CreateGame("Game 2");
@@ -52,9 +52,6 @@ class ServerInstance():
     #region Server
 
     def ClientHandle(self, connection, address):
-        LogUtility.Information(f"Connected to server - {address}");
-        self.ShowActiveConnections();
-
         while True:
             try:
                 packetStream = connection.recv(4 * NetConstants.KILOBYTE);
@@ -64,7 +61,7 @@ class ServerInstance():
                 if not packet:
                     break;
 
-                LogUtility.Request(f"Packet type - {str(packet.PacketType)}");
+                LogUtility.Request(f"Packet type - {packet.PacketType}");
 
                 validPacketTypes = PacketTypeEnum.Values();
 
@@ -75,8 +72,7 @@ class ServerInstance():
                 LogUtility.Error(str(error));
                 break;
 
-        LogUtility.Information(f"Lost connection to server - {address}");
-        connection.close();
+        self.Disconnect(connection);
 
         return;
 
@@ -137,9 +133,35 @@ class ServerInstance():
     def Connect(self, connection, packet):
         dto = packet.Data;
 
-        player = Player(dto.ClientName, dto.ClientIdentifier)
+        player = Player(dto.ClientName, dto.ClientIdentifier);
+
+        connectionKey = connection.getpeername();
+        self.__connections[connectionKey] = player;
+
+        LogUtility.Information(f"Connected to server (player {player}) - {connectionKey}");
+        self.ShowActiveConnections();
 
         connection.sendall(pickle.dumps(player));
+
+        return;
+
+    def Disconnect(self, connection):
+        connectionKey = connection.getpeername();
+        player = None;
+
+        if connectionKey in self.__connections.keys():
+            player = self.__connections[connectionKey];
+            gameIdentifier = self.IsPlayerAlreadyInAGame(player);
+
+            if gameIdentifier:
+                game = self.GetGameWithIdentifier(gameIdentifier);
+                game.Leave(player);
+
+            self.__connections.pop(connectionKey);
+
+        LogUtility.Information(f"Lost connection (player {player}) to server - {connectionKey}");
+        connection.shutdown(2);
+        connection.close();
 
         return;
 
@@ -340,8 +362,8 @@ class ServerInstance():
             if not game.Players:
                 continue;
 
-            player = next(p for p in game.Players \
-                if p.Identifier == playerIdentifier);
+            player = next((p for p in game.Players\
+                if p.Identifier == playerIdentifier), None);
 
             if player:
                 return game.Identifier;
