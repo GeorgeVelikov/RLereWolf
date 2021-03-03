@@ -49,9 +49,6 @@ class DummyPlayer(AgentPlayer):
         vote = Vote(self, playerToVoteFor)
 
         self.Game.Vote(vote);
-
-        LogUtility.CreateGameMessage(f"Player {self.Name} voted to execute {playerToVoteFor.Name}.", self.Game);
-
         return;
 
     def ActDayWerewolf(self):
@@ -68,9 +65,6 @@ class DummyPlayer(AgentPlayer):
         vote = Vote(self, playerToVoteFor)
 
         self.Game.Vote(vote);
-
-        LogUtility.CreateGameMessage(f"Player {self.Name} voted to execute {playerToVoteFor.Name}.", self.Game);
-
         return;
 
     #endregion
@@ -94,15 +88,33 @@ class DummyPlayer(AgentPlayer):
         vote = Vote(self, playerToKill)
 
         self.Game.Vote(vote);
-
-        LogUtility.CreateGameMessage(f"Player {self.Name} voted to execute {playerToKill.Name}.", self.Game);
-
         return;
 
     def ActNightSeer(self):
+        viablePlayersToDivine = [player for player in self.Game.Players];
+
+        if not viablePlayersToDivine:
+            return;
+
+        playerToDivine = random.choice(viablePlayersToDivine);
+
+        vote = Vote(self, playerToDivine)
+
+        self.Game.Vote(vote);
         return;
 
     def ActNightGuard(self):
+        viablePlayersToGuard = [player for player in self.Game.Players\
+            if player.IsAlive];
+
+        if not viablePlayersToGuard:
+            return;
+
+        playerToGuard = random.choice(viablePlayersToGuard);
+
+        vote = Vote(self, playerToGuard)
+
+        self.Game.Vote(vote);
         return;
 
     #endregion

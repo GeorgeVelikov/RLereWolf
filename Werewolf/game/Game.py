@@ -1,11 +1,11 @@
 import Shared.constants.GameConstants as GameConstants;
 import Shared.utility.LogUtility as LogUtility;
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 from Shared.exceptions.GameException import GameException;
 
-import Werewolf.game.GameRules as GameRules;
-
 from Werewolf.agents.AgentPlayer import AgentPlayer;
+import Werewolf.game.GameRules as GameRules;
 
 import uuid;
 from collections import Counter;
@@ -191,6 +191,8 @@ class Game():
         LogUtility.Error("Time of day is not Day/Night", self);
         return;
 
+    #region Day
+
     def VoteDay(self, vote):
         playerIdentifiers = self.PlayerIdentifiers;
 
@@ -201,24 +203,8 @@ class Game():
             return;
 
         self.Votes.add(vote);
-        LogUtility.Information(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}", self);
 
-        if len(self.Votes) == len(playerIdentifiers):
-            self.CountVotesExecute();
-
-        return;
-
-    def VoteNight(self, vote):
-        playerIdentifiers = self.NightPlayerIdentifiers;
-
-        if not vote.Player.Identifier in playerIdentifiers or\
-            not vote.VotedPlayer.Identifier in playerIdentifiers:
-            # players not in the game, error
-            LogUtility.Error("Invalid vote, one of the players is not in the game", self);
-            return;
-
-        self.Votes.add(vote);
-        LogUtility.Information(f"{vote.Player.Name} votes to kill {vote.VotedPlayer.Name}", self);
+        LogUtility.CreateGameMessage(f"Player {vote.Player.Name} voted to execute {vote.VotedPlayer.Name}.", self);
 
         if len(self.Votes) == len(playerIdentifiers):
             self.CountVotesExecute();
@@ -244,7 +230,66 @@ class Game():
 
         return;
 
-    def Attack(self, player):
+    #endregion
+
+    #region Night
+
+    def VoteNight(self, vote):
+        playerIdentifiers = self.PlayerIdentifiers;
+        playersWhoCanActAtNight = self.NightPlayerIdentifiers;
+
+        if not vote.Player.Identifier in playersWhoCanActAtNight:
+            playerDetails = vote.Player.Name + " - " +  vote.Player.Identifier;
+            LogUtility.Error(f"Player {playerDetails} cannot act in the night.", self);
+            return;
+
+        if not vote.VotedPlayer.Identifier in playerIdentifiers:
+            playerDetails = vote.VotedPlayer.Name + " - " +  vote.VotedPlayer.Identifier;
+            LogUtility.Error(f"Invalid vote, target player {playerDetails} is not in the game", self);
+            return;
+
+        player = self.GetPlayerByIdentifier(vote.Player.Identifier);
+        targetPlayer = self.GetPlayerByIdentifier(vote.VotedPlayer.Identifier);
+
+        if player.Role.Type == PlayerTypeEnum.Werewolf:
+            self.Attack(player, targetPlayer);
+        elif player.Role.Type == PlayerTypeEnum.Seer:
+            self.Divine(player, targetPlayer);
+        elif player.Role.Type == PlayerTypeEnum.Guard:
+            self.Guard(player, targetPlayer);
+        else:
+            # I know this should semantically be before the actual addition of
+            # the vote. However, we rely on the previous security checks
+            LogUtility.Error(f"Player {player.Name} does not have a valid night role - {player.Role.Type}", self);
+            return;
+
+        self.Votes.add(vote);
+
+        if len(self.Votes) == len(playersWhoCanActAtNight):
+            self.CountNightVotes();
+
+        return;
+
+    def Attack(self, werewolf, player):
+        LogUtility.Information(f"Werewolf {werewolf.Name} attacks {player.Name}.", self);
+        return;
+
+    def Guard(self, guard, player):
+        LogUtility.Information(f"Guard {guard.Name} guards {player.Name}.", self);
+        return;
+
+    def Divine(self, seer, player):
+        LogUtility.Information(f"Seer {seer.Name} divines {player.Name}.", self);
+        return;
+
+    def CountNightVotes(self):
+        # Get votes for kill
+        # Get votes for seer (these are independent from everything else)
+        # Get guard calls
+
+        # Get most voted player to attack, check if they're guarded
+        # if guarded, don't kill and announce that they survived the night because they were guarded
+        # if not guarded, kill them and announce their death
         return;
 
     def WerewolfKill(self, player):
@@ -257,11 +302,7 @@ class Game():
 
         return;
 
-    def Guard(self, player):
-        return;
-
-    def Divine(self, player):
-        return;
+    #endregion
 
     #endregion
 

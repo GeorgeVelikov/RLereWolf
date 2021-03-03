@@ -271,6 +271,9 @@ class ServerInstance():
             connection.sendall(pickle.dumps(False));
             return;
 
+        vote = Vote(player, targetPlayer);
+        game.Vote(vote);
+
         connection.sendall(pickle.dumps(True));
         return;
 
@@ -289,6 +292,9 @@ class ServerInstance():
             connection.sendall(pickle.dumps(False));
             return;
 
+        vote = Vote(player, targetPlayer);
+        game.Vote(vote);
+
         connection.sendall(pickle.dumps(True));
         return;
 
@@ -306,6 +312,9 @@ class ServerInstance():
             LogUtility.Error(f"Player {player.Name} - {player.Identifier} has guarded already", game);
             connection.sendall(pickle.dumps(False));
             return;
+
+        vote = Vote(player, targetPlayer);
+        game.Vote(vote);
 
         connection.sendall(pickle.dumps(True));
         return;

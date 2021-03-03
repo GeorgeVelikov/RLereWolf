@@ -113,14 +113,15 @@ class GameLobbyScreen(ScreenBase):
 
         if self.Client.Game.HasStarted:
             lastCycleTimeOfDay = self.__gameTime.get();
+            lastCycleTimeOfDayEnum = TimeOfDayEnum.FromString(lastCycleTimeOfDay);
 
             self.__gameTurn.set(self.Client.Game.Turn);
             self.__gameTime.set(self.Client.Game.TimeOfDay);
             self.__playerRole.set(self.Client.Player.Role.Type);
             self.__playerRoleState.set("Alive" if self.Client.Player.IsAlive else "Dead");
 
-            if lastCycleTimeOfDay != self.Client.Game.TimeOfDay\
-                and lastCycleTimeOfDay in self.__validTimeOfDayValues:
+            if lastCycleTimeOfDayEnum != self.Client.Game.TimeOfDay\
+                and lastCycleTimeOfDayEnum in self.__validTimeOfDayValues:
                 # this is a bit of an optimization, we probably don't want to call this on every loop
                 # since we're using tkinter and not a dedicated graphics library, we try to be mindful
                 self.UpdateGameControlButtons();

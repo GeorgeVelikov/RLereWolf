@@ -20,6 +20,15 @@ class TimeOfDayEnum(Enum):
             raise GameException("Unknown turn cycle type used.");
 
     @staticmethod
+    def FromString(string):
+        if string == str(TimeOfDayEnum.Day):
+            return TimeOfDayEnum.Day;
+        elif string == str(TimeOfDayEnum.Night):
+            return TimeOfDayEnum.Night;
+        else:
+            return TimeOfDayEnum._None;
+
+    @staticmethod
     def Values():
         return [\
             TimeOfDayEnum.Day,\
