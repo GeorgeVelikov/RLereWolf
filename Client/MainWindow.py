@@ -19,6 +19,8 @@ class MainWindow(tk.Tk):
     #Override
     def Close(self):
         if messagebox.askyesno("Exit", "Are you sure you want to exit the client?"):
+            self.__context.ServiceContext.LeaveGame();
+            self.__context.ServiceContext.Disconnect();
             self.destroy();
             return True;
 
