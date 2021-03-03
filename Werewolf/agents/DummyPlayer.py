@@ -81,6 +81,22 @@ class DummyPlayer(AgentPlayer):
         return;
 
     def ActNightWerewolf(self):
+        viablePlayersToVoteFor = [player for player in self.Game.Players\
+            if player.IsAlive\
+                and player.Identifier != self.Identifier\
+                and player.Role != PlayerTypeEnum.Werewolf]
+
+        if not viablePlayersToVoteFor:
+            return;
+
+        playerToKill = random.choice(viablePlayersToVoteFor);
+
+        vote = Vote(self, playerToKill)
+
+        self.Game.Vote(vote);
+
+        LogUtility.CreateGameMessage(f"Player {self.Name} voted to execute {playerToKill.Name}.", self.Game);
+
         return;
 
     def ActNightSeer(self):

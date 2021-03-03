@@ -4,6 +4,7 @@ from Shared.utility.Helpers import nameof;
 from Client.screens.ScreenBase import ScreenBase;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 
 import tkinter as tk;
 
@@ -27,6 +28,8 @@ class GameLobbyScreen(ScreenBase):
         self.__gameTime = self.GetVariable("GameTime");
         self.__playerRole = self.GetVariable("RoleType");
         self.__playerRoleState = self.GetVariable("RoleState");
+
+        self.__validTimeOfDayValues = TimeOfDayEnum.Values();
 
         self.__messagesListBox.config(yscrollcommand = self.__messagesScrollBar.set);
         self.__messagesScrollBar.config(command = self.__messagesListBox.yview);
@@ -109,10 +112,18 @@ class GameLobbyScreen(ScreenBase):
         self.__gameName.set(self.Client.Game.Name);
 
         if self.Client.Game.HasStarted:
+            lastCycleTimeOfDay = self.__gameTime.get();
+
             self.__gameTurn.set(self.Client.Game.Turn);
             self.__gameTime.set(self.Client.Game.TimeOfDay);
             self.__playerRole.set(self.Client.Player.Role.Type);
             self.__playerRoleState.set("Alive" if self.Client.Player.IsAlive else "Dead");
+
+            if lastCycleTimeOfDay != self.Client.Game.TimeOfDay\
+                and lastCycleTimeOfDay in self.__validTimeOfDayValues:
+                # this is a bit of an optimization, we probably don't want to call this on every loop
+                # since we're using tkinter and not a dedicated graphics library, we try to be mindful
+                self.UpdateGameControlButtons();
 
         else:
             self.__gameTurn.set("0");
