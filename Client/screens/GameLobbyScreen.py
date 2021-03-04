@@ -102,7 +102,7 @@ class GameLobbyScreen(ScreenBase):
             # Store the identifier as "text", it's a hidden field anyways.
             self.__playersListBox.insert(str(), tk.END,\
                 text = player.Identifier,\
-                values = (self.GetPlayerDisplayName(player)));
+                values = [self.GetPlayerDisplayName(player)]);
 
         return;
 
@@ -217,19 +217,19 @@ class GameLobbyScreen(ScreenBase):
         deadStatus = str();
         specialRoleIdentifier = str();
 
+        if not self.Client.Game.HasStarted:
+            readyStatus = "+" if player.IsReady else "-";
+        elif self.Client.Game.HasStarted and not player.IsAlive:
+            deadStatus = "[Dead] ";
+
+        if player.Identifier == self.Client.Player.Identifier:
+            identifier = " (You)";
+
         if self.Client.Player.Role\
             and player.Role\
             and self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf\
             and player.Role.Type == PlayerTypeEnum.Werewolf:
-            specialRoleIdentifier = "(Werewolf)";
-
-        if not self.Client.Game.HasStarted:
-            readyStatus = "+" if player.IsReady else "-";
-        elif self.Client.Game.HasStarted and not player.IsAlive:
-            deadStatus = "[Dead]";
-
-        if player.Identifier == self.Client.Player.Identifier:
-            identifier = "(You)";
+            specialRoleIdentifier = " (Werewolf)";
 
         return readyStatus + deadStatus + player.Name + identifier + specialRoleIdentifier;
 
@@ -324,12 +324,23 @@ class GameLobbyScreen(ScreenBase):
 
     # Misc
     def AddAgent_Clicked(self):
+        if self.Client.Game.HasStarted:
+            return;
+
+        self.Context.ServiceContext.AddAgentToGame();
         return;
 
     def RemoveAgent_Clicked(self):
+        if self.Client.Game.HasStarted:
+            return;
+
+        self.Context.ServiceContext.RemoveAgentFromGame();
         return;
 
     def Ready_Clicked(self):
+        if self.Client.Player.IsReady:
+            return;
+
         self.Context.ServiceContext.VoteStart();
         self.UpdateButtons();
         return;

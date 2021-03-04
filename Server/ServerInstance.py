@@ -1,9 +1,10 @@
 import Shared.constants.NetConstants as NetConstants;
+import Shared.constants.LogConstants as LogConstants;
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
 import Shared.utility.LogUtility as LogUtility;
-import Shared.constants.LogConstants as LogConstants;
+from Shared.utility.Helpers import GenerateFirstName;
 
 from Werewolf.game.Game import Game;
 from Werewolf.game.Player import Player;
@@ -14,6 +15,7 @@ from Werewolf.game.actions.Vote import Vote;
 import Server.utility.ConversionHelper as ConversionHelper;
 
 from datetime import datetime;
+import random;
 import traceback;
 import threading;
 import socket;
@@ -28,12 +30,6 @@ class ServerInstance():
         self.CreateGame("Game 2");
         self.CreateGame("Game 3");
         self.CreateGame("Game 4");
-
-        lastGame = list(self.__games.values())[-1];
-        for i in range(0, 20):
-            player = DummyPlayer(f"player_{i}", lastGame);
-            player._Player__isReady = True;
-            lastGame.Join(player);
 
         LogUtility.Information("Server start up");
 
@@ -68,6 +64,13 @@ class ServerInstance():
 
                 if packet.PacketType in validPacketTypes:
                     self.RedirectPacket(connection, packet);
+                else:
+                    clientKey = connection.getpeername();
+                    client = self.__connections[clientKey];
+                    # this has caught me off a few times
+                    LogUtility.Error(f"Packet type is not supported - {packet.PacketType}, " +\
+                        f"sent from {client.Name} - {clientKey}. Add to valid packet types!");
+                    connection.sendall(pickle.dumps(False));
 
             except Exception as error:
                 trace = traceback.format_exc();
@@ -96,10 +99,12 @@ class ServerInstance():
         return;
 
     def RedirectPacket(self, connection, packet):
+        # TODO: is there a neat way of routing this, similarly to C# attributes?
 
         if packet.PacketType == PacketTypeEnum.Connect:
             self.Connect(connection, packet);
 
+        # game list
         elif packet.PacketType == PacketTypeEnum.GetGamesList:
             self.GetGamesList(connection, packet);
 
@@ -109,12 +114,20 @@ class ServerInstance():
         elif packet.PacketType == PacketTypeEnum.LeaveGame:
             self.LeaveGame(connection, packet);
 
+        # game lobby calls
         elif packet.PacketType == PacketTypeEnum.GameLobby:
             self.GetGameLobby(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.AddAgent:
+            self.AddAgentToGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.RemoveAgent:
+            self.RemoveAgentFromGame(connection, packet);
 
         elif packet.PacketType == PacketTypeEnum.VoteStart:
             self.VoteStart(connection, packet);
 
+        # game lobby action calls
         elif packet.PacketType == PacketTypeEnum.VotePlayer:
             self.VotePlayer(connection, packet);
 
@@ -183,7 +196,7 @@ class ServerInstance():
 
         game = self.GetGameWithIdentifier(dto.GameIdentifier);
 
-        if not game:
+        if not game or game.IsFull:
             connection.sendall(pickle.dumps(None));
             return;
 
@@ -192,8 +205,6 @@ class ServerInstance():
         lastUpdatedUtc = datetime.utcnow();
 
         game.Join(player);
-
-        LogUtility.CreateGameMessage(f"Player '{player.Name}' has joined.", game);
 
         gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc);
 
@@ -213,7 +224,6 @@ class ServerInstance():
             return;
 
         game.Leave(dto.Player);
-        LogUtility.CreateGameMessage(f"Player '{dto.Player.Name}' has left.", game);
 
         connection.sendall(pickle.dumps(True));
 
@@ -238,6 +248,38 @@ class ServerInstance():
 
         connection.sendall(pickle.dumps(updatedEntityDto));
 
+        return;
+
+    def AddAgentToGame(self, connection, packet):
+        dto = packet.Data;
+        gameIdentifier = dto.GameIdentifier;
+
+        game = self.GetGameWithIdentifier(gameIdentifier);
+
+        if not game:
+            connection.sendall(pickle.dumps(False));
+            return;
+
+        agent = DummyPlayer(GenerateFirstName(), game);
+
+        connection.sendall(pickle.dumps(True));
+        return;
+
+    def RemoveAgentFromGame(self, connection, packet):
+        dto = packet.Data;
+        gameIdentifier = dto.GameIdentifier;
+
+        game = self.GetGameWithIdentifier(gameIdentifier);
+
+        if not game.HasAgentPlayers:
+            connection.sendall(pickle.dumps(True));
+            return;
+
+        randomAgent = random.choice(game.AgentPlayers);
+        game.Leave(randomAgent);
+        del randomAgent;
+
+        connection.sendall(pickle.dumps(True));
         return;
 
     def VoteStart(self, connection, packet):
@@ -352,10 +394,11 @@ class ServerInstance():
 
         self.__games[game.Identifier] = game;
 
-        return;
+        return game;
 
     def GetGameWithIdentifier(self, gameIdentifier):
-        if not gameIdentifier in self.__games:
+        if not gameIdentifier in self.__games.keys():
+            LogUtility.Error(f"Game {gameIdentifier} does not exist.");
             return None;
 
         return self.__games[gameIdentifier];

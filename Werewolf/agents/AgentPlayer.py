@@ -2,8 +2,11 @@ from Werewolf.game.Player import Player;
 
 class AgentPlayer(Player):
     def __init__(self, name, game):
-        super().__init__(name);
+        super().__init__("[AI] " + name);
         self.__game = game;
+        self._Player__isReady = True;
+
+        self.__game.Join(self);
 
     @property
     def Game(self):

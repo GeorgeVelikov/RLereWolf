@@ -132,6 +132,26 @@ class ServiceContext():
 
         return self.Client.Game;
 
+    def AddAgentToGame(self):
+        if not self.Client.GameIdentifier:
+            return None;
+
+        dto = PlayerGameIdentifierDto(self.Client.Player, self.Client.GameIdentifier);
+        packet = PacketUtility.GetAddAgentToGamePacket(dto);
+
+        reply = self.Send(packet);
+        return reply;
+
+    def RemoveAgentFromGame(self):
+        if not self.Client.GameIdentifier:
+            return None;
+
+        dto = PlayerGameIdentifierDto(self.Client.Player, self.Client.GameIdentifier);
+        packet = PacketUtility.GetRemoveAgentFromGamePacket(dto);
+
+        reply = self.Send(packet);
+        return reply;
+
     def VoteStart(self):
         if not self.Client.GameIdentifier:
             return None;

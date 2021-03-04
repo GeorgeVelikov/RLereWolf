@@ -8,24 +8,29 @@ class PacketTypeEnum(Enum):
     _None = 0;
 
     # Server call, this needs a "Disconnect" call as well
-    Connect = 1;
+    Connect = 100;
 
     # Server game list calls
-    GetGamesList = 2;
-    JoinGame = 3;
-    LeaveGame = 4;
+    GetGamesList = 200;
+    JoinGame = 201;
+    LeaveGame = 202;
 
-    # Game instance call, this just asks for the game state
-    GameLobby = 5;
+    # Game Instance call, this just asks for the game state
+    GameLobby = 300;
+    AddAgent = 301;
+    RemoveAgent = 302;
+    VoteStart = 303;
 
     # Game Instance Actions
-    VoteStart = 6;
-    Talk = 7;
-    VotePlayer = 8;
-    Whisper = 9;
-    AttackPlayer = 10;
-    DivinePlayer = 11;
-    GuardPlayer = 12;
+    Talk = 400;
+    VotePlayer = 401;
+
+    Whisper = 410;
+    AttackPlayer = 411;
+
+    DivinePlayer = 420;
+
+    GuardPlayer = 430;
 
     def __str__(self):
         if self.value == self._None.value:
@@ -43,6 +48,10 @@ class PacketTypeEnum(Enum):
 
         elif self.value == self.GameLobby.value:
             return nameof(self.GameLobby);
+        elif self.value == self.AddAgent.value:
+            return nameof(self.AddAgent);
+        elif self.value == self.RemoveAgent.value:
+            return nameof(self.RemoveAgent);
 
         elif self.value == self.VoteStart.value:
             return nameof(self.VoteStart);
@@ -71,8 +80,10 @@ class PacketTypeEnum(Enum):
             PacketTypeEnum.LeaveGame,\
 
             PacketTypeEnum.GameLobby,\
-
+            PacketTypeEnum.AddAgent,\
+            PacketTypeEnum.RemoveAgent,\
             PacketTypeEnum.VoteStart,\
+
             PacketTypeEnum.VotePlayer,\
             PacketTypeEnum.Talk,\
             PacketTypeEnum.Whisper,\

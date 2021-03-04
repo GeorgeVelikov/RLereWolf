@@ -92,12 +92,22 @@ class Game():
         return [player for player in self.Players \
             if issubclass(type(player), AgentPlayer)];
 
+    @property
+    def IsFull(self):
+        return len(self.Players) >= GameConstants.MAXIMUM_PLAYER_COUNT;
+
     #endregion
 
     #region Game calls
 
     def Join(self, player):
+        if self.IsFull:
+            # can't really be hit by normal users, this can only get hit by trying to add agents
+            LogUtility.Warning(f"Player '{player.Name} cannot join the game, the game is full!", sellf);
+            return;
+
         self.__players.add(player);
+        LogUtility.CreateGameMessage(f"Player '{player.Name}' has joined.", self);
         return;
 
     def Leave(self, player):
@@ -109,6 +119,10 @@ class Game():
         # no need to sort, already alphabetical
         self.__players\
             .remove(self.GetPlayerByIdentifier(player.Identifier));
+
+        LogUtility.CreateGameMessage(f"Player '{player.Name}' has left.", self);
+
+        return;
 
     def Start(self):
         if (len(self.__players) < GameConstants.MINIMAL_PLAYER_COUNT):
@@ -308,7 +322,9 @@ class Game():
 
     def Attack(self, werewolf, player):
         if not player:
+            # Should werewolves be able to wait? Is this even an actual use case?
             LogUtility.Information(f"Werewolf {werewolf.Name} waits.", self);
+            return;
 
         LogUtility.Information(f"Werewolf {werewolf.Name} attacks {player.Name}.", self);
         return;
@@ -316,6 +332,7 @@ class Game():
     def Guard(self, guard, player):
         if not player:
             LogUtility.Information(f"Guard {guard.Name} waits.", self);
+            return;
 
         guard.Role._Guard__canGuardTimes -= 1;
         LogUtility.Information(f"Guard {guard.Name} guards {player.Name}.", self);
@@ -324,6 +341,7 @@ class Game():
     def Divine(self, seer, player):
         if not player:
             LogUtility.Information(f"Seer {seer.Name} waits.", self);
+            return;
 
         seer.Role._Seer__canDivineTimes -= 1;
         LogUtility.Information(f"Seer {seer.Name} divines {player.Name}.", self);
