@@ -186,19 +186,19 @@ class GameLobbyScreen(ScreenBase):
 
     def UpdateIsReadyButton(self):
         if self.Client.Game.HasStarted:
-            self.__addAgentButton.pack_forget();
-            self.__removeAgentButton.pack_forget();
-            self.__isReadyButton.pack_forget();
+            self.__addAgentButton.grid_remove();
+            self.__removeAgentButton.grid_remove();
+            self.__isReadyButton.grid_remove();
             return;
 
         if not self.__addAgentButton.winfo_ismapped():
-            self.__addAgentButton.pack();
+            self.__addAgentButton.grid();
 
         if not self.__removeAgentButton.winfo_ismapped():
-            self.__removeAgentButton.pack();
+            self.__removeAgentButton.grid();
 
         if not self.__isReadyButton.winfo_ismapped():
-            self.__isReadyButton.pack();
+            self.__isReadyButton.grid();
 
         buttonText = ("Cancel" if self.Client.Player.IsReady else "Ready");
         self.__isReadyButtonText.set(buttonText);
