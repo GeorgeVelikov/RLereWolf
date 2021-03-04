@@ -58,7 +58,6 @@
     <Compile Include="screens\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="utility\Helpers.py" />
     <Compile Include="context\UIContext.py" />
     <Compile Include="utility\__init__.py" />
     <Compile Include="__init__.py">

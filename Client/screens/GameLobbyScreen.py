@@ -15,6 +15,7 @@ class GameLobbyScreen(ScreenBase):
 
         self.__playersListBox = self.GetObject("PlayerListBox");
         self.__playersScrollBar = self.GetObject("PlayersScrollbar");
+        self.__playersColumn = self.GetObject("PlayersColumn");
 
         self.__playersListBox.config(yscrollcommand = self.__playersScrollBar.set);
         self.__playersScrollBar.config(command = self.__playersListBox.yview);
@@ -217,11 +218,15 @@ class GameLobbyScreen(ScreenBase):
         deadStatus = str();
         specialRoleIdentifier = str();
 
+        # TODO: this is really not great, but this will do for now since we have no formal game GUI
+
+        # before player.Name
         if not self.Client.Game.HasStarted:
-            readyStatus = "+" if player.IsReady else "-";
+            readyStatus = "+ " if player.IsReady else "- ";
         elif self.Client.Game.HasStarted and not player.IsAlive:
             deadStatus = "[Dead] ";
 
+        # after player.Name
         if player.Identifier == self.Client.Player.Identifier:
             identifier = " (You)";
 
