@@ -312,7 +312,7 @@ class ServerInstance():
         targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
 
         if game.HasPlayerVotedAlready(player.Identifier):
-            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has voted already", game);
+            LogUtility.Error(f"'{player.Name}' - {player.Identifier} has voted already", game);
             connection.sendall(pickle.dumps(False));
             return;
 
@@ -332,7 +332,7 @@ class ServerInstance():
         targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
 
         if game.HasPlayerVotedAlready(player.Identifier):
-            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has attacked already", game);
+            LogUtility.Error(f"'{player.Name}' - {player.Identifier} has attacked already", game);
             connection.sendall(pickle.dumps(False));
             return;
 
@@ -353,7 +353,7 @@ class ServerInstance():
         targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
 
         if game.HasPlayerVotedAlready(player.Identifier):
-            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has divined already", game);
+            LogUtility.Error(f"'{player.Name}' - {player.Identifier} has divined already", game);
             connection.sendall(pickle.dumps(False));
             return;
 
@@ -374,7 +374,7 @@ class ServerInstance():
         targetPlayer = game.GetPlayerByIdentifier(dto.TargetPlayerIdentifier);
 
         if game.HasPlayerVotedAlready(player.Identifier):
-            LogUtility.Error(f"Player {player.Name} - {player.Identifier} has guarded already", game);
+            LogUtility.Error(f"'{player.Name}' - {player.Identifier} has guarded already", game);
             connection.sendall(pickle.dumps(False));
             return;
 
@@ -418,7 +418,7 @@ class ServerInstance():
 
     def IsGameActionValid(self, game, gameActionDto):
         if not game.Identifier == self.IsPlayerAlreadyInAGame(gameActionDto.Player.Identifier):
-            LogUtility.Error(f"Player {dto.Player.Name} - {dto.Player.Identifier} is not in game", game);
+            LogUtility.Error(f"'{dto.Player.Name}' - {dto.Player.Identifier} is not in game", game);
             return False;
 
         if not gameActionDto.TargetPlayerIdentifier:

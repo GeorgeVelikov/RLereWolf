@@ -103,16 +103,16 @@ class Game():
     def Join(self, player):
         if self.IsFull:
             # can't really be hit by normal users, this can only get hit by trying to add agents
-            LogUtility.Warning(f"Player '{player.Name} cannot join the game, the game is full!", self);
+            LogUtility.Warning(f"'{player.Name}' cannot join the game, the game is full!", self);
             return;
 
         self.__players.add(player);
-        LogUtility.CreateGameMessage(f"Player '{player.Name}' has joined.", self);
+        LogUtility.CreateGameMessage(f"'{player.Name}' has joined.", self);
         return;
 
     def Leave(self, player):
         if (player.Identifier not in self.PlayerIdentifiers):
-            LogUtility.Error(f"Player {player.Identifier} is not in the game.", self);
+            LogUtility.Error(f"'{player.Name}' is not in the game.", self);
             # TODO: raise some silent exception
             return;
 
@@ -120,7 +120,7 @@ class Game():
         self.__players\
             .remove(self.GetPlayerByIdentifier(player.Identifier));
 
-        LogUtility.CreateGameMessage(f"Player '{player.Name}' has left.", self);
+        LogUtility.CreateGameMessage(f"'{player.Name}' has left.", self);
 
         return;
 
@@ -242,9 +242,9 @@ class Game():
             return;
 
         if not vote.VotedPlayer:
-            LogUtility.CreateGameMessage(f"Player {vote.Player.Name} does not vote.", self);
+            LogUtility.CreateGameMessage(f"'{vote.Player.Name}' does not vote.", self);
         else:
-            LogUtility.CreateGameMessage(f"Player {vote.Player.Name} voted to execute {vote.VotedPlayer.Name}.", self);
+            LogUtility.CreateGameMessage(f"'{vote.Player.Name}' voted to execute {vote.VotedPlayer.Name}.", self);
 
         self.Votes.add(vote);
 
@@ -288,8 +288,8 @@ class Game():
         playerIdentifiers = self.PlayerIdentifiers;
 
         if not vote.Player.Identifier in self.__playersWhoCanActThisNight:
-            playerDetails = vote.Player.Name + " - " +  vote.Player.Identifier;
-            LogUtility.Error(f"Player {playerDetails} cannot act in the night.", self);
+            playerDetails = "'" + vote.Player.Name + "' - " +  vote.Player.Identifier;
+            LogUtility.Error(f"{playerDetails} cannot act in the night.", self);
             return;
 
         if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
@@ -309,7 +309,7 @@ class Game():
         else:
             # I know this should semantically be before the actual addition of
             # the vote. However, we rely on the previous security checks
-            LogUtility.Error(f"Player {player.Name} does not have a valid night role - {player.Role.Type}", self);
+            LogUtility.Error(f"'{player.Name}' does not have a valid night role - {player.Role.Type}", self);
             return;
 
         self.Votes.add(vote);
@@ -368,8 +368,8 @@ class Game():
         if not guardsForAttackedPlayer:
             self.WerewolfKill(playerToKill);
         else:
-            LogUtility.CreateGameMessage("Player " + playerToKill.Name +\
-                " was attacked by werewolves in the night but was guarded and lives to see another day.", self);
+            LogUtility.CreateGameMessage("'" + playerToKill.Name +\
+                "' was attacked by werewolves in the night but was guarded and lives to see another day.", self);
 
         # Get votes for seer (these are independent from everything else)
 

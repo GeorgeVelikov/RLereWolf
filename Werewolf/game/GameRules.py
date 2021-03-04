@@ -40,7 +40,7 @@ def DistributeRolesBaseGame(game):
 
         player._Player__role = roleType;
 
-        LogUtility.Information(f"Player {player.Name} is a {player.Role.Type}.", game);
+        LogUtility.Information(f"'{player.Name}' is a {player.Role.Type}.", game);
 
     return;
 
