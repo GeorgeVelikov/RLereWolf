@@ -158,6 +158,7 @@ class Game():
     def StartDay(self):
         self.__votes = set();
         self.__timeOfDay = TimeOfDayEnum.Day;
+        self.ShowTurnAndTime();
 
         for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
             agent.ActDay();
@@ -167,12 +168,18 @@ class Game():
     def StartNight(self):
         self.__votes = set();
         self.__timeOfDay = TimeOfDayEnum.Night;
+        self.ShowTurnAndTime();
 
         self.__playersWhoCanActThisNight = set([np.Identifier for np in self.NightPlayers if np.IsAlive]);
 
         for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
             agent.ActNight();
 
+        return;
+
+    def ShowTurnAndTime(self):
+        capitalGameTime = str(self.TimeOfDay).capitalize();
+        LogUtility.CreateGameMessage(f"\n\n\n\t\tTURN: {self.Turn}\t\tTIME: NIGHT\n\n", self);
         return;
 
     def VoteStart(self, player):

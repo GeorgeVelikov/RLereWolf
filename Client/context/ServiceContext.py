@@ -143,10 +143,6 @@ class ServiceContext():
 
         reply = self.Send(packet);
 
-        self.Client.SetGame(reply.Entity.Game);
-        self.Client.SetPlayer(reply.Entity.Player);
-        self.__lastUpdatedUtc = reply.UpdatedUtc;
-
         return reply;
 
     # Villager / Common

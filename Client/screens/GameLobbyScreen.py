@@ -107,6 +107,10 @@ class GameLobbyScreen(ScreenBase):
         if not messages:
             return;
 
+        # ascending order
+        messages.sort(key = lambda m: m.TimeUtc,\
+            reverse = False);
+
         (scrollX, scrollY) = self.__messagesScrollBar.get();
         shouldScrollToBottom = scrollY == 1;
 
@@ -200,6 +204,13 @@ class GameLobbyScreen(ScreenBase):
         readyStatus = str();
         identifier = str();
         deadStatus = str();
+        specialRoleIdentifier = str();
+
+        if self.Client.Player.Role\
+            and player.Role\
+            and self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf\
+            and player.Role.Type == PlayerTypeEnum.Werewolf:
+            specialRoleIdentifier = "(Werewolf)";
 
         if not self.Client.Game.HasStarted:
             readyStatus = "+" if player.IsReady else "-";
@@ -209,7 +220,7 @@ class GameLobbyScreen(ScreenBase):
         if player.Identifier == self.Client.Player.Identifier:
             identifier = "(You)";
 
-        return readyStatus + deadStatus + player.Name + identifier;
+        return readyStatus + deadStatus + player.Name + identifier + specialRoleIdentifier;
 
     def GetSelectedPlayerIdentifierFromTreeView(self):
         selectedPlayerIndex = self.__playersListBox.focus();
