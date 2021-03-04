@@ -4,7 +4,7 @@ from Shared.dtos.MessageDto import MessageDto;
 
 from datetime import datetime;
 import os;
-from pathlib import Path
+from pathlib import Path;
 
 SHARED_PATH = Path(os.path.dirname(os.path.dirname(__file__)));
 LOGS_PATH = str(SHARED_PATH.parent) + os.path.sep + "Logs"\
@@ -15,7 +15,7 @@ def Log(status, message, game = None):
     filePath = LOGS_PATH \
         + os.path.sep + datetime.utcnow().strftime("%d-%m-%Y");
 
-    fileName =  "server" if not game else str(game);
+    fileName =  ("server" if not game else str(game)) + ".txt";
 
     if not os.path.exists(filePath):
         os.makedirs(filePath);
@@ -25,9 +25,8 @@ def Log(status, message, game = None):
     logMessage = f"{utcNowFormatted} {status} {message}.";
     print(logMessage);
 
-    log = open(filePath + os.path.sep + fileName + ".txt", "a");
-    log.write("\n" + logMessage);
-    log.close();
+    with open(filePath + os.path.sep + fileName, "a") as log:
+        log.write("\n" + logMessage);
 
     return;
 

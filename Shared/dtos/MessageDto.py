@@ -27,7 +27,7 @@ class MessageDto():
     @property
     def TimeStampLocal(self):
         return DateTimeUtility.UtcToLocal(self.__timeUtc)\
-            .strftime(NetConstants.DATETIME_FORMAT);
+            .strftime(NetConstants.TIME_FORMAT);
 
     @property
     def AuthorIdentifier(self):
