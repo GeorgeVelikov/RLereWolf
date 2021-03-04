@@ -103,7 +103,7 @@ class Game():
     def Join(self, player):
         if self.IsFull:
             # can't really be hit by normal users, this can only get hit by trying to add agents
-            LogUtility.Warning(f"Player '{player.Name} cannot join the game, the game is full!", sellf);
+            LogUtility.Warning(f"Player '{player.Name} cannot join the game, the game is full!", self);
             return;
 
         self.__players.add(player);

@@ -15,7 +15,7 @@ class GameLobbyScreen(ScreenBase):
 
         self.__playersListBox = self.GetObject("PlayerListBox");
         self.__playersScrollBar = self.GetObject("PlayersScrollbar");
-        self.__playersColumn = self.GetObject("PlayersColumn");
+        self.__playersColumnId = "PlayersColumn";
 
         self.__playersListBox.config(yscrollcommand = self.__playersScrollBar.set);
         self.__playersScrollBar.config(command = self.__playersListBox.yview);
@@ -104,6 +104,9 @@ class GameLobbyScreen(ScreenBase):
             self.__playersListBox.insert(str(), tk.END,\
                 text = player.Identifier,\
                 values = [self.GetPlayerDisplayName(player)]);
+
+        self.__playersListBox.heading(self.__playersColumnId,\
+            text="Players " + self.Client.Game.PlayersCount)
 
         return;
 

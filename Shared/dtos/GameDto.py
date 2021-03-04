@@ -1,3 +1,5 @@
+import Shared.constants.GameConstants as GameConstants;
+
 class GameDto():
     def __init__(self, identifier, hasStarted, name, messages, players, turn, timeOfDay):
         self.__identifier = identifier
@@ -35,3 +37,8 @@ class GameDto():
     @property
     def TimeOfDay(self):
         return self.__timeOfDay;
+
+    @property
+    def PlayersCount(self):
+        return str(len(self.__players)) + "/" + str(GameConstants.MAXIMUM_PLAYER_COUNT);
+
