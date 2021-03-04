@@ -130,6 +130,8 @@ class Game():
         return;
 
     def Restart(self):
+        LogUtility.CreateGameMessage("Restarting game lobby", self);
+
         for player in self.__players:
             player._Player__isAlive = True;
             player._Player__isReady = False;
@@ -179,7 +181,7 @@ class Game():
 
     def ShowTurnAndTime(self):
         capitalGameTime = str(self.TimeOfDay).capitalize();
-        LogUtility.CreateGameMessage(f"\n\n\n\t\tTURN: {self.Turn}\t\tTIME: NIGHT\n\n", self);
+        LogUtility.CreateGameMessage(f"\n\n\n\t\tTurn: {self.Turn}\t\tTime: {capitalGameTime}\n\n", self);
         return;
 
     def VoteStart(self, player):
