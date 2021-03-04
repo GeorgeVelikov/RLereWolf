@@ -52,10 +52,13 @@ def DoWerewolvesWin(game):
         and w.Role.Type != PlayerTypeEnum.Werewolf];
 
     # this just makes debugging easier since this gets called many times
-    if len(werewolves) >= len(villagers):
-        return True;
+    if len(werewolves) < len(villagers):
+        return False;
 
-    return False;
+    werewolfNames = ', '.join([w.Name for w in werewolves]);
+
+    LogUtility.CreateGameMessage(f"Werewolves ({werewolfNames}) win!", game);
+    return True;
 
 def DoVillagersWin(game):
     werewolves = [w for w in game.Players if w.IsAlive\
@@ -65,6 +68,7 @@ def DoVillagersWin(game):
         return False;
 
     # if all werewolves are dead, the villagers win
+    LogUtility.CreateGameMessage("Villagers win!", game);
     return True;
 
 def GetPlayerCountForRole(playerCount, playersToRoleRatio):

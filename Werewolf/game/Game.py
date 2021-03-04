@@ -71,7 +71,7 @@ class Game():
 
     @property
     def NightPlayers(self):
-        return [p for p in self.Players if p.Role.HasNightAction];
+        return [p for p in self.Players if (p.Role and p.Role.HasNightAction)];
 
     @property
     def NightPlayerIdentifiers(self):
@@ -117,6 +117,7 @@ class Game():
             return;
 
         for player in self.__players:
+            player._Player__isAlive = True;
             player._Player__isReady = False;
 
         GameRules.DistributeRolesBaseGame(self);
@@ -130,6 +131,7 @@ class Game():
 
     def Restart(self):
         for player in self.__players:
+            player._Player__isAlive = True;
             player._Player__isReady = False;
             player._Player__role = None;
 
@@ -144,12 +146,10 @@ class Game():
     def CheckWinCondition(self):
         # this will be defined in GameRules.py
         if GameRules.DoVillagersWin(self):
-            LogUtility.CreateGameMessage("Villagers win!", self);
             self.Restart();
             return True;
 
         if GameRules.DoWerewolvesWin(self):
-            LogUtility.CreateGameMessage("Werewolves win!", self);
             self.Restart();
             return True;
 
@@ -239,7 +239,13 @@ class Game():
         LogUtility.CreateGameMessage(f"{player.Name} has the most votes to get executed - {times}.", self);
 
         self.Execute(player);
+
+        if self.CheckWinCondition():
+            # don't go to other turn and don't start the day if the game is over
+            return;
+
         self.StartNight();
+
         return;
 
     def Execute(self, player):
@@ -249,8 +255,6 @@ class Game():
 
         player._Player__isAlive = False;
         LogUtility.CreateGameMessage(f"{player.Name} is executed.", self);
-
-        self.CheckWinCondition();
         return;
 
     #endregion
@@ -271,7 +275,7 @@ class Game():
             return;
 
         player = self.GetPlayerByIdentifier(vote.Player.Identifier);
-        targetPlayer = self.GetPlayerByIdentifier(vote.VotedPlayer.Identifier);
+        targetPlayer = self.GetPlayerByIdentifier(vote.VotedPlayer.Identifier) if vote.VotedPlayer else None;
 
         if vote.PlayerType == PlayerTypeEnum.Werewolf:
             self.Attack(player, targetPlayer);
@@ -295,14 +299,14 @@ class Game():
 
     def Attack(self, werewolf, player):
         if not player:
-            LogUtility.Information(f"Werewolf {vote.Player.Name} waits.", self);
+            LogUtility.Information(f"Werewolf {werewolf.Name} waits.", self);
 
         LogUtility.Information(f"Werewolf {werewolf.Name} attacks {player.Name}.", self);
         return;
 
     def Guard(self, guard, player):
         if not player:
-            LogUtility.Information(f"Guard {vote.Player.Name} waits.", self);
+            LogUtility.Information(f"Guard {guard.Name} waits.", self);
 
         guard.Role._Guard__canGuardTimes -= 1;
         LogUtility.Information(f"Guard {guard.Name} guards {player.Name}.", self);
@@ -310,7 +314,7 @@ class Game():
 
     def Divine(self, seer, player):
         if not player:
-            LogUtility.Information(f"Seer {vote.Player.Name} waits.", self);
+            LogUtility.Information(f"Seer {seer.Name} waits.", self);
 
         seer.Role._Seer__canDivineTimes -= 1;
         LogUtility.Information(f"Seer {seer.Name} divines {player.Name}.", self);
@@ -342,9 +346,12 @@ class Game():
 
         # Get votes for seer (these are independent from everything else)
 
-        if not self.CheckWinCondition():
-            self.__turn += 1;
-            self.StartDay();
+        if self.CheckWinCondition():
+            # don't go to other turn and don't start the day if the game is over
+            return;
+
+        self.__turn += 1;
+        self.StartDay();
 
         return;
 

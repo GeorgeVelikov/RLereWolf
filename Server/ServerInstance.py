@@ -14,6 +14,7 @@ from Werewolf.game.actions.Vote import Vote;
 import Server.utility.ConversionHelper as ConversionHelper;
 
 from datetime import datetime;
+import traceback;
 import threading;
 import socket;
 import pickle;
@@ -69,7 +70,8 @@ class ServerInstance():
                     self.RedirectPacket(connection, packet);
 
             except Exception as error:
-                LogUtility.Error(str(error));
+                trace = traceback.format_exc();
+                LogUtility.Error(str(error) + "\n\n" + trace);
                 break;
 
         self.Disconnect(connection);
@@ -85,7 +87,8 @@ class ServerInstance():
 
             self.ShowActiveConnections();
         except socket.error as error:
-            LogUtility.Error(str(error));
+            trace = traceback.format_exc();
+            LogUtility.Error(str(error) + "\n\n" + trace);
 
         while True:
             connection, address = self.__connection.accept();

@@ -107,12 +107,18 @@ class GameLobbyScreen(ScreenBase):
         if not messages:
             return;
 
+        (scrollX, scrollY) = self.__messagesScrollBar.get();
+        shouldScrollToBottom = scrollY == 1;
+
         self.__messagesListBox.config(state = tk.NORMAL);
 
         for message in messages:
             self.__messagesListBox.insert(tk.END, str(message) + "\n");
 
         self.__messagesListBox.config(state = tk.DISABLED);
+
+        if shouldScrollToBottom:
+            self.__messagesListBox.see(tk.END);
 
         return;
 
