@@ -317,8 +317,8 @@ class ServerInstance():
             return;
 
         vote = Vote(player, targetPlayer);
-        connection.sendall(pickle.dumps(True));
         game.Vote(vote);
+        connection.sendall(pickle.dumps(True));
         return;
 
     def AttackPlayer(self, connection, packet):
@@ -337,8 +337,9 @@ class ServerInstance():
             return;
 
         vote = Vote(player, targetPlayer);
-        connection.sendall(pickle.dumps(True));
         game.Vote(vote);
+
+        connection.sendall(pickle.dumps(True));
         return;
 
     def DivinePlayer(self, connection, packet):
@@ -357,8 +358,9 @@ class ServerInstance():
             return;
 
         vote = Vote(player, targetPlayer);
-        connection.sendall(pickle.dumps(True));
         game.Vote(vote);
+
+        connection.sendall(pickle.dumps(True));
         return;
 
     def GuardPlayer(self, connection, packet):
@@ -377,8 +379,9 @@ class ServerInstance():
             return;
 
         vote = Vote(player, targetPlayer);
-        connection.sendall(pickle.dumps(True));
         game.Vote(vote);
+
+        connection.sendall(pickle.dumps(True));
         return;
 
     #endregion
