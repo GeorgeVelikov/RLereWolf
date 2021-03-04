@@ -556,7 +556,7 @@
                         <property name="text" translatable="yes">Add Agent</property>
                         <layout manager="pack">
                           <property name="expand">true</property>
-                          <property name="fill">both</property>
+                          <property name="fill">x</property>
                           <property name="pady">2</property>
                         </layout>
                       </object>
@@ -568,7 +568,7 @@
                         <property name="text" translatable="yes">Remove Agent</property>
                         <layout manager="pack">
                           <property name="expand">true</property>
-                          <property name="fill">both</property>
+                          <property name="fill">x</property>
                           <property name="pady">2</property>
                           <property name="propagate">True</property>
                           <property name="side">top</property>
@@ -585,7 +585,7 @@
                         <property name="textvariable">string:IsReady</property>
                         <layout manager="pack">
                           <property name="expand">true</property>
-                          <property name="fill">both</property>
+                          <property name="fill">x</property>
                           <property name="pady">2</property>
                           <property name="side">top</property>
                         </layout>
@@ -598,7 +598,7 @@
                         <property name="text" translatable="yes">Quit</property>
                         <layout manager="pack">
                           <property name="expand">true</property>
-                          <property name="fill">both</property>
+                          <property name="fill">x</property>
                           <property name="pady">2</property>
                           <property name="side">bottom</property>
                         </layout>
