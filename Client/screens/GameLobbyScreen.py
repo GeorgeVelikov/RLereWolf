@@ -39,6 +39,9 @@ class GameLobbyScreen(ScreenBase):
         self.__seerButtons = self.GetObject(str(PlayerTypeEnum.Seer));
         self.__guardButtons = self.GetObject(str(PlayerTypeEnum.Guard));
 
+        self.__addAgentButton = self.GetObject("AddAgentButton");
+        self.__removeAgentButton = self.GetObject("RemoveAgentButton");
+
         self.__isReadyButton = self.GetObject(nameof(self.Client.Player.IsReady));
         self.__isReadyButtonText = self.GetVariable(nameof(self.Client.Player.IsReady));
 
@@ -183,11 +186,19 @@ class GameLobbyScreen(ScreenBase):
 
     def UpdateIsReadyButton(self):
         if self.Client.Game.HasStarted:
-            self.__isReadyButton.grid_remove();
+            self.__addAgentButton.pack_forget();
+            self.__removeAgentButton.pack_forget();
+            self.__isReadyButton.pack_forget();
             return;
 
+        if not self.__addAgentButton.winfo_ismapped():
+            self.__addAgentButton.pack();
+
+        if not self.__removeAgentButton.winfo_ismapped():
+            self.__removeAgentButton.pack();
+
         if not self.__isReadyButton.winfo_ismapped():
-            self.__isReadyButton.grid();
+            self.__isReadyButton.pack();
 
         buttonText = ("Cancel" if self.Client.Player.IsReady else "Ready");
         self.__isReadyButtonText.set(buttonText);
@@ -312,9 +323,16 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     # Misc
+    def AddAgent_Clicked(self):
+        return;
+
+    def RemoveAgent_Clicked(self):
+        return;
+
     def Ready_Clicked(self):
         self.Context.ServiceContext.VoteStart();
         self.UpdateButtons();
+        return;
 
     def Quit_Clicked(self):
         self.StopBackgroundCalls();
