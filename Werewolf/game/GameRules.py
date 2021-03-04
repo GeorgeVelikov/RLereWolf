@@ -55,7 +55,7 @@ def DoWerewolvesWin(game):
     if len(werewolves) < len(villagers):
         return False;
 
-    werewolfNames = ', '.join([w.Name for w in werewolves]);
+    werewolfNames = ', '.join([w.Name for w in game.Players if w.Role.Type == PlayerTypeEnum.Werewolf]);
 
     LogUtility.CreateGameMessage(f"Werewolves ({werewolfNames}) win!", game);
     return True;
