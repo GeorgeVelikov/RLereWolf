@@ -73,4 +73,5 @@ def DoVillagersWin(game):
     return True;
 
 def GetPlayerCountForRole(playerCount, playersToRoleRatio):
-    return 1 + ((playerCount - playersToRoleRatio) // playersToRoleRatio);
+    additionalCount = (playerCount - playersToRoleRatio) // playersToRoleRatio;
+    return 1 + (additionalCount if additionalCount > 0 else 0);
