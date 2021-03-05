@@ -61,7 +61,7 @@ class DummyPlayer(AgentPlayer):
         viablePlayersToVoteFor = [player for player in self.Game.Players\
             if player.IsAlive\
                 and player.Identifier != self.Identifier\
-                and player.Role != PlayerTypeEnum.Werewolf]
+                and player.Role.Type != PlayerTypeEnum.Werewolf]
 
         if not viablePlayersToVoteFor:
             return;
@@ -84,7 +84,7 @@ class DummyPlayer(AgentPlayer):
         viablePlayersToVoteFor = [player for player in self.Game.Players\
             if player.IsAlive\
                 and player.Identifier != self.Identifier\
-                and player.Role != PlayerTypeEnum.Werewolf]
+                and player.Role.Type != PlayerTypeEnum.Werewolf]
 
         if not viablePlayersToVoteFor:
             return;

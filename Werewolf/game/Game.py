@@ -323,28 +323,28 @@ class Game():
     def Attack(self, werewolf, player):
         if not player:
             # Should werewolves be able to wait? Is this even an actual use case?
-            LogUtility.Information(f"Werewolf {werewolf.Name} waits.", self);
+            LogUtility.Information(f"Werewolf '{werewolf.Name}' waits.", self);
             return;
 
-        LogUtility.Information(f"Werewolf {werewolf.Name} attacks {player.Name}.", self);
+        LogUtility.Information(f"Werewolf '{werewolf.Name}' attacks '{player.Name}'.", self);
         return;
 
     def Guard(self, guard, player):
         if not player:
-            LogUtility.Information(f"Guard {guard.Name} waits.", self);
+            LogUtility.Information(f"Guard '{guard.Name}' waits.", self);
             return;
 
         guard.Role._Guard__canGuardTimes -= 1;
-        LogUtility.Information(f"Guard {guard.Name} guards {player.Name}.", self);
+        LogUtility.Information(f"Guard '{guard.Name}' guards '{player.Name}'.", self);
         return;
 
     def Divine(self, seer, player):
         if not player:
-            LogUtility.Information(f"Seer {seer.Name} waits.", self);
+            LogUtility.Information(f"Seer '{seer.Name}' waits.", self);
             return;
 
         seer.Role._Seer__canDivineTimes -= 1;
-        LogUtility.Information(f"Seer {seer.Name} divines {player.Name}.", self);
+        LogUtility.Information(f"Seer '{seer.Name}' divines '{player.Name}'.", self);
         return;
 
     def CountNightVotesAndEvents(self):
@@ -384,11 +384,11 @@ class Game():
 
     def WerewolfKill(self, player):
         if player not in self.Players:
-            LogUtility.Error(f"Cannot kill {player.Name} as they are not in the game {self.Name}", self);
+            LogUtility.Error(f"Cannot kill '{player.Name}' as they are not in the game '{self.Name}'", self);
             return;
 
         player._Player__isAlive = False;
-        LogUtility.CreateGameMessage(f"{player.Name} is killed by the werewolves.", self);
+        LogUtility.CreateGameMessage(f"'{player.Name}' is killed by the werewolves.", self);
 
         return;
 
