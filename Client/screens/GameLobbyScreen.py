@@ -346,7 +346,7 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Ready_Clicked(self):
-        if self.Client.Player.IsReady:
+        if self.Client.Game.HasStarted:
             return;
 
         self.Context.ServiceContext.VoteStart();
