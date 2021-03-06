@@ -2,7 +2,6 @@ from Client.context.ViewModelContext import ViewModelContext;
 
 import uuid;
 
-
 class ClientInstance():
     def __init__(self):
         self.__context = ViewModelContext(self);
