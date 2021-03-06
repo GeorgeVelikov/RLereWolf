@@ -45,9 +45,7 @@ class ServerInstance():
         return datetime.utcnow();
 
     def ShowActiveConnections(self):
-        LogUtility.Information(f"Active connections - {threading.activeCount() - 1}");
-
-    #region Server
+        LogUtility.Information(f"Active connections - {len(self.__connections)}");
 
     def Run(self):
         try:
@@ -70,6 +68,9 @@ class ServerInstance():
         while True:
             try:
                 packetStream = connection.recv(4 * NetConstants.KILOBYTE);
+
+                if not packetStream:
+                    break;
 
                 packet = pickle.loads(packetStream);
 
@@ -143,17 +144,13 @@ class ServerInstance():
 
         return;
 
-    #endregion
-
-    #region Game calls
-
     def Connect(self, connection, packet):
         dto = packet.Data;
 
         player = Player(dto.ClientName, dto.ClientIdentifier);
 
         connectionKey = connection.getpeername();
-        self.__connections[connectionKey] = player;
+        self.Connections[connectionKey] = player;
 
         LogUtility.Information(f"Connected to server (player {player}) - {connectionKey}");
         self.ShowActiveConnections();
@@ -174,26 +171,22 @@ class ServerInstance():
                 game = self.HandlerContext.GetGameWithIdentifier(gameIdentifier);
                 game.Leave(player);
 
-            self.__connections.pop(connectionKey);
+            self.Connections.pop(connectionKey);
 
         LogUtility.Information(f"Lost connection (player {player}) to server - {connectionKey}");
         connection.shutdown(socket.SHUT_RDWR);
         connection.close();
 
+        self.ShowActiveConnections();
+
         return;
-
-    #endregion
-
-    #region Server only calls
 
     def CreateGame(self, name):
         game = Game(name);
 
-        self.__games[game.Identifier] = game;
+        self.Games[game.Identifier] = game;
 
         return game;
-
-    #endregion
 
 if __name__ == "__main__":
     ServerInstance().Run();
