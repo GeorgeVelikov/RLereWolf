@@ -106,6 +106,10 @@ class Game():
             LogUtility.Warning(f"'{player.Name}' cannot join the game, the game is full!", self);
             return;
 
+        # TODO: This is kind of nasty and we should probably have a server player
+        # and a game instance player entity, but this will do as a first pass. This
+        # implies that the server is a "common world" instead of having a meta-player identity
+        player._Player__isReady = False;
         self.__players.add(player);
         LogUtility.CreateGameMessage(f"'{player.Name}' has joined.", self);
         return;
@@ -116,11 +120,10 @@ class Game():
             # TODO: raise some silent exception
             return;
 
-        # no need to sort, already alphabetical
-        self.__players\
-            .remove(self.GetPlayerByIdentifier(player.Identifier));
+        playerToLeave = self.GetPlayerByIdentifier(player.Identifier);
+        self.__players.remove(playerToLeave);
 
-        LogUtility.CreateGameMessage(f"'{player.Name}' has left.", self);
+        LogUtility.CreateGameMessage(f"'{playerToLeave.Name}' has left.", self);
 
         return;
 

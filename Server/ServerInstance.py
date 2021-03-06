@@ -1,8 +1,8 @@
 from Server.HandlerContext import HandlerContext;
 
 import Shared.constants.NetConstants as NetConstants;
-from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 import Shared.utility.LogUtility as LogUtility;
+from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 
 from Werewolf.game.Game import Game;
 from Werewolf.game.Player import Player;
@@ -20,6 +20,7 @@ class ServerInstance():
         self.__validPacketTypes = PacketTypeEnum.Values();
         self.__connections = dict();
         self.__games = dict();
+
         self.CreateGame("Game 1");
         self.CreateGame("Game 2");
         self.CreateGame("Game 3");
@@ -88,7 +89,7 @@ class ServerInstance():
                 LogUtility.Request(f"Packet type - {packet.PacketType}");
 
                 if packet.PacketType in self.ValidPacketTypes:
-                    self.RedirectPacket(connection, packet);
+                    self.HandlerContext.RedirectPacket(connection, packet);
                 else:
                     clientKey = connection.getpeername();
                     client = self.Connections[clientKey];
@@ -103,50 +104,6 @@ class ServerInstance():
                 break;
 
         self.Disconnect(connection);
-
-        return;
-
-    def RedirectPacket(self, connection, packet):
-        # TODO: is there a neat way of routing this, similarly to C# attributes?
-
-        if packet.PacketType == PacketTypeEnum.Connect:
-            self.Connect(connection, packet);
-
-        # game lobby calls
-        elif packet.PacketType == PacketTypeEnum.GetGamesList:
-            self.HandlerContext.GameLobbyHandler.GetGamesList(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.JoinGame:
-            self.HandlerContext.GameLobbyHandler.JoinGame(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.LeaveGame:
-            self.HandlerContext.GameLobbyHandler.LeaveGame(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.GameLobby:
-            self.HandlerContext.GameLobbyHandler.GetGameLobby(connection, packet);
-
-        # game action calls
-
-        elif packet.PacketType == PacketTypeEnum.AddAgent:
-            self.HandlerContext.GameActionHandler.AddAgentToGame(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.RemoveAgent:
-            self.HandlerContext.GameActionHandler.RemoveAgentFromGame(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.VoteStart:
-            self.HandlerContext.GameActionHandler.VoteStart(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.VotePlayer:
-            self.HandlerContext.GameActionHandler.VotePlayer(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.AttackPlayer:
-            self.HandlerContext.GameActionHandler.AttackPlayer(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.DivinePlayer:
-            self.HandlerContext.GameActionHandler.DivinePlayer(connection, packet);
-
-        elif packet.PacketType == PacketTypeEnum.GuardPlayer:
-            self.HandlerContext.GameActionHandler.GuardPlayer(connection, packet);
 
         return;
 

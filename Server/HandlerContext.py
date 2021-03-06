@@ -2,6 +2,7 @@ from Server.handlers.GameActionHandler import GameActionHandler;
 from Server.handlers.GameLobbyHandler import GameLobbyHandler;
 
 import Shared.utility.LogUtility as LogUtility;
+from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 
 class HandlerContext():
     def __init__(self, server):
@@ -20,6 +21,50 @@ class HandlerContext():
     @property
     def GameActionHandler(self):
         return self.__gameActionHandler;
+
+    def RedirectPacket(self, connection, packet):
+        # TODO: is there a neat way of routing this, similarly to C# attributes?
+
+        if packet.PacketType == PacketTypeEnum.Connect:
+            self.Server.Connect(connection, packet);
+
+        # game lobby calls
+        elif packet.PacketType == PacketTypeEnum.GetGamesList:
+            self.GameLobbyHandler.GetGamesList(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.JoinGame:
+            self.GameLobbyHandler.JoinGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.LeaveGame:
+            self.GameLobbyHandler.LeaveGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.GameLobby:
+            self.GameLobbyHandler.GetGameLobby(connection, packet);
+
+        # game action calls
+
+        elif packet.PacketType == PacketTypeEnum.AddAgent:
+            self.GameActionHandler.AddAgentToGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.RemoveAgent:
+            self.GameActionHandler.RemoveAgentFromGame(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.VoteStart:
+            self.GameActionHandler.VoteStart(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.VotePlayer:
+            self.GameActionHandler.VotePlayer(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.AttackPlayer:
+            self.GameActionHandler.AttackPlayer(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.DivinePlayer:
+            self.GameActionHandler.DivinePlayer(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.GuardPlayer:
+            self.GameActionHandler.GuardPlayer(connection, packet);
+
+        return;
 
     def GetGameWithIdentifier(self, gameIdentifier):
         if not gameIdentifier in self.Server.Games.keys():
