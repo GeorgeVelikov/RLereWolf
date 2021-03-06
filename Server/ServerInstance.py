@@ -17,6 +17,7 @@ class ServerInstance():
     def __init__(self):
         self.__connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM);
         self.__handlerContext = HandlerContext(self);
+        self.__validPacketTypes = PacketTypeEnum.Values();
         self.__connections = dict();
         self.__games = dict();
         self.CreateGame("Game 1");
@@ -39,6 +40,10 @@ class ServerInstance():
     @property
     def HandlerContext(self):
         return self.__handlerContext;
+
+    @property
+    def ValidPacketTypes(self):
+        return self.__validPacketTypes;
 
     @property
     def UtcNow(self):
@@ -70,18 +75,19 @@ class ServerInstance():
                 packetStream = connection.recv(4 * NetConstants.KILOBYTE);
 
                 if not packetStream:
+                    # connection is interrupted/closed by client because we get null back
                     break;
 
                 packet = pickle.loads(packetStream);
 
-                if not packet:
+                if not packet or not packet.PacketType:
+                    # This is really just a sanity check and making sure nothing
+                    # unknown is coming that could potentially break the server
                     break;
 
                 LogUtility.Request(f"Packet type - {packet.PacketType}");
 
-                validPacketTypes = PacketTypeEnum.Values();
-
-                if packet.PacketType in validPacketTypes:
+                if packet.PacketType in self.ValidPacketTypes:
                     self.RedirectPacket(connection, packet);
                 else:
                     clientKey = connection.getpeername();
