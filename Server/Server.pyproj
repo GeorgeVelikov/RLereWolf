@@ -21,9 +21,25 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="handlers\" />
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandlerContext.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\GameActionHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\GameLobbyHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\HandlerBase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="handlers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ServerInstance.py" />
     <Compile Include="utility\ConversionHelper.py">
       <SubType>Code</SubType>
