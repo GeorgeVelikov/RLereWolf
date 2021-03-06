@@ -3,7 +3,7 @@
 
 ## What is this?
 
-RLereWolf is a, Python developed, framework for the social deduction game Werewolf. The development of which is part of my undergraduate thesis at [University of Aberdeen](https://www.abdn.ac.uk/). RLereWolf provides the base Werewolf game which can be played multiplayer with either other people or bots (agents). 
+RLereWolf is a, Python developed, framework for the social deduction game [Werewolf](https://en.wikipedia.org/wiki/Ultimate_Werewolf). The development of which is part of my undergraduate thesis at [University of Aberdeen](https://www.abdn.ac.uk/). RLereWolf provides the base Werewolf game which can be played multiplayer with either other people or bots (agents). 
 
 It also provides AI developers with an easy to use and integrate to framework for training agents to play Werewolf. The game's implementation allows users to create/join games of up to 75 players in which the players can be other humans, "dummy" agent players, rule-based agent players and/or reinforcement learning agent players, trained with OpenAI Gym.
 
