@@ -1,5 +1,3 @@
-import Shared.utility.LogUtility as LogUtility;
-
 class HandlerBase():
     def __init__(self, server, handlerContext):
         self.__server = server;
