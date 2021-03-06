@@ -13,9 +13,9 @@ class AgentPlayer(Player):
         return self.__game;
 
     def ActDay(self):
-        raise NotImplementedError("Act Day has not been implemented for this dummy agent type.");
+        raise NotImplementedError("Act Day has not been implemented for this agent type.");
         return;
 
     def ActNight(self):
-        raise NotImplementedError("Act Night has not been implemented for this dummy agent type.");
+        raise NotImplementedError("Act Night has not been implemented for this agent type.");
         return;
