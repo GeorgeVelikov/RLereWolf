@@ -4,9 +4,9 @@ class AgentPlayer(Player):
     def __init__(self, name, game):
         super().__init__("[AI] " + name);
         self.__game = game;
-        self._Player__isReady = True;
 
         self.__game.Join(self);
+        self._Player__isReady = True;
 
     @property
     def Game(self):
