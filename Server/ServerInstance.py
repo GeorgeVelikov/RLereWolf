@@ -150,6 +150,3 @@ class ServerInstance():
         self.Games[game.Identifier] = game;
 
         return game;
-
-if __name__ == "__main__":
-    ServerInstance().Run();

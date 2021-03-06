@@ -5,7 +5,7 @@
     <ProjectGuid>6958b57e-47a5-44e3-bc4c-7f17e9f1e9e4</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>ClientInstance.py</StartupFile>
+    <StartupFile>__init__.py</StartupFile>
     <SearchPath>..\..\Werewolf</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -76,6 +76,13 @@
     <Content Include="views\GameListScreen.ui" />
     <Content Include="views\GameLobbyScreen.ui" />
     <Content Include="views\MainMenuScreen.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.pyproj">
+      <Name>Shared</Name>
+      <Project>{6a6aa1f8-07d6-417d-9a11-a2b24ee379cd}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
