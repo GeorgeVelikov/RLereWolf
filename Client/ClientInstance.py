@@ -60,3 +60,6 @@ class ClientInstance():
         return;
 
     #endregion
+
+if __name__ == "__main__":
+    ClientInstance();

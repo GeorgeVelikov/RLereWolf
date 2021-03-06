@@ -5,7 +5,7 @@
     <ProjectGuid>4c904ce1-5d75-424d-a871-2968e9420319</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>__init__.py</StartupFile>
+    <StartupFile>ServerInstance.py</StartupFile>
     <SearchPath>..\..\Werewolf</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
