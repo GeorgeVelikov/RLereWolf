@@ -7,6 +7,12 @@ RLereWolf is a, Python developed, framework for the social deduction game [Werew
 
 It also provides AI developers with an easy to use and integrate to framework for training agents to play Werewolf. The game's implementation allows users to create/join games of up to 75 players in which the players can be other humans, "dummy" agent players, rule-based agent players and/or reinforcement learning agent players, trained with OpenAI Gym.
 
+RLereWolf provides the following:
+1. The implementation for the Werewolf game
+2. A basic TCP/IP Server-Client infrastructure to support multiplayer games
+3. A testing platform for Werewolf AI agents
+4. Verbose logging
+5. A development platform for Werewolf AI and further game expansions
 
 ## Setup
 The development of RLereWolf is done in Visual Studio 2019 as a "PyProject" using Python 3.9. In order to setup RLereWolf for development "out of the box" you need to
