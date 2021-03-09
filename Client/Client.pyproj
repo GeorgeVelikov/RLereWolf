@@ -38,6 +38,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MainWindow.py" />
+    <Compile Include="models\TalkMessage.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="screens\ErrorDialog.py">
       <SubType>Code</SubType>
     </Compile>
@@ -46,6 +52,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="utility\PacketUtility.py" />
+    <Compile Include="utility\TalkMessageUtility.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="views\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -67,6 +76,7 @@
   <ItemGroup>
     <Folder Include="constants\" />
     <Folder Include="context\" />
+    <Folder Include="models\" />
     <Folder Include="views\" />
     <Folder Include="screens\" />
     <Folder Include="utility\" />
