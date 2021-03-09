@@ -24,6 +24,10 @@ class GameLobbyScreen(ScreenBase):
         self.__messagesListBox = self.GetObject("MessagesListBox");
         self.__messagesScrollBar = self.GetObject("MessagesScrollbar");
 
+        self.__messagesMenu = tk.Menu(root, tearoff = False);
+
+        self.SetupTalkSubMenu();
+
         self.__gameName = self.GetVariable("GameName");
         self.__gameTurn = self.GetVariable("GameTurn");
         self.__gameTime = self.GetVariable("GameTime");
@@ -263,10 +267,30 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
+    def SetupTalkSubMenu(self):
+        self.__messagesMenu.add_command(\
+            label = "Example 2",\
+            command = lambda: self.Talk_SendMessage("message type 1"));
+
+        self.__messagesMenu.add_separator();
+
+        self.__messagesMenu.add_command(\
+            label = "Example 2",\
+            command = lambda: self.Talk_SendMessage("message type 1 2"));
+
+        return;
+
     #endregion
 
     # General Controls
     def Talk_Clicked(self):
+        x = self.Root.winfo_pointerx();
+        y = self.Root.winfo_pointery();
+
+        self.__messagesMenu.tk_popup(x, y);
+        return;
+
+    def Talk_SendMessage(self, messageType):
         return;
 
     def Vote_Clicked(self):
