@@ -16,6 +16,13 @@ class MessageDto():
         return str(self);
 
     @property
+    def Author(self):
+        if self.__author:
+            return self.__author;
+
+        return "[SERVER]";
+
+    @property
     def TimeUtc(self):
         return self.__timeUtc;
 
@@ -32,14 +39,14 @@ class MessageDto():
     @property
     def AuthorIdentifier(self):
         if not self.__author:
-            return "[SERVER]";
+            return self.Author;
 
         return self.__author.Identifier;
 
     @property
     def AuthorName(self):
         if not self.__author:
-            return "[SERVER]";
+            return self.Author;
 
         return self.__author.Name;
 
