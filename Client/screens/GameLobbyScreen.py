@@ -1,6 +1,7 @@
 from Shared.utility.KillableThread import KillableThread;
 from Shared.utility.Helpers import nameof;
 
+import Client.utility.TalkMessageUtility as TalkMessageUtility;
 from Client.screens.ScreenBase import ScreenBase;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
@@ -24,9 +25,8 @@ class GameLobbyScreen(ScreenBase):
         self.__messagesListBox = self.GetObject("MessagesListBox");
         self.__messagesScrollBar = self.GetObject("MessagesScrollbar");
 
-        self.__messagesMenu = tk.Menu(root, tearoff = False);
-
-        self.SetupTalkSubMenu();
+        self.__talkMessagesMenu = None;
+        self.__whisperMessagesMenu = None;
 
         self.__gameName = self.GetVariable("GameName");
         self.__gameTurn = self.GetVariable("GameTurn");
@@ -166,6 +166,7 @@ class GameLobbyScreen(ScreenBase):
     def UpdateButtons(self):
         self.UpdateGameControlButtons();
         self.UpdateIsReadyButton();
+        self.SetupTalkAndWhisperSubMenu();
 
     def UpdateGameControlButtons(self):
         if not self.Client.Game.HasStarted:
@@ -267,16 +268,45 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
-    def SetupTalkSubMenu(self):
-        self.__messagesMenu.add_command(\
-            label = "Example 2",\
-            command = lambda: self.Talk_SendMessage("message type 1"));
+    def SetupTalkAndWhisperSubMenu(self):
+        if (self.Client.Game.HasStarted and self.__talkMessagesMenu) or\
+            (not self.Client.Game.HasStarted and not self.__talkMessagesMenu):
 
-        self.__messagesMenu.add_separator();
+            return;
 
-        self.__messagesMenu.add_command(\
-            label = "Example 2",\
-            command = lambda: self.Talk_SendMessage("message type 1 2"));
+        if not self.Client.Game.HasStarted and self.__talkMessagesMenu:
+            self.__talkMessagesMenu = None;
+            self.__whisperMessagesMenu = None;
+            return;
+
+        # This is a bit hacky, but makes sure we only pass this
+        # there is a change in the has started game property
+        self.__talkMessagesMenu = tk.Menu(self.Root, tearoff = False);
+        clientRole = self.Client.Player.Role.Type;
+        previousMessageRole = None;
+
+        for message in TalkMessageUtility.TalkMessagesForRole(clientRole):
+
+            if previousMessageRole != message.PlayerType:
+                self.__talkMessagesMenu.add_separator();
+
+            self.__talkMessagesMenu.add_command(\
+                label = message.MessageName,\
+                command = lambda: self.Talk_SendMessage(message));
+
+            previousMessageRole = message.PlayerType;
+
+            continue;
+
+        if clientRole in TalkMessageUtility.ROLES_THAT_CAN_WHISPER:
+            self.__whisperMessagesMenu = tk.Menu(self.Root, tearoff = False);
+
+            for message in TalkMessageUtility.WhisperMessagesForRole(clientRole):
+                 self.__whisperMessagesMenu.add_command(\
+                    label = message.MessageName,\
+                    command = lambda: self.Talk_SendMessage(message));
+
+                 continue;
 
         return;
 
@@ -287,7 +317,7 @@ class GameLobbyScreen(ScreenBase):
         x = self.Root.winfo_pointerx();
         y = self.Root.winfo_pointery();
 
-        self.__messagesMenu.tk_popup(x, y);
+        self.__talkMessagesMenu.tk_popup(x, y);
         return;
 
     def Talk_SendMessage(self, messageType):
