@@ -57,6 +57,7 @@ class ClientInstance():
 
     def SetGame(self, game):
         self.__game = game;
+        self.Player._Player__role = None;
         return;
 
     #endregion

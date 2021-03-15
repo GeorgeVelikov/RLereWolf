@@ -19,8 +19,8 @@ class Game():
         self.__votes = set();
         self.__turn = int();
         self.__players = set();
+        self.__playerIdentifiersThatCanVote = set();
         self.__timeOfDay = TimeOfDayEnum._None;
-        self.__playersWhoCanActThisNight = set();
 
     def __str__(self):
         return self.Name + " - " + self.Identifier;
@@ -122,8 +122,21 @@ class Game():
 
         playerToLeave = self.GetPlayerByIdentifier(player.Identifier);
         self.__players.remove(playerToLeave);
+        playerToLeave._Player__role = None;
+
+        if playerToLeave.Identifier in self.__playerIdentifiersThatCanVote:
+            self.__playerIdentifiersThatCanVote.remove(playerToLeave.Identifier);
+
+        self.__votes = set([v for v in self.__votes\
+            if v.Player != playerToLeave and v.VotedPlayer != playerToLeave]);
 
         LogUtility.CreateGameMessage(f"'{playerToLeave.Name}' has left.", self);
+
+        if not self.CheckWinCondition() and not self.__playerIdentifiersThatCanVote:
+            if self.__timeOfDay == TimeOfDayEnum.Day:
+                self.CountVotesExecute();
+            elif self.__timeOfDay == TimeOfDayEnum.Night:
+                self.CountNightVotesAndEvents();
 
         return;
 
@@ -163,6 +176,14 @@ class Game():
         self.__timeOfDay = TimeOfDayEnum._None;
 
     def CheckWinCondition(self):
+        if not self.HasStarted:
+            return False;
+
+        if len(self.Players) < GameConstants.MINIMAL_PLAYER_COUNT:
+            LogUtility.CreateGameMessage(f"Minimum of {GameConstants.MINIMAL_PLAYER_COUNT} players required.");
+            self.Restart();
+            return True;
+
         # this will be defined in GameRules.py
         if GameRules.DoVillagersWin(self):
             self.Restart();
@@ -179,6 +200,8 @@ class Game():
         self.__timeOfDay = TimeOfDayEnum.Day;
         self.ShowTurnAndTime();
 
+        self.__playerIdentifiersThatCanVote = set([p.Identifier for p in self.Players if p.IsAlive]);
+
         for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
             agent.ActDay();
 
@@ -189,7 +212,7 @@ class Game():
         self.__timeOfDay = TimeOfDayEnum.Night;
         self.ShowTurnAndTime();
 
-        self.__playersWhoCanActThisNight = set([np.Identifier for np in self.NightPlayers if np.IsAlive]);
+        self.__playerIdentifiersThatCanVote = set([p.Identifier for p in self.NightPlayers if p.IsAlive]);
 
         for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
             agent.ActNight();
@@ -238,7 +261,7 @@ class Game():
         alivePlayers = [ap for ap in self.Players if ap.IsAlive];
         playerIdentifiers = [p.Identifier for p in alivePlayers];
 
-        if not vote.Player.Identifier in playerIdentifiers or\
+        if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote or\
             (vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers):
             # players not in the game, error
             LogUtility.Error("Invalid vote, one of the players is not alive in the game", self);
@@ -250,8 +273,9 @@ class Game():
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' voted to execute {vote.VotedPlayer.Name}.", self);
 
         self.Votes.add(vote);
+        self.__playerIdentifiersThatCanVote.remove(vote.Player.Identifier);
 
-        if len(self.Votes) == len(playerIdentifiers):
+        if not self.__playerIdentifiersThatCanVote:
             self.CountVotesExecute();
 
         return;
@@ -290,7 +314,7 @@ class Game():
     def VoteNight(self, vote):
         playerIdentifiers = self.PlayerIdentifiers;
 
-        if not vote.Player.Identifier in self.__playersWhoCanActThisNight:
+        if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote:
             playerDetails = "'" + vote.Player.Name + "' - " +  vote.Player.Identifier;
             LogUtility.Error(f"{playerDetails} cannot act in the night.", self);
             return;
@@ -316,10 +340,10 @@ class Game():
             return;
 
         self.Votes.add(vote);
+        self.__playerIdentifiersThatCanVote.remove(player.Identifier);
 
-        if len(self.Votes) == len(self.__playersWhoCanActThisNight):
+        if not self.__playerIdentifiersThatCanVote:
             self.CountNightVotesAndEvents();
-            self.__playersWhoCanActThisNight = set();
 
         return;
 
