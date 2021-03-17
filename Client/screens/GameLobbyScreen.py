@@ -290,9 +290,23 @@ class GameLobbyScreen(ScreenBase):
             if previousMessageRole != message.PlayerType:
                 self.__talkMessagesMenu.add_separator();
 
-            self.__talkMessagesMenu.add_command(\
-                label = message.MessageName,\
-                command = lambda: self.Talk_SendMessage(message));
+            if message.IsRoleBased:
+                bufferMenu = tk.Menu(self.Root, tearoff = False);
+
+                for role in PlayerTypeEnum.Values():
+                    bufferMenu.add_command(\
+                        label = str(role),\
+                        command = lambda: self.Talk_SendMessage(message, role));
+
+                    pass;
+
+                self.__talkMessagesMenu.add_cascade(\
+                    label = message.MessageName,\
+                    menu = bufferMenu);
+            else:
+                self.__talkMessagesMenu.add_command(\
+                    label = message.MessageName,\
+                    command = lambda: self.Talk_SendMessage(message));
 
             previousMessageRole = message.PlayerType;
 
@@ -320,7 +334,7 @@ class GameLobbyScreen(ScreenBase):
         self.__talkMessagesMenu.tk_popup(x, y);
         return;
 
-    def Talk_SendMessage(self, messageType):
+    def Talk_SendMessage(self, messageType, role = None):
         return;
 
     def Vote_Clicked(self):

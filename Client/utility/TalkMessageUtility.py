@@ -4,24 +4,21 @@ import Shared.constants.CommunicationPresetConstants as CommunicationPresets;
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 
 GENERAL_MESSAGES = [\
-    TalkMessage("Agree", CommunicationPresets.AGREE_PLAYER, None),\
-    TalkMessage("Disagree", CommunicationPresets.DISAGREE_PLAYER, None),\
-    TalkMessage("Certain role" , CommunicationPresets.ASSERT_CERTAIN_PLAYER_ROLE, None),\
-    TalkMessage("Uncertain role", CommunicationPresets.ASSERT_UNCERTAIN_PLAYER_ROLE, None),\
-    TalkMessage("Declare", CommunicationPresets.DECLARE_ROLE, None),\
-    TalkMessage("Declare Vote", CommunicationPresets.VOTE_PLAYER, None),\
+    TalkMessage("Agree", CommunicationPresets.AGREE_PLAYER, None, False),\
+    TalkMessage("Disagree", CommunicationPresets.DISAGREE_PLAYER, None, False),\
+    TalkMessage("Accuse Certain Role" , CommunicationPresets.ASSERT_CERTAIN_PLAYER_ROLE, None, True),\
+    TalkMessage("Accuse Uncertain Role", CommunicationPresets.ASSERT_UNCERTAIN_PLAYER_ROLE, None, True),\
+    TalkMessage("Declare Role", CommunicationPresets.DECLARE_ROLE, None, True),\
 ];
 
 WEREWOLF_MESSAGES = [\
-    TalkMessage("Attack", CommunicationPresets.WEREWOLF_ATTACK_PLAYER, PlayerTypeEnum.Werewolf),\
+    TalkMessage("Attack", CommunicationPresets.WEREWOLF_ATTACK_PLAYER, PlayerTypeEnum.Werewolf, False),\
 ];
 
 SEER_MESSAGES = [\
-    TalkMessage("Divine", CommunicationPresets.SEER_DIVINE_PLAYER_ROLE, PlayerTypeEnum.Seer),\
 ];
 
 GUARD_MESSAGES = [\
-    TalkMessage("Not in house", CommunicationPresets.GUARD_NOT_IN_HOUSE, PlayerTypeEnum.Guard),\
 ];
 
 ROLES_THAT_CAN_WHISPER = [\

@@ -1,8 +1,9 @@
 class TalkMessage():
-    def __init__(self, messageName, messageTemplate, playerType):
+    def __init__(self, messageName, messageTemplate, playerType, isRoleBased):
         self.__messageName = messageName;
         self.__messageTemplate = messageTemplate;
         self.__playerType = playerType;
+        self.__isRoleBased = isRoleBased;
 
     @property
     def MessageName(self):
@@ -15,3 +16,7 @@ class TalkMessage():
     @property
     def PlayerType(self):
         return self.__playerType;
+
+    @property
+    def IsRoleBased(self):
+        return self.__isRoleBased;

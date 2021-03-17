@@ -31,7 +31,7 @@ class PlayerTypeEnum(Enum):
             PlayerTypeEnum.Villager,\
             PlayerTypeEnum.Werewolf,\
             PlayerTypeEnum.Seer,\
-            PlayerTypeEnum.Doctor];
+            PlayerTypeEnum.Guard];
 
     @staticmethod
     def RolesWithPrivateMessages():
