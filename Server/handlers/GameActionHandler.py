@@ -59,7 +59,8 @@ class GameActionHandler(HandlerBase):
 
         game.VoteStart(player);
 
-        dto = PlayerGameDto(player, ConversionHelper.GameToDto(game, lastUpdatedUtc));
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player.Identifier);
+        dto = PlayerGameDto(player, gameDto);
 
         updatedEntityDto = UpdatedEntityDto(dto, self.Server.UtcNow);
 

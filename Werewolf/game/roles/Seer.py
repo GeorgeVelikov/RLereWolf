@@ -3,7 +3,7 @@ from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 
 class Seer(Role):
     def __init__(self):
-        self.__canDivineTimes = 1;
+        pass;
 
     @property
     def Type(self):
@@ -19,4 +19,4 @@ class Seer(Role):
 
     @property
     def CanDivine(self):
-        return self.__canDivineTimes > 0;
+        return True;

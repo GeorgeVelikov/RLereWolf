@@ -36,6 +36,12 @@ def CreateGameMessage(message, game):
     game.Messages.add(dto);
     return dto;
 
+def CreatePrivateGameMessage(message, game, forPlayer):
+    dto = MessageDto(None, message, forPlayer);
+    Log(LogConstants.MESSAGE, dto.Content, game);
+    game.Messages.add(dto);
+    return dto;
+
 def Error(message, game = None):
     Log(LogConstants.ERROR, message, game);
 

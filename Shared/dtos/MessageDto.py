@@ -4,10 +4,13 @@ import Shared.utility.DateTimeUtility as DateTimeUtility
 from datetime import datetime;
 
 class MessageDto():
-    def __init__(self, author, text):
+    def __init__(self, author, text, forPlayer = None):
         self.__timeUtc = datetime.utcnow();
         self.__author = author;
         self.__text = text;
+
+        # only specify this is if it's a "private" message
+        self.__forPlayer = forPlayer;
 
     def __str__(self):
         return self.TimeStampLocal + " " + self.Content;
@@ -22,9 +25,15 @@ class MessageDto():
 
         return "[SERVER]";
 
+    # Used by the server to filter out messages
+    # when delivering to the client
     @property
     def TimeUtc(self):
         return self.__timeUtc;
+
+    @property
+    def ForPlayer(self):
+        return self.__forPlayer;
 
     @property
     def TimeStampUtc(self):

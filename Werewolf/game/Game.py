@@ -375,7 +375,6 @@ class Game():
             LogUtility.Information(f"Seer '{seer.Name}' waits.", self);
             return;
 
-        seer.Role._Seer__canDivineTimes -= 1;
         LogUtility.Information(f"Seer '{seer.Name}' divines '{player.Name}'.", self);
         return;
 
@@ -402,6 +401,16 @@ class Game():
         else:
             LogUtility.CreateGameMessage("'" + playerToKill.Name +\
                 "' was attacked by werewolves in the night but was guarded and lives to see another day.", self);
+
+        for vote in votesToDivine:
+            divinedPlayer = vote.VotedPlayer;
+            isDivinedPlayerWereolf = divinedPlayer.Role.Type == PlayerTypeEnum.Werewolf;
+            negator = str() if isDivinedPlayerWereolf else "NOT";
+
+            message = f"'{divinedPlayer.Name}' was divined, they are {negator} a werewolf.";
+            LogUtility.CreatePrivateGameMessage(message, self, vote.Player.Identifier);
+
+            pass;
 
         # Get votes for seer (these are independent from everything else)
 
