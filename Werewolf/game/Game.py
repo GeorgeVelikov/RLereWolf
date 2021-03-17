@@ -181,7 +181,7 @@ class Game():
             return False;
 
         if len(self.Players) < GameConstants.MINIMAL_PLAYER_COUNT:
-            LogUtility.CreateGameMessage(f"Minimum of {GameConstants.MINIMAL_PLAYER_COUNT} players required.");
+            LogUtility.CreateGameMessage(f"Minimum of {GameConstants.MINIMAL_PLAYER_COUNT} players required.", self);
             self.Restart();
             return True;
 
