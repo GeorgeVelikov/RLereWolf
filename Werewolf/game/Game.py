@@ -8,6 +8,7 @@ from Werewolf.agents.AgentPlayer import AgentPlayer;
 import Werewolf.game.GameRules as GameRules;
 
 import uuid;
+import random;
 from collections import Counter;
 
 class Game():
@@ -202,7 +203,9 @@ class Game():
 
         self.__playerIdentifiersThatCanVote = set([p.Identifier for p in self.Players if p.IsAlive]);
 
-        for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
+        agentPlayers = self.AgentPlayers
+        shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
+        for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
             agent.ActDay();
 
         return;
@@ -214,7 +217,9 @@ class Game():
 
         self.__playerIdentifiersThatCanVote = set([p.Identifier for p in self.NightPlayers if p.IsAlive]);
 
-        for agent in [ap for ap in self.AgentPlayers if ap.IsAlive]:
+        agentPlayers = self.AgentPlayers
+        shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
+        for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
             agent.ActNight();
 
         return;
