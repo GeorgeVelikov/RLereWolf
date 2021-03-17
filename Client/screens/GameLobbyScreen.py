@@ -318,7 +318,7 @@ class GameLobbyScreen(ScreenBase):
             for message in TalkMessageUtility.WhisperMessagesForRole(clientRole):
                  self.__whisperMessagesMenu.add_command(\
                     label = message.MessageName,\
-                    command = lambda: self.Talk_SendMessage(message));
+                    command = lambda: self.Whisper_SendMessage(message));
 
                  continue;
 
@@ -362,6 +362,9 @@ class GameLobbyScreen(ScreenBase):
         y = self.Root.winfo_pointery();
 
         self.__whisperMessagesMenu.tk_popup(x, y);
+        return;
+
+    def Whisper_SendMessage(self, messageType, role = None):
         return;
 
     def Attack_Clicked(self):
