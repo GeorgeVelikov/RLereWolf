@@ -4,11 +4,11 @@ import Shared.constants.CommunicationPresetConstants as CommunicationPresets;
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 
 GENERAL_MESSAGES = [\
-    TalkMessage("Agree", CommunicationPresets.AGREE_PLAYER, None, False),\
-    TalkMessage("Disagree", CommunicationPresets.DISAGREE_PLAYER, None, False),\
-    TalkMessage("Accuse Certain Role" , CommunicationPresets.ASSERT_CERTAIN_PLAYER_ROLE, None, True),\
-    TalkMessage("Accuse Uncertain Role", CommunicationPresets.ASSERT_UNCERTAIN_PLAYER_ROLE, None, True),\
-    TalkMessage("Declare Role", CommunicationPresets.DECLARE_ROLE, None, True),\
+    TalkMessage("Agree with", CommunicationPresets.AGREE_PLAYER, None, False),\
+    TalkMessage("Disagree with", CommunicationPresets.DISAGREE_PLAYER, None, False),\
+    TalkMessage("Accuse Player of being A" , CommunicationPresets.ASSERT_CERTAIN_PLAYER_ROLE, None, True),\
+    TalkMessage("Player might be a", CommunicationPresets.ASSERT_UNCERTAIN_PLAYER_ROLE, None, True),\
+    TalkMessage("I am a", CommunicationPresets.DECLARE_ROLE, None, True),\
 ];
 
 WEREWOLF_MESSAGES = [\
