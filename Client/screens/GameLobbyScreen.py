@@ -332,6 +332,9 @@ class GameLobbyScreen(ScreenBase):
         if not selectedPlayerIdentifier:
             return;
 
+        if selectedPlayerIdentifier == self.Client.Player.Identifier:
+            return;
+
         self.Context.ServiceContext.Vote(selectedPlayerIdentifier);
         return;
 
@@ -353,6 +356,9 @@ class GameLobbyScreen(ScreenBase):
         if not selectedPlayerIdentifier:
             return;
 
+        if selectedPlayerIdentifier == self.Client.Player.Identifier:
+            return;
+
         self.Context.ServiceContext.Attack(selectedPlayerIdentifier);
         return;
 
@@ -365,6 +371,9 @@ class GameLobbyScreen(ScreenBase):
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
 
         if not selectedPlayerIdentifier:
+            return;
+
+        if selectedPlayerIdentifier == self.Client.Player.Identifier:
             return;
 
         self.Context.ServiceContext.Divine(selectedPlayerIdentifier);
