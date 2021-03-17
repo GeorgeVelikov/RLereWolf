@@ -358,6 +358,10 @@ class GameLobbyScreen(ScreenBase):
 
     # Werewolf Controls
     def Whisper_Clicked(self):
+        x = self.Root.winfo_pointerx();
+        y = self.Root.winfo_pointery();
+
+        self.__whisperMessagesMenu.tk_popup(x, y);
         return;
 
     def Attack_Clicked(self):
