@@ -54,3 +54,15 @@ def WhisperMessagesForRole(role):
         if role and m.PlayerType == role]
 
     return messagesForRole;
+
+def ConstructMessageText(talkMessage, targetPlayer, targetRole):
+
+    if CommunicationPresets.PLAYER in talkMessage.MessageTemplate and not targetPlayer:
+        return None;
+
+    if CommunicationPresets.ROLE in talkMessage.MessageTemplate and not targetRole:
+        return None;
+
+    return talkMessage.MessageTemplate\
+        .replace(CommunicationPresets.PLAYER, targetPlayer.Name)\
+        .replace(CommunicationPresets.ROLE, str(targetRole));

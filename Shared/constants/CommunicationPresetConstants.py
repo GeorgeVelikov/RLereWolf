@@ -1,17 +1,17 @@
-__PLAYER = "%player%";
-__ROLE = "%role%";
+PLAYER = "%player%";
+ROLE = "%role%";
 
 # General
-AGREE_PLAYER = "I agree with {__PLAYER}.";
-DISAGREE_PLAYER = "I disagree with {__PLAYER}.";
+AGREE_PLAYER = "I agree with {PLAYER}.";
+DISAGREE_PLAYER = "I disagree with {PLAYER}.";
 
-ASSERT_CERTAIN_PLAYER_ROLE = f"{__PLAYER} is a {__ROLE}.";
-ASSERT_UNCERTAIN_PLAYER_ROLE = f"I think {__PLAYER} is a {__ROLE}.";
-DECLARE_ROLE = f"I am a {__ROLE}.";
+ASSERT_CERTAIN_PLAYER_ROLE = f"{PLAYER} is a {ROLE}.";
+ASSERT_UNCERTAIN_PLAYER_ROLE = f"I think {PLAYER} is a {ROLE}.";
+DECLARE_ROLE = f"I am a {ROLE}.";
 
 # Guard specific
 
 # Werewolf specific
-WEREWOLF_ATTACK_PLAYER = f"I will attack {__PLAYER}.";
+WEREWOLF_ATTACK_PLAYER = f"I will attack {PLAYER}.";
 
 # Seer specific

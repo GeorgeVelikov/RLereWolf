@@ -6,8 +6,10 @@ from Client.screens.ScreenBase import ScreenBase;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
+from Shared.dtos.MessageDto import MessageDto;
 
 import tkinter as tk;
+from functools import partial
 
 class GameLobbyScreen(ScreenBase):
     def __init__(self, root, context):
@@ -296,7 +298,7 @@ class GameLobbyScreen(ScreenBase):
                 for role in PlayerTypeEnum.Values():
                     bufferMenu.add_command(\
                         label = str(role),\
-                        command = lambda: self.Talk_SendMessage(message, role));
+                        command = partial(self.Talk_SendMessage, (message, role)));
 
                     pass;
 
@@ -306,7 +308,7 @@ class GameLobbyScreen(ScreenBase):
             else:
                 self.__talkMessagesMenu.add_command(\
                     label = message.MessageName,\
-                    command = lambda: self.Talk_SendMessage(message));
+                    command = partial(self.Talk_SendMessage, message));
 
             previousMessageRole = message.PlayerType;
 
@@ -318,7 +320,7 @@ class GameLobbyScreen(ScreenBase):
             for message in TalkMessageUtility.WhisperMessagesForRole(clientRole):
                  self.__whisperMessagesMenu.add_command(\
                     label = message.MessageName,\
-                    command = lambda: self.Whisper_SendMessage(message));
+                    command = partial(self.Talk_SendMessage, message));
 
                  continue;
 
@@ -334,7 +336,20 @@ class GameLobbyScreen(ScreenBase):
         self.__talkMessagesMenu.tk_popup(x, y);
         return;
 
-    def Talk_SendMessage(self, messageType, role = None):
+    def Talk_SendMessage(self, messageType, targetRole = None):
+        currentPlayer = self.Client.Player;
+
+        selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
+
+        selectedPlayer = next((p for p in self.Client.Game.Players\
+            if p.Identifier == selectedPlayerIdentifier), None);
+
+        text = TalkMessageUtility.ConstructMessageText(messageType, selectedPlayer, targetRole)
+
+        if not text:
+            return;
+
+        message = MessageDto(currentPlayer, text, targetRole, None, None);
         return;
 
     def Vote_Clicked(self):
@@ -364,7 +379,20 @@ class GameLobbyScreen(ScreenBase):
         self.__whisperMessagesMenu.tk_popup(x, y);
         return;
 
-    def Whisper_SendMessage(self, messageType, role = None):
+    def Whisper_SendMessage(self, messageType, targetRole = None):
+        currentPlayer = self.Client.Player;
+
+        selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
+
+        selectedPlayer = next((p for p in self.Client.Game.Players\
+            if p.Identifier == selectedPlayerIdentifier), None);
+
+        text = TalkMessageUtility.ConstructMessageText(messageType, selectedPlayer, targetRole)
+
+        if not text:
+            return;
+
+        message = MessageDto(currentPlayer, text, targetRole, None, None);
         return;
 
     def Attack_Clicked(self):

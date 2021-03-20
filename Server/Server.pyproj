@@ -51,18 +51,6 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.pyproj">
-      <Name>Shared</Name>
-      <Project>{6a6aa1f8-07d6-417d-9a11-a2b24ee379cd}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Werewolf\Werewolf.pyproj">
-      <Name>Werewolf</Name>
-      <Project>{ebeb76b6-f945-4178-a682-0dae77f084e9}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in
