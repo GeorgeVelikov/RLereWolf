@@ -121,7 +121,7 @@ class GameLobbyScreen(ScreenBase):
             return;
 
         # ascending order
-       messages.sort(key = lambda m: m.TimeUtc,\
+        messages.sort(key = lambda m: m.TimeUtc,\
             reverse = False);
 
         (scrollX, scrollY) = self.__messagesScrollBar.get();
