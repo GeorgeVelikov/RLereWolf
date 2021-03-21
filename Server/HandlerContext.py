@@ -55,6 +55,12 @@ class HandlerContext():
         elif packet.PacketType == PacketTypeEnum.VotePlayer:
             self.GameActionHandler.VotePlayer(connection, packet);
 
+        elif packet.PacketType == PacketTypeEnum.Talk:
+            self.GameActionHandler.Talk(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.Whisper:
+            self.GameActionHandler.Whisper(connection, packet);
+
         elif packet.PacketType == PacketTypeEnum.AttackPlayer:
             self.GameActionHandler.AttackPlayer(connection, packet);
 

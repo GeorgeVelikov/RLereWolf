@@ -68,6 +68,14 @@ class GameActionHandler(HandlerBase):
 
         return;
 
+    def Talk(self, connection, packet):
+        connection.sendall(pickle.dumps(True));
+        return;
+
+    def Whisper(self, connection, packet):
+        connection.sendall(pickle.dumps(True));
+        return;
+
     def VotePlayer(self, connection, packet):
         dto = packet.Data;
         game = self.HandlerContext.GetGameWithIdentifier(dto.GameIdentifier);

@@ -38,6 +38,12 @@ def GetVoteGameStartPacket(data):
 def GetVotePlayerPacket(data):
     return Packet(PacketTypeEnum.VotePlayer, data);
 
+def GetTalkPacket(data):
+    return Packet(PacketTypeEnum.Talk, data);
+
+def GetWhisperPacket(data):
+    return Packet(PacketTypeEnum.Whisper, data);
+
 def GetAttackPlayerPacket(data):
     return Packet(PacketTypeEnum.AttackPlayer, data);
 

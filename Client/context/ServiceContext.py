@@ -170,7 +170,11 @@ class ServiceContext():
         if not message or not message.IsValid:
             return;
 
-        return;
+        packet = PacketUtility.GetTalkPacket(message);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     def Vote(self, targetPlayerIdentifier):
         if not self.Client or\
@@ -206,7 +210,11 @@ class ServiceContext():
         if not message or not message.IsValid:
             return;
 
-        return;
+        packet = PacketUtility.GetWhisperPacket(message);
+
+        reply = self.Send(packet);
+
+        return reply;
 
     def Attack(self, targetPlayerIdentifier):
         if not self.Client or\
