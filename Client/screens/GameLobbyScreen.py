@@ -171,27 +171,33 @@ class GameLobbyScreen(ScreenBase):
         self.SetupTalkAndWhisperSubMenu();
 
     def UpdateGameControlButtons(self):
-        if not self.Client.Game.HasStarted:
+        if not self.Client.Game.HasStarted or not self.Client.Player.IsAlive:
             self.__villagerButtons.grid_remove();
             self.__werewolfButtons.grid_remove();
             self.__seerButtons.grid_remove();
             self.__guardButtons.grid_remove();
             return;
 
-        self.__villagerButtons.grid();
-
         if not self.Client.Player.Role:
             print("No Role in the game.");
             return
 
-        if self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf:
-            self.__werewolfButtons.grid();
+        if self.Client.Game.TimeOfDay == TimeOfDayEnum.Day:
+            self.__villagerButtons.grid();
+            self.__werewolfButtons.grid_remove();
+            self.__seerButtons.grid_remove();
+            self.__guardButtons.grid_remove();
+        else:
+            self.__villagerButtons.grid_remove();
 
-        elif self.Client.Player.Role.Type == PlayerTypeEnum.Seer:
-            self.__seerButtons.grid();
+            if self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf:
+                self.__werewolfButtons.grid();
 
-        elif self.Client.Player.Role.Type == PlayerTypeEnum.Guard:
-            self.__guardButtons.grid();
+            elif self.Client.Player.Role.Type == PlayerTypeEnum.Seer:
+                self.__seerButtons.grid();
+
+            elif self.Client.Player.Role.Type == PlayerTypeEnum.Guard:
+                self.__guardButtons.grid();
 
         return;
 
