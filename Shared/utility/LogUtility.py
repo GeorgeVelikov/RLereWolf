@@ -37,7 +37,28 @@ def CreateGameMessage(message, game):
     return dto;
 
 def CreatePrivateGameMessage(message, game, forPlayer):
-    dto = MessageDto(None, message, forPlayer);
+    dto = MessageDto(None, message, forPlayer = forPlayer);
+    Log(LogConstants.MESSAGE, dto.Content, game);
+    game.Messages.add(dto);
+    return dto;
+
+def CreateTalkGameMessage(author, message, messageType, game):
+    dto = MessageDto(\
+        author,\
+        message,\
+        messageType = messageType);
+
+    Log(LogConstants.MESSAGE, dto.Content, game);
+    game.Messages.add(dto);
+    return dto
+
+def CreateWhisperGameMessage(author, message, messageType, game, forRole):
+    dto = MessageDto(\
+        author,\
+        message,\
+        messageType = messageType,\
+        forRole = forRole);
+
     Log(LogConstants.MESSAGE, dto.Content, game);
     game.Messages.add(dto);
     return dto;

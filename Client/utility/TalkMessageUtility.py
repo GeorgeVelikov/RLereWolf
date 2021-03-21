@@ -2,17 +2,46 @@ from Client.models.TalkMessage import TalkMessage;
 
 import Shared.constants.CommunicationPresetConstants as CommunicationPresets;
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.MessageTypeEnum import MessageTypeEnum;
 
 GENERAL_MESSAGES = [\
-    TalkMessage("Agree with", CommunicationPresets.AGREE_PLAYER, None, False),\
-    TalkMessage("Disagree with", CommunicationPresets.DISAGREE_PLAYER, None, False),\
-    TalkMessage("Accuse Player of being a" , CommunicationPresets.ASSERT_CERTAIN_PLAYER_ROLE, None, True),\
-    TalkMessage("Player might be a", CommunicationPresets.ASSERT_UNCERTAIN_PLAYER_ROLE, None, True),\
-    TalkMessage("I am a", CommunicationPresets.DECLARE_ROLE, None, True),\
+    TalkMessage("Agree with",\
+        CommunicationPresets.AGREE_PLAYER,\
+        None,\
+        False,\
+        MessageTypeEnum.AgreeWith),\
+
+    TalkMessage("Disagree with",\
+        CommunicationPresets.DISAGREE_PLAYER,\
+        None,\
+        False,\
+        MessageTypeEnum.DisagreeWith),\
+
+    TalkMessage("Accuse Player of being a",\
+        CommunicationPresets.ASSERT_CERTAIN_PLAYER_ROLE,\
+        None,\
+        True,\
+        MessageTypeEnum.AccusePlayerOfRole),\
+
+    TalkMessage("Player might be a",\
+        CommunicationPresets.ASSERT_UNCERTAIN_PLAYER_ROLE,\
+        None,\
+        True,\
+        MessageTypeEnum.SuggestPlayerOfRole),\
+
+    TalkMessage("I am a",\
+        CommunicationPresets.DECLARE_ROLE,\
+        None,\
+        True,\
+        MessageTypeEnum.DeclareSelfAsRole),\
 ];
 
 WEREWOLF_MESSAGES = [\
-    TalkMessage("Attack", CommunicationPresets.WEREWOLF_ATTACK_PLAYER, PlayerTypeEnum.Werewolf, False),\
+    TalkMessage("Attack",\
+        CommunicationPresets.WEREWOLF_ATTACK_PLAYER,\
+        PlayerTypeEnum.Werewolf,\
+        False,\
+        MessageTypeEnum.WerewolfAttack),\
 ];
 
 SEER_MESSAGES = [\

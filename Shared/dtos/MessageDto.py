@@ -4,7 +4,14 @@ import Shared.utility.DateTimeUtility as DateTimeUtility
 from datetime import datetime;
 
 class MessageDto():
-    def __init__(self, author, text, targetPlayer = None, forPlayer = None, messageType = None):
+    def __init__(self,\
+        author,\
+        text,\
+        targetPlayer = None,\
+        forPlayer = None,\
+        forRole = None,\
+        messageType = None):
+
         self.__timeUtc = datetime.utcnow();
         self.__author = author;
         self.__text = text;
@@ -13,6 +20,8 @@ class MessageDto():
         # who the message is directed to, this could be a special message or
         # someone saying "I think player X is a Werewolf", where this is player X.
         self.__targetPlayer = targetPlayer;
+
+        self.__forRole = forRole;
 
         # only specify this is if it's a "private" message
         self.__forPlayer = forPlayer;
@@ -38,6 +47,10 @@ class MessageDto():
     @property
     def TimeUtc(self):
         return self.__timeUtc;
+
+    @property
+    def ForRole(self):
+        return self.__forRole;
 
     @property
     def ForPlayer(self):
