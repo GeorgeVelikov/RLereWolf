@@ -182,22 +182,27 @@ class GameLobbyScreen(ScreenBase):
             print("No Role in the game.");
             return
 
+        self.__villagerButtons.grid();
+
+        if self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf:
+            self.__werewolfButtons.grid();
+
+        elif self.Client.Player.Role.Type == PlayerTypeEnum.Seer:
+            self.__seerButtons.grid();
+
+        elif self.Client.Player.Role.Type == PlayerTypeEnum.Guard:
+            self.__guardButtons.grid();
+
         if self.Client.Game.TimeOfDay == TimeOfDayEnum.Day:
-            self.__villagerButtons.grid();
-            self.__werewolfButtons.grid_remove();
-            self.__seerButtons.grid_remove();
-            self.__guardButtons.grid_remove();
+            self.SetButtonsStateInLayout(self.__villagerButtons, tk.NORMAL);
+            self.SetButtonsStateInLayout(self.__werewolfButtons, tk.DISABLED);
+            self.SetButtonsStateInLayout(self.__seerButtons, tk.DISABLED);
+            self.SetButtonsStateInLayout(self.__guardButtons, tk.DISABLED);
         else:
-            self.__villagerButtons.grid_remove();
-
-            if self.Client.Player.Role.Type == PlayerTypeEnum.Werewolf:
-                self.__werewolfButtons.grid();
-
-            elif self.Client.Player.Role.Type == PlayerTypeEnum.Seer:
-                self.__seerButtons.grid();
-
-            elif self.Client.Player.Role.Type == PlayerTypeEnum.Guard:
-                self.__guardButtons.grid();
+            self.SetButtonsStateInLayout(self.__villagerButtons, tk.DISABLED);
+            self.SetButtonsStateInLayout(self.__werewolfButtons, tk.NORMAL);
+            self.SetButtonsStateInLayout(self.__seerButtons, tk.NORMAL);
+            self.SetButtonsStateInLayout(self.__guardButtons, tk.NORMAL);
 
         return;
 
@@ -267,12 +272,11 @@ class GameLobbyScreen(ScreenBase):
 
         return playerItem["text"];
 
-    def ToggleButtonsInLayout(self, layout):
+    def SetButtonsStateInLayout(self, layout, state):
         buttons = layout.winfo_children();
 
         for button in buttons:
-            state = button["state"];
-            button.config(state = tk.DISABLED if state == tk.NORMAL else tk.NORMAL);
+            button.config(state = state);
 
         return;
 
