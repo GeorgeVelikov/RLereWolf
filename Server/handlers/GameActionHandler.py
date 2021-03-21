@@ -69,6 +69,21 @@ class GameActionHandler(HandlerBase):
         return;
 
     def Talk(self, connection, packet):
+        messageRequestDto = packet.Data;
+
+        if not messageRequestDto or not messageRequestDto.IsValid:
+            connection.sendall(pickle.dumps(False));
+            return;
+
+        game = self.HandlerContext.GetGameWithIdentifier(messageRequestDto.GameIdentifier);
+        talkMessage = messageRequestDto.TalkMessage;
+
+        player = game.GetPlayerByIdentifier(messageRequestDto.PlayerIdentifier);
+        targetPlayer = None;
+
+        if messageRequestDto.TargetPlayerIdentifier:
+            targetPlayer = game.GetPlayerByIdentifier(messageRequestDto.TargetPlayerIdentifier);
+
         connection.sendall(pickle.dumps(True));
         return;
 

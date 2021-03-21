@@ -36,6 +36,7 @@ def CreateGameMessage(message, game):
     game.Messages.add(dto);
     return dto;
 
+# TODO: could you potentially DM other people? Should be pretty straight forward!
 def CreatePrivateGameMessage(message, game, forPlayer):
     dto = MessageDto(None, message, forPlayer = forPlayer);
     Log(LogConstants.MESSAGE, dto.Content, game);
