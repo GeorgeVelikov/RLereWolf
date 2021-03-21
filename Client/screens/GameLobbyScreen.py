@@ -121,7 +121,7 @@ class GameLobbyScreen(ScreenBase):
             return;
 
         # ascending order
-        messages.sort(key = lambda m: m.TimeUtc,\
+       messages.sort(key = lambda m: m.TimeUtc,\
             reverse = False);
 
         (scrollX, scrollY) = self.__messagesScrollBar.get();
@@ -320,7 +320,7 @@ class GameLobbyScreen(ScreenBase):
             for message in TalkMessageUtility.WhisperMessagesForRole(clientRole):
                  self.__whisperMessagesMenu.add_command(\
                     label = message.MessageName,\
-                    command = partial(self.Talk_SendMessage, message));
+                    command = partial(self.Whisper_SendMessage, message));
 
                  continue;
 

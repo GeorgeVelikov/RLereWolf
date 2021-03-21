@@ -3,7 +3,7 @@ from Shared.dtos.GameListDto import GameListDto;
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 from Werewolf.game.Game import Game;
 
-def GameToDto(game, lastUpdatedUtc, forPlayer):
+def GameToDto(game, lastUpdatedUtc, player):
     if not game:
         return None;
 
@@ -13,7 +13,8 @@ def GameToDto(game, lastUpdatedUtc, forPlayer):
     if lastUpdatedUtc:
         messages = [m for m in game.Messages\
             if m.TimeUtc >= lastUpdatedUtc\
-            and (not m.ForPlayer or forPlayer == m.ForPlayer)];
+            and (not m.ForPlayer or player.Identifier == m.ForPlayer)\
+            and (not m.ForRole or not player.Role or player.Role.Type == m.ForRole)];
 
     return GameDto(game.Identifier,\
         game.HasStarted,\

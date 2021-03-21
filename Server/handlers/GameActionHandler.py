@@ -61,7 +61,7 @@ class GameActionHandler(HandlerBase):
 
         game.VoteStart(player);
 
-        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player.Identifier);
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player);
         dto = PlayerGameDto(player, gameDto);
 
         updatedEntityDto = UpdatedEntityDto(dto, self.Server.UtcNow);
@@ -99,12 +99,51 @@ class GameActionHandler(HandlerBase):
 
         # this is automatically added to the game, no need to serialize
         # it and send it back the game loop will handle all of the magic
-        messageDto = LogUtility.CreateTalkGameMessage(player, messageText, messageMetaDataDto, game);
+        messageDto = LogUtility.CreateTalkGameMessage(\
+            player,\
+            messageText,\
+            messageMetaDataDto,\
+            game);
 
         connection.sendall(pickle.dumps(True));
         return;
 
     def Whisper(self, connection, packet):
+        messageRequestDto = packet.Data;
+
+        if not messageRequestDto or not messageRequestDto.IsValid:
+            connection.sendall(pickle.dumps(False));
+            return;
+
+        game = self.HandlerContext.GetGameWithIdentifier(messageRequestDto.GameIdentifier);
+        talkMessage = messageRequestDto.TalkMessage;
+
+        player = game.GetPlayerByIdentifier(messageRequestDto.PlayerIdentifier);
+        targetPlayer = None;
+
+        if messageRequestDto.TargetPlayerIdentifier:
+            targetPlayer = game.GetPlayerByIdentifier(messageRequestDto.TargetPlayerIdentifier);
+
+        messageMetaDataDto = MessageMetaDataDto(\
+            messageRequestDto.PlayerIdentifier,\
+            messageRequestDto.TargetPlayerIdentifier,\
+            messageRequestDto.TargetPlayerRole,\
+            talkMessage.MessageType);
+
+        messageText = self.ConstructMessageText(\
+            talkMessage,\
+            targetPlayer,\
+            messageMetaDataDto.TargetRole);
+
+        # this is automatically added to the game, no need to serialize
+        # it and send it back the game loop will handle all of the magic
+        messageDto = LogUtility.CreateWhisperGameMessage(\
+            player,\
+            messageText,\
+            messageMetaDataDto,\
+            game,\
+            player.Role.Type);
+
         connection.sendall(pickle.dumps(True));
         return;
 

@@ -35,7 +35,7 @@ class GameLobbyHandler(HandlerBase):
 
         game.Join(player);
 
-        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player.Identifier);
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player);
 
         updatedEntityDto = UpdatedEntityDto(gameDto, lastUpdatedUtc);
 
@@ -71,7 +71,7 @@ class GameLobbyHandler(HandlerBase):
         game = self.HandlerContext.GetGameWithIdentifier(playerGameIdentifierDto.GameIdentifier);
         player = game.GetPlayerByIdentifier(playerGameIdentifierDto.Player.Identifier)
 
-        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player.Identifier);
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player);
         dto = PlayerGameDto(player, gameDto);
 
         updatedEntityDto = UpdatedEntityDto(dto, self.Server.UtcNow);

@@ -82,7 +82,11 @@ class MessageDto():
 
     @property
     def Content(self):
-        return self.AuthorName + " " + ("says: " if self.__isHumanAuthor else str()) + self.Text;
+        return \
+            ("[PRIVATE] " if self.ForPlayer else str()) +\
+            ("[WHISPER] " if self.ForRole else str()) +\
+            self.AuthorName + " " + ("says: " if self.__isHumanAuthor else str()) +\
+            self.Text;
 
     @property
     def MetaData(self):
