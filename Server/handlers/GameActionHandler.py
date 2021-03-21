@@ -1,9 +1,11 @@
 import Server.utility.ConversionHelper as ConversionHelper;
 from Server.handlers.HandlerBase import HandlerBase;
 
+import Shared.constants.CommunicationPresetConstants as CommunicationPresets;
 import Shared.utility.LogUtility as LogUtility;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
+from Shared.dtos.MessageMetaDataDto import MessageMetaDataDto;
 from Shared.utility.Helpers import GenerateFirstName;
 
 from Werewolf.agents.DummyPlayer import DummyPlayer;
@@ -83,6 +85,21 @@ class GameActionHandler(HandlerBase):
 
         if messageRequestDto.TargetPlayerIdentifier:
             targetPlayer = game.GetPlayerByIdentifier(messageRequestDto.TargetPlayerIdentifier);
+
+        messageMetaDataDto = MessageMetaDataDto(\
+            messageRequestDto.PlayerIdentifier,\
+            messageRequestDto.TargetPlayerIdentifier,\
+            messageRequestDto.TargetPlayerRole,\
+            talkMessage.MessageType);
+
+        messageText = self.ConstructMessageText(\
+            talkMessage,\
+            targetPlayer,\
+            messageMetaDataDto.TargetRole);
+
+        # this is automatically added to the game, no need to serialize
+        # it and send it back the game loop will handle all of the magic
+        messageDto = LogUtility.CreateTalkGameMessage(player, messageText, messageMetaDataDto, game);
 
         connection.sendall(pickle.dumps(True));
         return;
@@ -173,3 +190,27 @@ class GameActionHandler(HandlerBase):
 
         connection.sendall(pickle.dumps(True));
         return;
+
+    #region Helpers
+
+    def ConstructMessageText(self, talkMessage, targetPlayer, targetRole):
+        if not talkMessage:
+            return None;
+
+        text = talkMessage.MessageTemplate;
+
+        if (CommunicationPresets.PLAYER in text) and targetPlayer:
+            text = text\
+                .replace(CommunicationPresets.PLAYER, targetPlayer.Name);
+        elif (CommunicationPresets.PLAYER in text) and not targetPlayer:
+            return None;
+
+        if (CommunicationPresets.ROLE in text) and targetRole:
+            text = text\
+                .replace(CommunicationPresets.ROLE, str(targetRole));
+        elif (CommunicationPresets.ROLE in text) and not targetRole:
+            return None;
+
+        return text;
+
+    #endregion

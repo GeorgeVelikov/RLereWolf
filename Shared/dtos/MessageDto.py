@@ -7,27 +7,23 @@ class MessageDto():
     def __init__(self,\
         author,\
         text,\
-        targetPlayer = None,\
         forPlayer = None,\
         forRole = None,\
-        messageType = None):
+        messageMetaData = None):
 
         self.__timeUtc = datetime.utcnow();
         self.__author = author;
         self.__text = text;
         self.__isHumanAuthor = True if author else False;
 
-        # who the message is directed to, this could be a special message or
-        # someone saying "I think player X is a Werewolf", where this is player X.
-        self.__targetPlayer = targetPlayer;
-
+        # this can be a whisper, similar sort of "message the team" functionality
         self.__forRole = forRole;
 
         # only specify this is if it's a "private" message
         self.__forPlayer = forPlayer;
 
-        # a better way of keeping track of the message type
-        self.__messageType = messageType;
+        # a better way of keeping track of the message type, message type, message target etc.
+        self.__messageMetaData = messageMetaData;
 
     def __str__(self):
         return self.TimeStampLocal + " " + self.Content;
@@ -81,13 +77,13 @@ class MessageDto():
         return self.__author.Name;
 
     @property
-    def TargetPlayer(self):
-        return self.__targetPlayer;
-
-    @property
     def Text(self):
         return self.__text;
 
     @property
     def Content(self):
         return self.AuthorName + " " + ("says: " if self.__isHumanAuthor else str()) + self.Text;
+
+    @property
+    def MetaData(self):
+        return self.__messageMetaData;
