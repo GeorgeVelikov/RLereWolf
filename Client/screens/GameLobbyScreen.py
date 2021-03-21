@@ -6,7 +6,7 @@ from Client.screens.ScreenBase import ScreenBase;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
-from Shared.dtos.MessageDto import MessageDto;
+from Shared.dtos.MessageRequestDto import MessageRequestDto;
 
 import tkinter as tk;
 from functools import partial
@@ -298,7 +298,7 @@ class GameLobbyScreen(ScreenBase):
                 for role in PlayerTypeEnum.Values():
                     bufferMenu.add_command(\
                         label = str(role),\
-                        command = partial(self.Talk_SendMessage, (message, role)));
+                        command = partial(self.Talk_SendMessage, message, role));
 
                     pass;
 
@@ -337,19 +337,31 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Talk_SendMessage(self, messageType, targetRole = None):
+        if not messageType:
+            return;
+
         currentPlayer = self.Client.Player;
+        currentGame = self.Client.GameIdentifier;
+
+        if not currentPlayer or\
+            not currentPlayer.Identifier or\
+            not currentGame:
+
+            return;
 
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
 
-        selectedPlayer = next((p for p in self.Client.Game.Players\
-            if p.Identifier == selectedPlayerIdentifier), None);
+        messageRequest = MessageRequestDto(\
+            currentGame,\
+            currentPlayer.Identifier,\
+            messageType,\
+            selectedPlayerIdentifier,\
+            targetRole);
 
-        text = TalkMessageUtility.ConstructMessageText(messageType, selectedPlayer, targetRole)
-
-        if not text:
+        if not messageRequest.IsValid:
             return;
 
-        message = MessageDto(currentPlayer, text, targetRole, None, None);
+        self.Context.ServiceContext.Talk(messageRequest);
         return;
 
     def Vote_Clicked(self):
@@ -380,19 +392,31 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def Whisper_SendMessage(self, messageType, targetRole = None):
+        if not messageType:
+            return;
+
         currentPlayer = self.Client.Player;
+        currentGame = self.Client.GameIdentifier;
+
+        if not currentPlayer or\
+            not currentPlayer.Identifier or\
+            not currentGame:
+
+            return;
 
         selectedPlayerIdentifier = self.GetSelectedPlayerIdentifierFromTreeView();
 
-        selectedPlayer = next((p for p in self.Client.Game.Players\
-            if p.Identifier == selectedPlayerIdentifier), None);
+        messageRequest = MessageRequestDto(\
+            currentGame,\
+            currentPlayer.Identifier,\
+            messageType,\
+            selectedPlayerIdentifier,\
+            targetRole);
 
-        text = TalkMessageUtility.ConstructMessageText(messageType, selectedPlayer, targetRole)
-
-        if not text:
+        if not messageRequest.IsValid:
             return;
 
-        message = MessageDto(currentPlayer, text, targetRole, None, None);
+        self.Context.ServiceContext.Whisper(messageRequest);
         return;
 
     def Attack_Clicked(self):

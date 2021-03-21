@@ -167,6 +167,9 @@ class ServiceContext():
 
     # Villager / Common
     def Talk(self, message):
+        if not message or not message.IsValid:
+            return;
+
         return;
 
     def Vote(self, targetPlayerIdentifier):
@@ -200,6 +203,9 @@ class ServiceContext():
 
     # Werewolf
     def Whisper(self, message):
+        if not message or not message.IsValid:
+            return;
+
         return;
 
     def Attack(self, targetPlayerIdentifier):
