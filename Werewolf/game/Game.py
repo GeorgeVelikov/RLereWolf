@@ -139,6 +139,9 @@ class Game():
             elif self.__timeOfDay == TimeOfDayEnum.Night:
                 self.CountNightVotesAndEvents();
 
+            return;
+
+        self.Restart();
         return;
 
     def Start(self):
@@ -182,16 +185,13 @@ class Game():
 
         if len(self.Players) < GameConstants.MINIMAL_PLAYER_COUNT:
             LogUtility.CreateGameMessage(f"Minimum of {GameConstants.MINIMAL_PLAYER_COUNT} players required.", self);
-            self.Restart();
             return True;
 
         # this will be defined in GameRules.py
         if GameRules.DoVillagersWin(self):
-            self.Restart();
             return True;
 
         if GameRules.DoWerewolvesWin(self):
-            self.Restart();
             return True;
 
         return False;
@@ -297,6 +297,7 @@ class Game():
 
         if self.CheckWinCondition():
             # don't go to other turn and don't start the day if the game is over
+            self.Restart();
             return;
 
         self.StartNight();
@@ -416,6 +417,7 @@ class Game():
 
         if self.CheckWinCondition():
             # don't go to other turn and don't start the day if the game is over
+            self.Restart();
             return;
 
         self.__turn += 1;
