@@ -53,6 +53,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.7" />
     <InterpreterReference Include="Global|PythonCore|3.9" />
   </ItemGroup>
