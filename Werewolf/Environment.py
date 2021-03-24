@@ -1,19 +1,18 @@
+from Werewolf.environment.WerewolfEnvironment import WerewolfEnvironemnt;
+from Werewolf.game.Game import Game;
+from Werewolf.agents.DummyPlayer import DummyPlayer;
+
 import gym;
 
-def RunOpenAiGym():
-    env = gym.make('CartPole-v0')
+def RunWerewolfEnvironment():
+    game = Game("Training game");
 
-    for i_episode in range(20):
-        observation = env.reset()
-        for t in range(10):
-            env.render()
-            print(observation)
-            action = env.action_space.sample()
-            observation, reward, done, info = env.step(action)
-            if done:
-                print("Episode finished after {} timesteps".format(t+1))
-                break
-    env.close()
+    for i in range (10):
+        DummyPlayer("bot-" + str(i), game);
+
+    environment = WerewolfEnvironemnt(game);
+
+    return;
 
 if __name__ == "__main__":
-    RunOpenAiGym();
+    RunWerewolfEnvironment();
