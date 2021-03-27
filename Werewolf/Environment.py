@@ -5,7 +5,7 @@ from Werewolf.agents.DummyPlayer import DummyPlayer;
 import gym;
 
 def RunWerewolfEnvironment():
-    game = Game("Training game");
+    game = Game("Training game", False);
 
     for i in range (10):
         DummyPlayer("bot-" + str(i), game);

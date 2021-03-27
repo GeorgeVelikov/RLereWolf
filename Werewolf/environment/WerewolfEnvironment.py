@@ -4,6 +4,7 @@ from Werewolf.environment.Statistics import Statistics;
 from Werewolf.environment.TrainingRewards import TrainingRewards;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 
 import gym;
 import numpy;
@@ -40,15 +41,75 @@ class WerewolfEnvironemnt(gym.Wrapper):
 
         self.action_space = gym.spaces.Discrete(self.__numberOfAgents);
 
-        x = 1;
-
-
     def render(self):
         # probably not worth doing
         pass;
 
     def step(self, agentActions):
-        self.__stepCount += 1;
+
+        agentPlayerIdentifiers = [ap.Identifier for ap in self.game.AgentPlayers];
+        rewards = {id: 0 for id in agentPlayerIdentifiers};
+
+        if self.game.TimeOfDay == TimeOfDayEnum.Day:
+            shouldForceGameStep = False;
+
+            for action in agentActions:
+                actionResult = self.game.VoteDay(action);
+
+                if actionResult == 10:
+                    # player cannot vote, likely attempted to vote more than once
+                    shouldForceGameStep = True;
+                    rewards[action.Player.Identifier] += TrainingRewards.IncorrectAction;
+                    pass;
+                elif actionResult == 11:
+                    # dead player target
+                    shouldForceGameStep = True;
+                    rewards[action.Player.Identifier] += TrainingRewards.DeadPlayerTargeted;
+                    pass;
+                elif actionResult == 0:
+                    # waited
+                    rewards[action.Player.Identifier] += TrainingRewards.Wait;
+                    pass;
+                elif actionResult == 1:
+                    # voted
+                    rewards[action.Player.Identifier] += TrainingRewards.Vote;
+                    pass;
+
+            if shouldForceGameStep:
+                self.game.CountVotesExecute();
+
+        if self.game.TimeOfDay == TimeOfDay.Night:
+            shouldForceGameStep = False;
+
+            for action in agentActions:
+                actionResult = self.game.VoteNight(action);
+
+                if actionResult == 10:
+                    # player cannot vote, likely attempted to vote more than once
+                    shouldForceGameStep = True;
+                    rewards[action.Player.Identifier] += TrainingRewards.IncorrectAction;
+                    pass;
+                elif actionResult == 11:
+                    # dead player target
+                    shouldForceGameStep = True;
+                    rewards[action.Player.Identifier] += TrainingRewards.DeadPlayerTargeted;
+                    pass;
+                elif actionResult == 12:
+                    # role cannot act during the night
+                    shouldForceGameStep = True;
+                    rewards[action.Player.Identifier] += TrainingRewards.IncorrectAction;
+                    pass;
+                elif actionResult == 0:
+                    # waited
+                    rewards[action.Player.Identifier] += TrainingRewards.Wait;
+                    pass;
+                elif actionResult == 1:
+                    # voted
+                    rewards[action.Player.Identifier] += TrainingRewards.Vote;
+                    pass;
+
+            if shouldForceGameStep:
+                self.game.CountNightVotesAndEvents();
 
         action = agentActions[0];
         observation, reward, done, info = self.env.step(action);
