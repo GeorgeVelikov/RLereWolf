@@ -12,7 +12,7 @@ import random;
 from collections import Counter;
 
 class Game():
-    def __init__(self, name):
+    def __init__(self, name, agentsAutomaticallyPlay = True):
         self.__identifier = uuid.uuid4().hex;
         self.__hasStarted = False;
         self.__name = name;
@@ -22,6 +22,8 @@ class Game():
         self.__players = set();
         self.__playerIdentifiersThatCanVote = set();
         self.__timeOfDay = TimeOfDayEnum._None;
+
+        self.__agentsAutomaticallyPlay = agentsAutomaticallyPlay;
 
     def __str__(self):
         return self.Name + " - " + self.Identifier;
@@ -157,7 +159,7 @@ class Game():
         GameRules.DistributeRolesBaseGame(self);
 
         self.__hasStarted = True;
-        self.__turn = 1;
+        self.__turn = 0;
 
         self.StartDay();
 
@@ -197,16 +199,18 @@ class Game():
         return False;
 
     def StartDay(self):
+        self.__turn += 1;
         self.__votes = set();
         self.__timeOfDay = TimeOfDayEnum.Day;
         self.ShowTurnAndTime();
 
         self.__playerIdentifiersThatCanVote = set([p.Identifier for p in self.Players if p.IsAlive]);
 
-        agentPlayers = self.AgentPlayers
-        shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
-        for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
-            agent.ActDay();
+        if self.__agentsAutomaticallyPlay:
+            agentPlayers = self.AgentPlayers
+            shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
+            for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
+                agent.ActDay();
 
         return;
 
@@ -217,10 +221,11 @@ class Game():
 
         self.__playerIdentifiersThatCanVote = set([p.Identifier for p in self.NightPlayers if p.IsAlive]);
 
-        agentPlayers = self.AgentPlayers
-        shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
-        for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
-            agent.ActNight();
+        if self.__agentsAutomaticallyPlay:
+            agentPlayers = self.AgentPlayers
+            shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
+            for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
+                agent.ActNight();
 
         return;
 
@@ -266,14 +271,18 @@ class Game():
         alivePlayers = [ap for ap in self.Players if ap.IsAlive];
         playerIdentifiers = [p.Identifier for p in alivePlayers];
 
-        if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote or\
-            (vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers):
+        if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote:
+            LogUtility.Error(f"Invalid vote, player {vote.Player.Name} cannot vote.", self);
+            return 10;
+
+        if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
             # players not in the game, error
-            LogUtility.Error("Invalid vote, one of the players is not alive in the game", self);
-            return;
+            LogUtility.Error(f"Invalid vote, target player {vote.VotedPlayer.Name} is not alive", self);
+            return 11;
 
         if not vote.VotedPlayer:
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' does not vote.", self);
+            return 0;
         else:
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' voted to execute {vote.VotedPlayer.Name}.", self);
 
@@ -283,7 +292,7 @@ class Game():
         if not self.__playerIdentifiersThatCanVote:
             self.CountVotesExecute();
 
-        return;
+        return 1;
 
     def CountVotesExecute(self):
         # remove the "wait" calls
@@ -323,12 +332,12 @@ class Game():
         if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote:
             playerDetails = "'" + vote.Player.Name + "' - " +  vote.Player.Identifier;
             LogUtility.Error(f"{playerDetails} cannot act in the night.", self);
-            return;
+            return 10;
 
         if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
             playerDetails = vote.VotedPlayer.Name + " - " +  vote.VotedPlayer.Identifier;
             LogUtility.Error(f"Invalid vote, target player {playerDetails} is not in the game", self);
-            return;
+            return 11;
 
         player = self.GetPlayerByIdentifier(vote.Player.Identifier);
         targetPlayer = self.GetPlayerByIdentifier(vote.VotedPlayer.Identifier) if vote.VotedPlayer else None;
@@ -343,7 +352,7 @@ class Game():
             # I know this should semantically be before the actual addition of
             # the vote. However, we rely on the previous security checks
             LogUtility.Error(f"'{player.Name}' does not have a valid night role - {player.Role.Type}", self);
-            return;
+            return 12;
 
         self.Votes.add(vote);
         self.__playerIdentifiersThatCanVote.remove(player.Identifier);
@@ -420,7 +429,6 @@ class Game():
             self.Restart();
             return;
 
-        self.__turn += 1;
         self.StartDay();
 
         return;
