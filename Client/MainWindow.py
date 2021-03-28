@@ -14,7 +14,7 @@ class MainWindow(tk.Tk):
         werewolfLogo = tk.PhotoImage(file = "RLereWolf.png");
 
         self.iconphoto(False, werewolfLogo);
-        self.title("Client");
+        self.title("RLereWolf Client");
         self.geometry("800x600");
         self.resizable(False, False);
         self.protocol("WM_DELETE_WINDOW", self.Close);
