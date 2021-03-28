@@ -33,12 +33,6 @@
     <Compile Include="agents\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="environment\MultiAgentActionSpace.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="environment\MultiAgentObservationSpace.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="environment\Observation.py">
       <SubType>Code</SubType>
     </Compile>
