@@ -20,6 +20,7 @@ def GameToDto(game, lastUpdatedUtc, player):
         game.HasStarted,\
         game.Name,\
         messages,\
+        game.Votes,\
         game.Players,\
         game.Turn,\
         game.TimeOfDay);
