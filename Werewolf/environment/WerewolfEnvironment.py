@@ -49,7 +49,8 @@ class WerewolfEnvironemnt(gym.Wrapper):
 
     def step(self, agentActions):
 
-        agentPlayerIdentifiers = [ap.Identifier for ap in self.game.AgentPlayers];
+        agents = self.game.AgentPlayers;
+        agentPlayerIdentifiers = [ap.Identifier for ap in agents];
         rewards = {id: 0 for id in agentPlayerIdentifiers};
 
         if self.game.TimeOfDay == TimeOfDayEnum.Day:
@@ -112,18 +113,40 @@ class WerewolfEnvironemnt(gym.Wrapper):
             rewards = {id: value + TrainingRewards.DayPassed\
                 for id, value in rewards.items()};
 
-        dones, rewards = self.check_done(rewards);
+        # done if you're dead
+        dones = {a.Identifier: not a.IsAlive for a in agents}
         observations = self.observe();
         info = None;
 
         gameIsOver, winningFaction = self.CheckWinCondition();
 
         if gameIsOver:
+            dones = {a.Identifier: True for a in agents}
+
+            villagers = [a for a in agents\
+                    if a.Role == PlayerTypeEnum.Villager\
+                        or a.Role == PlayerTypeEnum.Guard\
+                        or a.Role == PlayerTypeEnum.Seer];
+
+            werewolves = [a for a in agents\
+                if a.Role == PlayerTypeEnum.Werewolf];
 
             if winningFaction == FactionTypeEnum.Villagers:
+                for villager in villagers:
+                    rewards[villager.Identifier] += TrainingRewards.Victory;
+
+                for werewolf in werewolves:
+                    rewards[werewolf.Identifier] += TrainingRewards.Lost;
+
                 pass;
 
             if winningFaction == FactionTypeEnum.Werewolves:
+                for villager in villagers:
+                    rewards[villager.Identifier] += TrainingRewards.Lost;
+
+                for werewolf in werewolves:
+                    rewards[werewolf.Identifier] += TrainingRewards.Victory;
+
                 pass;
 
             pass;
