@@ -83,6 +83,7 @@
     <Folder Include="utility\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="RLereWolf.png" />
     <Content Include="views\ErrorDialog.ui" />
     <Content Include="views\GameListScreen.ui" />
     <Content Include="views\GameLobbyScreen.ui" />
