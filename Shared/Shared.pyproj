@@ -70,6 +70,9 @@
     <Compile Include="dtos\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="enums\FactionTypeEnum.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\MessageTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>
@@ -77,6 +80,9 @@
     <Compile Include="enums\PlayerTypeEnum.py" />
     <Compile Include="enums\TimeOfDayEnum.py" />
     <Compile Include="enums\TurnPhaseTypeEnum.py" />
+    <Compile Include="enums\VoteResultTypeEnum.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\__init__.py" />
     <Compile Include="exceptions\GameException.py">
       <SubType>Code</SubType>

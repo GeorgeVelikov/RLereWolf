@@ -2,6 +2,8 @@ import Shared.constants.GameConstants as GameConstants;
 import Shared.utility.LogUtility as LogUtility;
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.FactionTypeEnum import FactionTypeEnum;
+from Shared.enums.VoteResultTypeEnum import VoteResultTypeEnum;
 from Shared.exceptions.GameException import GameException;
 
 from Werewolf.agents.AgentPlayer import AgentPlayer;
@@ -135,7 +137,9 @@ class Game():
 
         LogUtility.CreateGameMessage(f"'{playerToLeave.Name}' has left.", self);
 
-        if not self.CheckWinCondition() and not self.__playerIdentifiersThatCanVote:
+        gameIsOver, winningFaction = self.CheckWinCondition();
+
+        if not gameIsOver and not self.__playerIdentifiersThatCanVote:
             if self.__timeOfDay == TimeOfDayEnum.Day:
                 self.CountVotesExecute();
             elif self.__timeOfDay == TimeOfDayEnum.Night:
@@ -183,20 +187,20 @@ class Game():
 
     def CheckWinCondition(self):
         if not self.HasStarted:
-            return False;
+            return (False, FactionTypeEnum._None);
 
         if len(self.Players) < GameConstants.MINIMAL_PLAYER_COUNT:
             LogUtility.CreateGameMessage(f"Minimum of {GameConstants.MINIMAL_PLAYER_COUNT} players required.", self);
-            return True;
+            return (True, FactionTypeEnum._None);
 
         # this will be defined in GameRules.py
         if GameRules.DoVillagersWin(self):
-            return True;
+            return (True, FactionTypeEnum.Villagers);
 
         if GameRules.DoWerewolvesWin(self):
-            return True;
+            return (True, FactionTypeEnum.Werewolves);
 
-        return False;
+        return (False, FactionTypeEnum._None);
 
     def StartDay(self):
         self.__turn += 1;
@@ -304,7 +308,9 @@ class Game():
 
         self.Execute(player);
 
-        if self.CheckWinCondition():
+        gameIsOver, winningFaction = self.CheckWinCondition();
+
+        if gameIsOver:
             # don't go to other turn and don't start the day if the game is over
             self.Restart();
             return;
@@ -332,27 +338,29 @@ class Game():
         if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote:
             playerDetails = "'" + vote.Player.Name + "' - " +  vote.Player.Identifier;
             LogUtility.Error(f"{playerDetails} cannot act in the night.", self);
-            return 10;
+            return VoteResultTypeEnum.InvalidAction;
 
         if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
             playerDetails = vote.VotedPlayer.Name + " - " +  vote.VotedPlayer.Identifier;
             LogUtility.Error(f"Invalid vote, target player {playerDetails} is not in the game", self);
-            return 11;
+            return VoteResultTypeEnum.DeadPlayerTargeted;
 
         player = self.GetPlayerByIdentifier(vote.Player.Identifier);
         targetPlayer = self.GetPlayerByIdentifier(vote.VotedPlayer.Identifier) if vote.VotedPlayer else None;
 
+        voteResult = VoteResultTypeEnum.WaitAction;
+
         if vote.PlayerType == PlayerTypeEnum.Werewolf:
-            self.Attack(player, targetPlayer);
+            voteResult = self.Attack(player, targetPlayer);
         elif vote.PlayerType == PlayerTypeEnum.Seer:
-            self.Divine(player, targetPlayer);
+            voteResult = self.Divine(player, targetPlayer);
         elif vote.PlayerType == PlayerTypeEnum.Guard:
-            self.Guard(player, targetPlayer);
+            voteResult = self.Guard(player, targetPlayer);
         else:
             # I know this should semantically be before the actual addition of
             # the vote. However, we rely on the previous security checks
             LogUtility.Error(f"'{player.Name}' does not have a valid night role - {player.Role.Type}", self);
-            return 12;
+            return VoteResultTypeEnum.CannotActDuringTimeOfDay;
 
         self.Votes.add(vote);
         self.__playerIdentifiersThatCanVote.remove(player.Identifier);
@@ -360,33 +368,37 @@ class Game():
         if not self.__playerIdentifiersThatCanVote:
             self.CountNightVotesAndEvents();
 
-        return;
+        return voteResult;
 
     def Attack(self, werewolf, player):
         if not player:
             # Should werewolves be able to wait? Is this even an actual use case?
             LogUtility.Information(f"Werewolf '{werewolf.Name}' waits.", self);
-            return;
+            return VoteResultTypeEnum.WaitAction;
 
         LogUtility.Information(f"Werewolf '{werewolf.Name}' attacks '{player.Name}'.", self);
-        return;
+
+        if player.Role.Type == PlayerTypeEnum.Werewolf:
+            return VoteResultTypeEnum.WerewolfCannibalism;
+
+        return VoteResultTypeEnum.SuccessfulAction;
 
     def Guard(self, guard, player):
         if not player:
             LogUtility.Information(f"Guard '{guard.Name}' waits.", self);
-            return;
+            return VoteResultTypeEnum.WaitAction;
 
         guard.Role._Guard__canGuardTimes -= 1;
         LogUtility.Information(f"Guard '{guard.Name}' guards '{player.Name}'.", self);
-        return;
+        return VoteResultTypeEnum.SuccessfulAction;
 
     def Divine(self, seer, player):
         if not player:
             LogUtility.Information(f"Seer '{seer.Name}' waits.", self);
-            return;
+            return VoteResultTypeEnum.WaitAction;
 
         LogUtility.Information(f"Seer '{seer.Name}' divines '{player.Name}'.", self);
-        return;
+        return VoteResultTypeEnum.SuccessfulAction;
 
     def CountNightVotesAndEvents(self):
         # remove the "wait" calls
@@ -424,7 +436,9 @@ class Game():
 
         # Get votes for seer (these are independent from everything else)
 
-        if self.CheckWinCondition():
+        gameIsOver, winningFaction = self.CheckWinCondition();
+
+        if gameIsOver:
             # don't go to other turn and don't start the day if the game is over
             self.Restart();
             return;

@@ -4,7 +4,7 @@ from Shared.exceptions.GameException import GameException;
 from enum import Enum;
 
 class MessageTypeEnum(Enum):
-        # Can't escape keywords in Python :(
+    # Can't escape keywords in Python :(
     _None = 0;
     AgreeWith = 100;
     DisagreeWith = 101;
@@ -40,7 +40,6 @@ class MessageTypeEnum(Enum):
         else:
             raise GameException("Unknown message type used.");
 
-
     @staticmethod
     def Values():
         return [\
@@ -53,5 +52,3 @@ class MessageTypeEnum(Enum):
             MessageTypeEnum.WerewolfAttack,\
 
             MessageTypeEnum.SeerDivine];
-
-
