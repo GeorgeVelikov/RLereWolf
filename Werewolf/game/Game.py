@@ -214,7 +214,12 @@ class Game():
             agentPlayers = self.AgentPlayers
             shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
             for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
-                agent.ActDay();
+                vote = agent.ActDay();
+
+                if not vote:
+                    continue;
+
+                self.Vote(vote);
 
         return;
 
@@ -229,7 +234,12 @@ class Game():
             agentPlayers = self.AgentPlayers
             shuffledAgentPLayers = random.sample(agentPlayers, len(agentPlayers));
             for agent in [ap for ap in shuffledAgentPLayers if ap.IsAlive]:
-                agent.ActNight();
+                vote = agent.ActNight();
+
+                if not vote:
+                    continue;
+
+                self.Vote(vote);
 
         return;
 

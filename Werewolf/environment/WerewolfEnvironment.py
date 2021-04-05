@@ -43,6 +43,14 @@ class WerewolfEnvironemnt(gym.Wrapper):
 
         self.action_space = gym.spaces.Discrete(self.__numberOfAgents);
 
+    @property
+    def Game(self):
+        return self.game;
+
+    @property
+    def NumberOfAgents(self):
+        return self.__numberOfAgents;
+
     def render(self):
         # probably not worth doing
         pass;
@@ -114,11 +122,10 @@ class WerewolfEnvironemnt(gym.Wrapper):
                 for id, value in rewards.items()};
 
         # done if you're dead
-        dones = {a.Identifier: not a.IsAlive for a in agents}
-        observations = self.observe();
-        info = None;
 
         gameIsOver, winningFaction = self.CheckWinCondition();
+
+        dones = {};
 
         if gameIsOver:
             dones = {a.Identifier: True for a in agents}
@@ -150,6 +157,11 @@ class WerewolfEnvironemnt(gym.Wrapper):
                 pass;
 
             pass;
+        else:
+            dones = {a.Identifier: not a.IsAlive for a in agents};
+
+        observations = self.observe();
+        info = None;
 
         return observations, rewards, dones, info;
 

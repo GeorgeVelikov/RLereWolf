@@ -11,34 +11,38 @@ class DummyPlayer(AgentPlayer):
         super().__init__(name, game);
 
     def ActDay(self):
+        action = None;
+
         if not self.IsAlive or not self.Game.HasStarted:
-            return;
+            return action;
 
         if self.Role.Type == PlayerTypeEnum.Villager:
-            self.ActDayVillager();
+            action = self.ActDayVillager();
         elif self.Role.Type == PlayerTypeEnum.Werewolf:
-            self.ActDayWerewolf();
+            action = self.ActDayWerewolf();
         elif self.Role.Type == PlayerTypeEnum.Seer:
-            self.ActDayVillager();
+            action = self.ActDayVillager();
         elif self.Role.Type == PlayerTypeEnum.Guard:
-            self.ActDayVillager();
+            action = self.ActDayVillager();
 
-        return;
+        return action;
 
     def ActNight(self):
+        action = None;
+
         if not self.IsAlive or not self.Game.HasStarted:
-            return;
+            return action;
 
         if self.Role.Type == PlayerTypeEnum.Villager:
-            self.ActNightVillager();
+            action = self.ActNightVillager();
         elif self.Role.Type == PlayerTypeEnum.Werewolf:
-            self.ActNightWerewolf();
+            action = self.ActNightWerewolf();
         elif self.Role.Type == PlayerTypeEnum.Seer:
-            self.ActNightSeer();
+            action = self.ActNightSeer();
         elif self.Role.Type == PlayerTypeEnum.Guard:
-            self.ActNightGuard();
+            action = self.ActNightGuard();
 
-        return;
+        return action;
 
     #region Day
 
@@ -52,10 +56,7 @@ class DummyPlayer(AgentPlayer):
 
         playerToVoteFor = random.choice(viablePlayersToVoteFor);
 
-        vote = Vote(self, playerToVoteFor)
-
-        self.Game.Vote(vote);
-        return;
+        return Vote(self, playerToVoteFor);
 
     def ActDayWerewolf(self):
         viablePlayersToVoteFor = [player for player in self.Game.Players\
@@ -68,10 +69,7 @@ class DummyPlayer(AgentPlayer):
 
         playerToVoteFor = random.choice(viablePlayersToVoteFor);
 
-        vote = Vote(self, playerToVoteFor)
-
-        self.Game.Vote(vote);
-        return;
+        return Vote(self, playerToVoteFor);
 
     #endregion
 
@@ -91,10 +89,7 @@ class DummyPlayer(AgentPlayer):
 
         playerToKill = random.choice(viablePlayersToVoteFor);
 
-        vote = Vote(self, playerToKill)
-
-        self.Game.Vote(vote);
-        return;
+        return Vote(self, playerToKill);
 
     def ActNightSeer(self):
         viablePlayersToDivine = [player for player in self.Game.Players\
@@ -105,23 +100,17 @@ class DummyPlayer(AgentPlayer):
 
         playerToDivine = random.choice(viablePlayersToDivine);
 
-        vote = Vote(self, playerToDivine)
-
-        self.Game.Vote(vote);
-        return;
+        return Vote(self, playerToDivine);
 
     def ActNightGuard(self):
         viablePlayersToGuard = [player for player in self.Game.Players\
             if player.IsAlive];
 
         if not viablePlayersToGuard:
-            return;
+            return None;
 
         playerToGuard = random.choice(viablePlayersToGuard);
 
-        vote = Vote(self, playerToGuard)
-
-        self.Game.Vote(vote);
-        return;
+        return Vote(self, playerToGuard);
 
     #endregion
