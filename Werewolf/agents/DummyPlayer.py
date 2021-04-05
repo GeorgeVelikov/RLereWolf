@@ -2,6 +2,7 @@ from Werewolf.agents.AgentPlayer import AgentPlayer;
 from Werewolf.game.actions.Vote import Vote;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum
 import Shared.utility.LogUtility as LogUtility;
 
 import random;
@@ -10,11 +11,24 @@ class DummyPlayer(AgentPlayer):
     def __init__(self, name, game):
         super().__init__(name, game);
 
+    def Act(self):
+        action = None;
+
+        if not self.IsAlive or not self.Game.HasStarted:
+            return None;
+
+        if self.Game.TimeOfDay == TimeOfDayEnum.Day:
+            action = self.ActDay();
+        elif self.Game.TimeOfDay == TimeOfDayEnum.Night:
+            action = self.ActNight();
+
+        return action;
+
     def ActDay(self):
         action = None;
 
         if not self.IsAlive or not self.Game.HasStarted:
-            return action;
+            return None;
 
         if self.Role.Type == PlayerTypeEnum.Villager:
             action = self.ActDayVillager();
@@ -31,7 +45,7 @@ class DummyPlayer(AgentPlayer):
         action = None;
 
         if not self.IsAlive or not self.Game.HasStarted:
-            return action;
+            return None;
 
         if self.Role.Type == PlayerTypeEnum.Villager:
             action = self.ActNightVillager();

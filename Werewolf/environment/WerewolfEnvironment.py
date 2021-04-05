@@ -85,7 +85,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
             if shouldForceGameStep:
                 self.game.CountVotesExecute();
 
-        if self.game.TimeOfDay == TimeOfDay.Night:
+        if self.game.TimeOfDay == TimeOfDayEnum.Night:
             shouldForceGameStep = False;
 
             for action in agentActions:
@@ -184,4 +184,5 @@ class WerewolfEnvironemnt(gym.Wrapper):
 
     def reset(self):
         self.game.Restart();
+        self.game.Start();
         return self.observe();

@@ -1,6 +1,7 @@
 from Werewolf.environment.WerewolfEnvironment import WerewolfEnvironemnt;
 from Werewolf.game.Game import Game;
 from Werewolf.agents.DummyPlayer import DummyPlayer;
+from Werewolf.agents.TrainablePlayer import TrainablePlayer;
 
 import multiprocessing;
 import logging;
@@ -14,6 +15,11 @@ def RunWerewolfEnvironment():
         DummyPlayer("bot-" + str(i), game);
 
     environment = WerewolfEnvironemnt(game);
+
+    # wrapper over everything
+    trainablePlayer = TrainablePlayer(game);
+
+    trainablePlayer.Experiment(10, environment, True);
 
     return;
 

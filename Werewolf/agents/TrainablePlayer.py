@@ -1,5 +1,3 @@
-from Werewolf.agents.DummyPlayer import DummyPlayer;
-
 import csv;
 import itertools;
 import random;
@@ -7,22 +5,16 @@ import sys;
 
 from multiprocessing.pool import ThreadPool
 
-class TrainablePlayer(DummyPlayer):
+class TrainablePlayer():
     def __init__(self, game):
         self.__game = game;
         self.__metrics = {};
 
     @property
-    def Environment(self, args):
-        return self.__environment;
-
-    @property
     def Game(self):
         return self.__game;
 
-    def Experiment(self, args):
-        episodes, environment, isRandom = args;
-
+    def Experiment(self, episodes, environment, isRandom):
         observations = environment.reset();
 
         episode = 0;
@@ -33,19 +25,20 @@ class TrainablePlayer(DummyPlayer):
 
         while episode < episodes:
 
-            actions = {};
+            actions = [];
 
             allAgents = self.Game.AgentPlayers;
-            allAliveAgentIds = [a.Identifier for a in allAgents];
+            allAliveAgents = [a for a in allAgents if a.IsAlive];
+            allAliveAgentIds = [a.Identifier for a in allAliveAgents];
 
-            if IsRandom:
+            if isRandom:
                 # just a random action
-                actions = None;
+                actions = [agent.Act() for agent in allAliveAgents];
             else:
                 # get list of people to target
                 actions, orderedTargets = None;
 
-            for idx, id_ in enumerate(observations.keys()):
+            for index, identifier in enumerate(observations.keys()):
                 pass;
 
             observations, rewards, dones, info = environment.step(actions);
