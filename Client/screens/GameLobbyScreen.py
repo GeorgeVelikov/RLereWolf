@@ -42,6 +42,7 @@ class GameLobbyScreen(ScreenBase):
         self.__messagesScrollBar.config(command = self.__messagesListBox.yview);
 
         self.__villagerButtons = self.GetObject(str(PlayerTypeEnum.Villager));
+        self.__villagerDayButtons = self.GetObject(str(PlayerTypeEnum.Villager) + str(TimeOfDayEnum.Day));
         self.__werewolfButtons = self.GetObject(str(PlayerTypeEnum.Werewolf));
         self.__seerButtons = self.GetObject(str(PlayerTypeEnum.Seer));
         self.__guardButtons = self.GetObject(str(PlayerTypeEnum.Guard));
@@ -194,12 +195,12 @@ class GameLobbyScreen(ScreenBase):
             self.__guardButtons.grid();
 
         if self.Client.Game.TimeOfDay == TimeOfDayEnum.Day:
-            self.SetButtonsStateInLayout(self.__villagerButtons, tk.NORMAL);
+            self.SetButtonsStateInLayout(self.__villagerDayButtons, tk.NORMAL);
             self.SetButtonsStateInLayout(self.__werewolfButtons, tk.DISABLED);
             self.SetButtonsStateInLayout(self.__seerButtons, tk.DISABLED);
             self.SetButtonsStateInLayout(self.__guardButtons, tk.DISABLED);
         else:
-            self.SetButtonsStateInLayout(self.__villagerButtons, tk.DISABLED);
+            self.SetButtonsStateInLayout(self.__villagerDayButtons, tk.DISABLED);
             self.SetButtonsStateInLayout(self.__werewolfButtons, tk.NORMAL);
             self.SetButtonsStateInLayout(self.__seerButtons, tk.NORMAL);
             self.SetButtonsStateInLayout(self.__guardButtons, tk.NORMAL);

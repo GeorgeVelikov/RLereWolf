@@ -65,6 +65,9 @@ class GameListScreen(ScreenBase):
         gameName = self.Context.UIContext\
             .ShowStringInputDialog("Create Game", "Enter game name:");
 
+        if not gameName or gameName.isspace():
+            return;
+
         self.Context.ServiceContext.CreateGame(gameName);
         self.Context.UIContext.ShowGameLobby();
 

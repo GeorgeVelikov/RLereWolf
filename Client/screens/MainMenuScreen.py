@@ -38,6 +38,9 @@ class MainMenuScreen(ScreenBase):
         userName = self.Context.UIContext\
             .ShowStringInputDialog("Set Name", "Enter your name:");
 
+        if not userName or userName.isspace():
+            return;
+
         self.Client.SetName(userName);
         self.__userName.set(self.Client.Name);
 
