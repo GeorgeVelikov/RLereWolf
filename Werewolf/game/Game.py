@@ -19,7 +19,9 @@ class Game():
         self.__identifier = uuid.uuid4().hex;
         self.__hasStarted = False;
         self.__name = name;
-        self.__passwordHash = None # hashlib.sha256(str.encode(password)).hexdigest();
+        # might be nice to do, no time though!
+        # self.__passwordHash = (hashlib.sha256(str.encode(password)).hexdigest() if password else None);
+        self.__passwordHash = None;
         self.__messages = set();
         self.__votes = set();
         self.__turn = int();
