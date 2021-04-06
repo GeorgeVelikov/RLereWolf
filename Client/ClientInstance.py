@@ -1,6 +1,7 @@
 from Client.context.ViewModelContext import ViewModelContext;
 
 import uuid;
+import traceback;
 from tkinter import messagebox;
 
 class ClientInstance():
@@ -67,4 +68,12 @@ if __name__ == "__main__":
     try:
         ClientInstance();
     except Exception as error:
-        messagebox.showerror("Error", str(error));
+        # this doesn't encapsulate the entire program in a try-catch
+        # it just takes care of any boot errors and provide the user with
+        # a concrete error message + trace
+        trace = traceback.format_exc();
+        messagebox.showerror("Error",\
+            "Please share this screen/message to an active developer " +\
+            " with some replication steps (if possible):" +\
+            "\n\nError: " + str(error) +\
+            "\n\nTrace:" + trace);
