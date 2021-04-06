@@ -46,6 +46,10 @@ class MainMenuScreen(ScreenBase):
         self.Root.focus_set();
         return;
 
+    def GameManual_Clicked(self):
+        self.Context.UIContext.ShowClientManualDialog();
+        return;
+
     def QuitGame_Clicked(self):
         self.Context.UIContext.CloseMainWindow();
         return;
