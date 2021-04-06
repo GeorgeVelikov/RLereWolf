@@ -61,6 +61,15 @@ class GameListScreen(ScreenBase):
         self.Context.UIContext.ShowMainMenu();
         return;
 
+    def CreateButton_Clicked(self):
+        gameName = self.Context.UIContext\
+            .ShowStringInputDialog("Create Game", "Enter game name:");
+
+        self.Context.ServiceContext.CreateGame(gameName);
+        self.Context.UIContext.ShowGameLobby();
+
+        return;
+
     def Join_Clicked(self):
         selection = self.__gamesGrid.focus();
 

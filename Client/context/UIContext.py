@@ -1,11 +1,15 @@
 from Client.screens.MainMenuScreen import MainMenuScreen;
 from Client.screens.GameListScreen import GameListScreen;
 from Client.screens.GameLobbyScreen import GameLobbyScreen;
+
 from Client.screens.ErrorDialog import ErrorDialog;
+
 from Client.MainWindow import MainWindow;
 
-import tkinter as tk
-import tkinter.ttk as ttk
+import tkinter as tk;
+import tkinter.ttk as ttk;
+
+from tkinter import simpledialog;
 
 class UIContext():
     def __init__(self, context):
@@ -50,5 +54,8 @@ class UIContext():
 
     def ShowErrorDialog(self, error):
         ErrorDialog(None, self.__context, error);
+
+    def ShowStringInputDialog(self, title, prompt):
+        return simpledialog.askstring(title = title, prompt = prompt);
 
     #endregion

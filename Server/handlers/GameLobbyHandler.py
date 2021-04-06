@@ -20,6 +20,29 @@ class GameLobbyHandler(HandlerBase):
 
         return;
 
+    def CreateGame(self, connection, packet):
+        dto = packet.Data;
+
+        game = self.HandlerContext.CreateGame(dto.Name);
+
+        if not game or game.IsFull:
+            connection.sendall(pickle.dumps(None));
+            return;
+
+        player = dto.Player;
+
+        lastUpdatedUtc = self.Server.UtcNow;
+
+        game.Join(player);
+
+        gameDto = ConversionHelper.GameToDto(game, lastUpdatedUtc, player);
+
+        updatedEntityDto = UpdatedEntityDto(gameDto, lastUpdatedUtc);
+
+        connection.sendall(pickle.dumps(updatedEntityDto));
+
+        return;
+
     def JoinGame(self, connection, packet):
         dto = packet.Data;
 
@@ -57,10 +80,6 @@ class GameLobbyHandler(HandlerBase):
         connection.sendall(pickle.dumps(True));
 
         return;
-
-    def CreateGame(self, connection, packet):
-        # reuse the server-side call but encapsulate it with the connection and packet check
-        raise NotImplementedError("Not implemented yet");
 
     def GetGameLobby(self, connection, packet):
         wrapper = packet.Data;

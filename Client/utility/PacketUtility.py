@@ -9,6 +9,9 @@ def GetConnectPacket(data):
 def GetGamesPacket(data = None):
     return Packet(PacketTypeEnum.GetGamesList, data);
 
+def GetCreateGamePacket(data):
+    return Packet(PacketTypeEnum.CreateGame, data);
+
 def GetJoinGamePacket(data):
     return Packet(PacketTypeEnum.JoinGame, data);
 

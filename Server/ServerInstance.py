@@ -21,10 +21,10 @@ class ServerInstance():
         self.__connections = dict();
         self.__games = dict();
 
-        self.CreateGame("Game 1");
-        self.CreateGame("Game 2");
-        self.CreateGame("Game 3");
-        self.CreateGame("Game 4");
+        self.__handlerContext.CreateGame("Game 1");
+        self.__handlerContext.CreateGame("Game 2");
+        self.__handlerContext.CreateGame("Game 3");
+        self.__handlerContext.CreateGame("Game 4");
 
         LogUtility.Information("Server start up");
 
@@ -143,13 +143,6 @@ class ServerInstance():
         self.ShowActiveConnections();
 
         return;
-
-    def CreateGame(self, name):
-        game = Game(name);
-
-        self.Games[game.Identifier] = game;
-
-        return game;
 
 if __name__ == "__main__":
     ServerInstance().Run();

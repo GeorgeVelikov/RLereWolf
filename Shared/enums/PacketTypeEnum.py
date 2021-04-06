@@ -7,13 +7,19 @@ class PacketTypeEnum(Enum):
     # Can't escape keywords in Python :(
     _None = 0;
 
-    # Server call, this needs a "Disconnect" call as well
+    # Server calls
+    # this needs a "Disconnect" call as well if we have time
+    # Disconnects are still handled, but it's not very explicit, rather it just
+    # cuts off the connection and we rely on the server detecting that there
+    # has been a cut off from some specific client. Arguably a bit more reliable
+    # than awaiting a disconnect call which may or may not fail. Still unsure.
     Connect = 100;
 
     # Server game list calls
     GetGamesList = 200;
-    JoinGame = 201;
-    LeaveGame = 202;
+    CreateGame = 201;
+    JoinGame = 202;
+    LeaveGame = 203;
 
     # Game Instance call, this just asks for the game state
     GameLobby = 300;
@@ -41,6 +47,8 @@ class PacketTypeEnum(Enum):
 
         elif self.value == self.GetGamesList.value:
             return nameof(self.GetGamesList);
+        elif self.value == self.CreateGame.value:
+            return nameof(self.CreateGame);
         elif self.value == self.JoinGame.value:
             return nameof(self.JoinGame);
         elif self.value == self.LeaveGame.value:
@@ -76,6 +84,7 @@ class PacketTypeEnum(Enum):
             PacketTypeEnum.Connect,\
 
             PacketTypeEnum.GetGamesList,\
+            PacketTypeEnum.CreateGame,\
             PacketTypeEnum.JoinGame,\
             PacketTypeEnum.LeaveGame,\
 

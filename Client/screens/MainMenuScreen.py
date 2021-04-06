@@ -5,8 +5,6 @@ from Client.screens.ScreenBase import ScreenBase;
 import tkinter as tk;
 import tkinter.ttk as ttk;
 
-from tkinter import simpledialog;
-
 class MainMenuScreen(ScreenBase):
     def __init__(self, root, context):
         super().__init__(root, context);
@@ -36,9 +34,8 @@ class MainMenuScreen(ScreenBase):
         return;
 
     def SetName_Clicked(self):
-        userName = simpledialog.askstring(\
-            title = "Set Name",\
-            prompt = "Enter your name:");
+        userName = self.Context.UIContext\
+            .ShowStringInputDialog("Set Name", "Enter your name:");
 
         self.Client.SetName(userName);
         self.__userName.set(self.Client.Name);

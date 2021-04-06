@@ -3,6 +3,7 @@ from Shared.dtos.PlayerGameIdentifierDto import PlayerGameIdentifierDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.ConnectDto import ConnectDto;
 from Shared.dtos.GameActionDto import GameActionDto;
+from Shared.dtos.CreateGameDto import CreateGameDto;
 from Shared.Packet import Packet;
 
 import Client.utility.PacketUtility as PacketUtility;
@@ -101,6 +102,21 @@ class ServiceContext():
 
         if reply:
             self.Client.SetGame(None);
+
+        return reply;
+
+    def CreateGame(self, gameName):
+
+        dto = CreateGameDto(self.Client.Player, gameName)
+        packet = PacketUtility.GetCreateGamePacket(dto);
+
+        reply = self.Send(packet);
+
+        if not reply:
+            return None;
+
+        self.Client.SetGame(reply.Entity);
+        self.__lastUpdatedUtc = reply.UpdatedUtc;
 
         return reply;
 

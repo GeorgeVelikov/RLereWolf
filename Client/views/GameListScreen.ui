@@ -302,6 +302,18 @@
                       <property type="col" id="1" name="weight">1</property>
                       <property type="col" id="4" name="weight">1</property>
                     </layout>
+                    <child>
+                      <object class="tk.Button" id="CreateButton">
+                        <property name="command">CreateButton_Clicked</property>
+                        <property name="idtocommand">false</property>
+                        <property name="text" translatable="yes">Create</property>
+                        <property name="width">15</property>
+                        <layout manager="pack">
+                          <property name="propagate">True</property>
+                          <property name="side">top</property>
+                        </layout>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child>

@@ -4,6 +4,8 @@ from Server.handlers.GameLobbyHandler import GameLobbyHandler;
 import Shared.utility.LogUtility as LogUtility;
 from Shared.enums.PacketTypeEnum import PacketTypeEnum;
 
+from Werewolf.game.Game import Game;
+
 class HandlerContext():
     def __init__(self, server):
         self.__server = server;
@@ -31,6 +33,9 @@ class HandlerContext():
         # game lobby calls
         elif packet.PacketType == PacketTypeEnum.GetGamesList:
             self.GameLobbyHandler.GetGamesList(connection, packet);
+
+        elif packet.PacketType == PacketTypeEnum.CreateGame:
+            self.GameLobbyHandler.CreateGame(connection, packet);
 
         elif packet.PacketType == PacketTypeEnum.JoinGame:
             self.GameLobbyHandler.JoinGame(connection, packet);
@@ -71,6 +76,13 @@ class HandlerContext():
             self.GameActionHandler.GuardPlayer(connection, packet);
 
         return;
+
+    def CreateGame(self, name):
+        game = Game(name);
+
+        self.Server.Games[game.Identifier] = game;
+
+        return game;
 
     def GetGameWithIdentifier(self, gameIdentifier):
         if not gameIdentifier in self.Server.Games.keys():
