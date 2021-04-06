@@ -324,8 +324,10 @@ class Game():
         gameIsOver, winningFaction = self.CheckWinCondition();
 
         if gameIsOver:
-            # don't go to other turn and don't start the day if the game is over
-            self.Restart();
+            if self.__agentsAutomaticallyPlay:
+                # don't go to other turn and don't start the day if the game is over
+                self.Restart();
+
             return;
 
         self.StartNight();
@@ -455,8 +457,9 @@ class Game():
         gameIsOver, winningFaction = self.CheckWinCondition();
 
         if gameIsOver:
-            # don't go to other turn and don't start the day if the game is over
-            self.Restart();
+            if self.__agentsAutomaticallyPlay:
+                # don't go to other turn and don't start the day if the game is over
+                self.Restart();
             return;
 
         self.StartDay();
