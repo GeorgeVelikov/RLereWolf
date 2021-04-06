@@ -12,6 +12,7 @@ import Werewolf.game.GameRules as GameRules;
 import uuid;
 import random;
 import hashlib;
+import datetime;
 from collections import Counter;
 
 class Game():
@@ -186,7 +187,12 @@ class Game():
 
         self.__hasStarted = False;
         self.__votes = set();
-        self.__messages = set();
+
+        messageCutOffPoint = datetime.datetime.utcnow() -\
+           datetime.timedelta(minutes = 1);
+
+        self.__messages = {m for m in self.__messages if m.TimeUtc > messageCutOffPoint}
+
         self.__turn = int();
         self.__timeOfDay = TimeOfDayEnum._None;
 
