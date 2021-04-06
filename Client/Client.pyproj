@@ -45,9 +45,6 @@
     <Compile Include="models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="screens\ErrorDialog.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="screens\GameListScreen.py" />
     <Compile Include="screens\GameLobbyScreen.py">
       <SubType>Code</SubType>
@@ -84,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RLereWolf.png" />
-    <Content Include="views\ErrorDialog.ui" />
     <Content Include="views\GameListScreen.ui" />
     <Content Include="views\GameLobbyScreen.ui" />
     <Content Include="views\MainMenuScreen.ui" />

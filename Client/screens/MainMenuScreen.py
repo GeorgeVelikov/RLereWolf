@@ -13,6 +13,7 @@ class MainMenuScreen(ScreenBase):
 
         self.__connectButton = self.GetObject(nameof(self.Context.ServiceContext.Connect));
         self.__userName = self.GetVariable(nameof(self.Client.Name));
+        self.__userName.set((self.Client.Name if self.Client.Name else "N/A"));
 
         self.UpdateConnectButton();
 

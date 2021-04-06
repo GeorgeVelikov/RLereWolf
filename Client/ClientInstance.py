@@ -1,6 +1,7 @@
 from Client.context.ViewModelContext import ViewModelContext;
 
 import uuid;
+from tkinter import messagebox;
 
 class ClientInstance():
     def __init__(self):
@@ -63,4 +64,7 @@ class ClientInstance():
     #endregion
 
 if __name__ == "__main__":
-    ClientInstance();
+    try:
+        ClientInstance();
+    except Exception as error:
+        messagebox.showerror("Error", str(error));

@@ -21,10 +21,10 @@ class ServerInstance():
         self.__connections = dict();
         self.__games = dict();
 
-        self.__handlerContext.CreateGame("Game 1");
-        self.__handlerContext.CreateGame("Game 2");
-        self.__handlerContext.CreateGame("Game 3");
-        self.__handlerContext.CreateGame("Game 4");
+        self.__handlerContext.CreateGame("Game Alpha");
+        self.__handlerContext.CreateGame("Game Beta");
+        self.__handlerContext.CreateGame("Game Gamma");
+        self.__handlerContext.CreateGame("Game Delta");
 
         LogUtility.Information("Server start up");
 
