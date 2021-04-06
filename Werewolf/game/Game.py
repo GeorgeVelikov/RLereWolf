@@ -287,16 +287,16 @@ class Game():
 
         if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote:
             LogUtility.Error(f"Invalid vote, player {vote.Player.Name} cannot vote.", self);
-            return 10;
+            return VoteResultTypeEnum.InvalidAction;
 
         if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
             # players not in the game, error
             LogUtility.Error(f"Invalid vote, target player {vote.VotedPlayer.Name} is not alive", self);
-            return 11;
+            return VoteResultTypeEnum.DeadPlayerTargeted;
 
         if not vote.VotedPlayer:
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' does not vote.", self);
-            return 0;
+            return VoteResultTypeEnum.WaitAction;
         else:
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' voted to execute {vote.VotedPlayer.Name}.", self);
 
@@ -306,7 +306,7 @@ class Game():
         if not self.__playerIdentifiersThatCanVote:
             self.CountVotesExecute();
 
-        return 1;
+        return VoteResultTypeEnum.SuccessfulAction;
 
     def CountVotesExecute(self):
         # remove the "wait" calls
@@ -314,9 +314,12 @@ class Game():
 
         (player, times) = self.GetPlayerAndTimesVoted(actualVotes);
 
-        LogUtility.CreateGameMessage(f"{player.Name} has the most votes to get executed - {times}.", self);
+        if not player or not times:
+            LogUtility.CreateGameMessage(f"No one gets executed during the day.", self);
+        else:
+            LogUtility.CreateGameMessage(f"{player.Name} has the most votes to get executed - {times}.", self);
 
-        self.Execute(player);
+            self.Execute(player);
 
         gameIsOver, winningFaction = self.CheckWinCondition();
 
@@ -417,22 +420,25 @@ class Game():
         # actual votes
         votesToKill = [v for v in actualVotes if v.PlayerType == PlayerTypeEnum.Werewolf];
 
-        (playerToKill, werewolfAttackTimes) = self.GetPlayerAndTimesVoted(votesToKill);
-
         # independent actions
         votesToGuard = [v for v in actualVotes if v.PlayerType == PlayerTypeEnum.Guard];
         votesToDivine = [v for v in actualVotes if v.PlayerType == PlayerTypeEnum.Seer];
 
-        # we only want to make the fact known that someone was guarded if an attack on them
-        # had occurred during the night. Otherwise it would advantage the werewolves.
-        guardsForAttackedPlayer = [v.Player for v in votesToGuard \
-            if playerToKill.Identifier == v.VotedPlayer.Identifier];
+        (playerToKill, werewolfAttackTimes) = self.GetPlayerAndTimesVoted(votesToKill);
 
-        if not guardsForAttackedPlayer:
-            self.WerewolfKill(playerToKill);
+        if not playerToKill or not werewolfAttackTimes:
+            LogUtility.CreateGameMessage(f"No one gets attacked during the night.", self);
         else:
-            LogUtility.CreateGameMessage("'" + playerToKill.Name +\
-                "' was attacked by werewolves in the night but was guarded and lives to see another day.", self);
+            # we only want to make the fact known that someone was guarded if an attack on them
+            # had occurred during the night. Otherwise it would advantage the werewolves.
+            guardsForAttackedPlayer = [v.Player for v in votesToGuard \
+                if playerToKill.Identifier == v.VotedPlayer.Identifier];
+
+            if not guardsForAttackedPlayer:
+                self.WerewolfKill(playerToKill);
+            else:
+                LogUtility.CreateGameMessage("'" + playerToKill.Name +\
+                    "' was attacked by werewolves in the night but was guarded and lives to see another day.", self);
 
         for vote in votesToDivine:
             divinedPlayer = vote.VotedPlayer;
@@ -477,7 +483,12 @@ class Game():
         votedPlayerIdentifiers = [vote.VotedPlayer.Identifier for vote in votes];
         counter = Counter(votedPlayerIdentifiers);
 
-        (mostVotedPlayerIdentifier, times) = counter.most_common(1)[0];
+        mostCommon = counter.most_common(1);
+
+        if not mostCommon:
+            return (None, None);
+
+        (mostVotedPlayerIdentifier, times) = mostCommon[0];
 
         player = self.GetPlayerByIdentifier(mostVotedPlayerIdentifier);
 

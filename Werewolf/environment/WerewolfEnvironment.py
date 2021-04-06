@@ -85,7 +85,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
             if shouldForceGameStep:
                 self.game.CountVotesExecute();
 
-        if self.game.TimeOfDay == TimeOfDayEnum.Night:
+        elif self.game.TimeOfDay == TimeOfDayEnum.Night:
             shouldForceGameStep = False;
 
             for action in agentActions:
@@ -94,7 +94,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
                 if actionResult == VoteResultTypeEnum.CannotActDuringTimeOfDay:
                     # role cannot act during the night
                     shouldForceGameStep = True;
-                    rewards[action.Player.Identifier] += TrainingRewards.CannotActDuringTimeOfDay;
+                    rewards[action.Player.Identifier] += TrainingRewards.IncorrectAction;
                 elif actionResult == VoteResultTypeEnum.InvalidAction:
                     # player cannot vote, likely attempted to vote more than once
                     shouldForceGameStep = True;
@@ -123,7 +123,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
 
         # done if you're dead
 
-        gameIsOver, winningFaction = self.CheckWinCondition();
+        gameIsOver, winningFaction = self.game.CheckWinCondition();
 
         dones = {};
 
