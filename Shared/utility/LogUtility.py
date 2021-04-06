@@ -10,6 +10,12 @@ SHARED_PATH = Path(os.path.dirname(os.path.dirname(__file__)));
 LOGS_PATH = str(SHARED_PATH.parent) + os.path.sep + "Logs"\
 
 def Log(status, message, game = None):
+    # if you're training AI, you should probably do an early return in here because
+    # that will speed up the iteration/second by 2.5x-3x, which could mean hours if you
+    # are doing thousands of games. Furthermore, if you disable this, you can easily do more
+    # concurrent games as none of the actions will prompt a file write lock.
+    # return;
+
     utcNow = datetime.utcnow();
 
     filePath = LOGS_PATH \
