@@ -2,6 +2,7 @@ import csv;
 import itertools;
 import random;
 import sys;
+from tqdm import tqdm;
 
 from multiprocessing.pool import ThreadPool
 
@@ -23,6 +24,7 @@ class TrainablePlayerWrapper():
         orderedTargets = [];
         metrics = [];
 
+        loadingBar = tqdm(total = episodes);
         while episode < episodes:
 
             actions = [];
@@ -47,7 +49,9 @@ class TrainablePlayerWrapper():
             if all(dones.values()):
                 observations = environment.reset();
                 episode += 1;
+                loadingBar.update(1);
 
+        loadingBar.close();
         return [environment.NumberOfAgents, isRandom], metrics;
 
     def SaveMetrics(self):
