@@ -20,7 +20,7 @@ def RunWerewolfEnvironment():
     # wrapper over everything
     trainablePlayer = TrainablePlayerWrapper(game);
 
-    trainablePlayer.Experiment(100, environment, True);
+    trainablePlayer.Experiment(5, environment, True);
 
     return;
 

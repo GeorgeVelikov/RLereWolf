@@ -315,7 +315,7 @@ class Game():
         (player, times) = self.GetPlayerAndTimesVoted(actualVotes);
 
         if not player or not times:
-            LogUtility.CreateGameMessage(f"No one gets executed during the day.", self);
+            LogUtility.CreateGameMessage("No one gets executed during the day.", self);
         else:
             LogUtility.CreateGameMessage(f"{player.Name} has the most votes to get executed - {times}.", self);
 

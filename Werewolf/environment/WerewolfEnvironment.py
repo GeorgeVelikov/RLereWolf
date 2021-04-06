@@ -174,7 +174,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
 
         for agent in aliveAgents:
             observations[agent.Identifier] = Observation(\
-                agent.Role.Type,\
+                agent.Role.Type if agent.Role else None,\
                 self.game.Players,\
                 self.game.TimeOfDay,\
                 self.game.Votes,\
