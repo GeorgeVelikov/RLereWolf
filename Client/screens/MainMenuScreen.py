@@ -5,6 +5,8 @@ from Client.screens.ScreenBase import ScreenBase;
 import tkinter as tk;
 import tkinter.ttk as ttk;
 
+from tkinter import simpledialog;
+
 class MainMenuScreen(ScreenBase):
     def __init__(self, root, context):
         super().__init__(root, context);
@@ -13,8 +15,6 @@ class MainMenuScreen(ScreenBase):
 
         self.__connectButton = self.GetObject(nameof(self.Context.ServiceContext.Connect));
         self.__userName = self.GetVariable(nameof(self.Client.Name));
-
-        self.__userName.set(self.Client.Name);
 
         self.UpdateConnectButton();
 
@@ -36,7 +36,12 @@ class MainMenuScreen(ScreenBase):
         return;
 
     def SetName_Clicked(self):
-        self.Client.SetName(self.__userName.get());
+        userName = simpledialog.askstring(\
+            title = "Set Name",\
+            prompt = "Enter your name:");
+
+        self.Client.SetName(userName);
+        self.__userName.set(self.Client.Name);
 
         # update button text
         self.UpdateConnectButton();

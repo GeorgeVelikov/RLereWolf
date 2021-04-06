@@ -182,6 +182,7 @@ class Game():
 
         self.__hasStarted = False;
         self.__votes = set();
+        self.__messages = set();
         self.__turn = int();
         self.__timeOfDay = TimeOfDayEnum._None;
 
