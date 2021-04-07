@@ -24,7 +24,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
         self.__totalEpisodeReward = [0 for _ in range(self.__numberOfAgents)]
         self.__stepCount = int();
 
-        self.staitistics = Statistics();
+        self.__statistics = Statistics();
 
         self.__roles = PlayerTypeEnum.Values();
         roleCount = len(self.__roles);
@@ -46,6 +46,10 @@ class WerewolfEnvironemnt(gym.Wrapper):
     @property
     def Game(self):
         return self.game;
+
+    @property
+    def Statistics(self):
+        return self.__statistics;
 
     @property
     def NumberOfAgents(self):
@@ -71,10 +75,12 @@ class WerewolfEnvironemnt(gym.Wrapper):
                     # player cannot vote, likely attempted to vote more than once
                     shouldForceGameStep = True;
                     rewards[action.Player.Identifier] += TrainingRewards.IncorrectAction;
+                    self.Statistics.IncorrectAction += 1;
                 elif actionResult == VoteResultTypeEnum.DeadPlayerTargeted:
                     # dead player target
                     shouldForceGameStep = True;
                     rewards[action.Player.Identifier] += TrainingRewards.DeadPlayerTargeted;
+                    self.Statistics.DeadAgentVoted += 1;
                 elif actionResult == VoteResultTypeEnum.WaitAction:
                     # waited
                     rewards[action.Player.Identifier] += TrainingRewards.Wait;
@@ -95,6 +101,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
                     # role cannot act during the night
                     shouldForceGameStep = True;
                     rewards[action.Player.Identifier] += TrainingRewards.IncorrectAction;
+                    self.Statistics.IncorrectAction += 1;
                 elif actionResult == VoteResultTypeEnum.InvalidAction:
                     # player cannot vote, likely attempted to vote more than once
                     shouldForceGameStep = True;
@@ -103,9 +110,11 @@ class WerewolfEnvironemnt(gym.Wrapper):
                     # dead player target
                     shouldForceGameStep = True;
                     rewards[action.Player.Identifier] += TrainingRewards.DeadPlayerTargeted;
+                    self.Statistics.DeadAgentAttacked += 1;
                 elif actionResult == VoteResultTypeEnum.WerewolfCannibalism:
                     # werewolf attacking werewolf
                     rewards[action.Player.Identifier] += TrainingRewards.WerewolfCannibalism;
+                    self.Statistics.TeammateAttacked += 1;
 
                 elif actionResult == VoteResultTypeEnum.WaitAction:
                     # waited
@@ -121,6 +130,8 @@ class WerewolfEnvironemnt(gym.Wrapper):
             rewards = {id: value + TrainingRewards.DayPassed\
                 for id, value in rewards.items()};
 
+            self.Statistics.TotalDays += 1;
+
         # done if you're dead
 
         gameIsOver, winningFaction = self.game.CheckWinCondition();
@@ -128,7 +139,8 @@ class WerewolfEnvironemnt(gym.Wrapper):
         dones = {};
 
         if gameIsOver:
-            dones = {a.Identifier: True for a in agents}
+            dones = {a.Identifier: True for a in agents};
+            self.Statistics.TotalGames += 1;
 
             villagers = [a for a in agents\
                     if a.Role == PlayerTypeEnum.Villager\
@@ -145,6 +157,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
                 for werewolf in werewolves:
                     rewards[werewolf.Identifier] += TrainingRewards.Lost;
 
+                self.Statistics.VillagerWins += 1;
                 pass;
 
             if winningFaction == FactionTypeEnum.Werewolves:
@@ -154,6 +167,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
                 for werewolf in werewolves:
                     rewards[werewolf.Identifier] += TrainingRewards.Victory;
 
+                self.Statistics.WerewolfWins += 1;
                 pass;
 
             pass;

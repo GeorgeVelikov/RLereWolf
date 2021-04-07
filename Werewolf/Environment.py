@@ -12,7 +12,7 @@ import ray;
 def RunWerewolfEnvironment():
     game = Game("Training game", False);
 
-    for i in range (10):
+    for i in range(70):
         TrainablePlayer("TBot-" + str(i), game);
 
     environment = WerewolfEnvironemnt(game);
@@ -20,7 +20,8 @@ def RunWerewolfEnvironment():
     # wrapper over everything
     trainablePlayer = TrainablePlayerWrapper(game);
 
-    trainablePlayer.Experiment(100, environment, True);
+    trainablePlayer.Experiment(10, environment, True);
+    print("\n" + str(environment.Statistics));
 
     return;
 
