@@ -8,6 +8,7 @@ import multiprocessing;
 import logging;
 import gym;
 import ray;
+import pprint;
 
 def RunWerewolfEnvironment():
     game = Game("Training game", False);
@@ -20,9 +21,11 @@ def RunWerewolfEnvironment():
     # wrapper over everything
     trainablePlayer = TrainablePlayerWrapper(game);
 
-    trainablePlayer.Experiment(10, environment, True);
+    generalInfo, metrics = trainablePlayer.Experiment(1, environment, True);
     print("\n" + str(environment.Statistics));
 
+    print("\n");
+    pprint.pprint(metrics, width = 1);
     return;
 
 if __name__ == "__main__":

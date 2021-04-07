@@ -21,15 +21,18 @@ class TrainablePlayerWrapper():
         episode = 0;
         actionSpace = environment.action_space;
 
+        allAgents = self.Game.AgentPlayers;
+        allAgentIds = [a.Identifier for a in allAgents];
+
+        self.__metrics = {k: 0 for k in allAgentIds};
+
         orderedTargets = [];
-        metrics = [];
 
         loadingBar = tqdm(total = episodes);
         while episode < episodes:
 
             actions = [];
 
-            allAgents = self.Game.AgentPlayers;
             allAliveAgents = [a for a in allAgents if a.IsAlive];
             allAliveAgentIds = [a.Identifier for a in allAliveAgents];
 
@@ -45,6 +48,9 @@ class TrainablePlayerWrapper():
 
             observations, rewards, dones, info = environment.step(actions);
 
+            for agentId in allAliveAgentIds:
+                self.__metrics[agentId] += rewards[agentId];
+
             # all players are "done"
             if all(dones.values()):
                 observations = environment.reset();
@@ -52,7 +58,7 @@ class TrainablePlayerWrapper():
                 loadingBar.update(1);
 
         loadingBar.close();
-        return [environment.NumberOfAgents, isRandom], metrics;
+        return [environment.NumberOfAgents, isRandom], self.__metrics;
 
     def SaveMetrics(self):
         headers = ["header 1", "header 2"];

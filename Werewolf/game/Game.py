@@ -359,7 +359,8 @@ class Game():
     #region Night
 
     def VoteNight(self, vote):
-        playerIdentifiers = self.PlayerIdentifiers;
+        alivePlayers = [ap for ap in self.Players if ap.IsAlive];
+        playerIdentifiers = [p.Identifier for p in alivePlayers];
 
         if not vote.Player.Identifier in self.__playerIdentifiersThatCanVote:
             playerDetails = "'" + vote.Player.Name + "' - " +  vote.Player.Identifier;
