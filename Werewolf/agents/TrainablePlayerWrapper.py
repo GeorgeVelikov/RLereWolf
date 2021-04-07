@@ -25,6 +25,7 @@ class TrainablePlayerWrapper():
         allAgentIds = [a.Identifier for a in allAgents];
 
         self.__metrics = {k: 0 for k in allAgentIds};
+        episodeMetrics = {k: 0 for k in allAgentIds};
 
         orderedTargets = [];
 
@@ -50,6 +51,7 @@ class TrainablePlayerWrapper():
 
             for agentId in allAliveAgentIds:
                 self.__metrics[agentId] += rewards[agentId];
+                episodeMetrics[agentId] += rewards[agentId];
 
             # all players are "done"
             if all(dones.values()):
@@ -57,15 +59,17 @@ class TrainablePlayerWrapper():
                 episode += 1;
                 loadingBar.update(1);
 
+                episodeMetrics = {k: 0 for k in allAgentIds};
+
         loadingBar.close();
         return [environment.NumberOfAgents, isRandom], self.__metrics;
 
-    def SaveMetrics(self):
+    def SaveMetrics(self, metrics):
         headers = ["header 1", "header 2"];
         rows = [headers]
 
         # add a csv row
-        for k, v in self.__metrics.items():
+        for k, v in self.metrics.items():
             pass;
 
         with open("metrics - " + str(self.Game), "w") as file:

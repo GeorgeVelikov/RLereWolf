@@ -21,11 +21,12 @@ def RunWerewolfEnvironment():
     # wrapper over everything
     trainablePlayer = TrainablePlayerWrapper(game);
 
-    generalInfo, metrics = trainablePlayer.Experiment(1, environment, True);
+    generalInfo, metrics = trainablePlayer.Experiment(20, environment, True);
     print("\n" + str(environment.Statistics));
 
     print("\n");
     pprint.pprint(metrics, width = 1);
+
     return;
 
 if __name__ == "__main__":
