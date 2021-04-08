@@ -1,3 +1,4 @@
+import Shared.constants.LogConstants as LogConstants;
 from Shared.utility.Helpers import nameof;
 
 from Client.screens.ScreenBase import ScreenBase;
@@ -29,7 +30,7 @@ class MainMenuScreen(ScreenBase):
             self.Context.ServiceContext.Connect();
             self.Context.UIContext.ShowGameList();
         except Exception as error:
-            print("[ERROR] " + str(error));
+            print(LogConstants.ERROR + " " + str(error));
             pass;
 
         return;

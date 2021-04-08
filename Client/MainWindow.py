@@ -13,7 +13,7 @@ class MainWindow(tk.Tk):
 
         werewolfLogo = tk.PhotoImage(file = "RLereWolf.png");
 
-        self.iconphoto(False, werewolfLogo);
+        self.iconphoto(True, werewolfLogo);
         self.title("RLereWolf Client");
         self.geometry("800x600");
         self.resizable(False, False);

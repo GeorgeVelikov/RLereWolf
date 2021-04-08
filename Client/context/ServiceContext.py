@@ -1,4 +1,5 @@
 import Shared.constants.NetConstants as NetConstants;
+import Shared.constants.LogConstants as LogConstants;
 from Shared.dtos.PlayerGameIdentifierDto import PlayerGameIdentifierDto;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.ConnectDto import ConnectDto;
@@ -46,7 +47,7 @@ class ServiceContext():
 
             print(reply);
         except socket.error as error:
-            print("[ERROR] " + str(error));
+            print(LogConstants.ERROR + " " + str(error));
 
         return;
 
@@ -64,7 +65,7 @@ class ServiceContext():
 
             return reply;
         except Exception as error:
-            print("[ERROR] " + str(error));
+            print(LogConstants.ERROR + " " + str(error));
 
         return;
 
@@ -76,7 +77,7 @@ class ServiceContext():
             self.LeaveGame();
             self.__connection.close();
         except Exception as error:
-            print("[ERROR] " + str(error));
+            print(LogConstants.ERROR + " " + str(error));
             return;
 
         return;
