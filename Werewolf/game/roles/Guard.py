@@ -10,6 +10,10 @@ class Guard(Role):
         return PlayerTypeEnum.Guard;
 
     @property
+    def CanTargetDeadPlayers(self):
+        return False;
+
+    @property
     def HasDayAction(self):
         return True;
 

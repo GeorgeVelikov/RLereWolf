@@ -9,6 +9,10 @@ class Role():
         return PlayerTypeEnum._None;
 
     @property
+    def CanTargetDeadPlayers(self):
+        return False;
+
+    @property
     def HasDayAction(self):
         return False;
 

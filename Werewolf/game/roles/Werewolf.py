@@ -10,6 +10,10 @@ class Werewolf(Role):
         return PlayerTypeEnum.Werewolf;
 
     @property
+    def CanTargetDeadPlayers(self):
+        return False;
+
+    @property
     def HasDayAction(self):
         return True;
 

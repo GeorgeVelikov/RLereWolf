@@ -373,7 +373,11 @@ class Game():
             LogUtility.Error(f"{playerDetails} cannot act in the night.", self);
             return VoteResultTypeEnum.InvalidAction;
 
-        if vote.VotedPlayer and not vote.VotedPlayer.Identifier in playerIdentifiers:
+        if vote.VotedPlayer\
+            and not vote.VotedPlayer.Identifier in playerIdentifiers\
+            and not vote.Player.Role.CanTargetDeadPlayers:
+
+            # the seer can check dead players
             playerDetails = vote.VotedPlayer.Name + " - " +  vote.VotedPlayer.Identifier;
             LogUtility.Error(f"Invalid vote, target player {playerDetails} is not in the game", self);
             return VoteResultTypeEnum.DeadPlayerTargeted;

@@ -10,6 +10,10 @@ class Seer(Role):
         return PlayerTypeEnum.Seer;
 
     @property
+    def CanTargetDeadPlayers(self):
+        return True;
+
+    @property
     def HasDayAction(self):
         return True;
 

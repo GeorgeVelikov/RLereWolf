@@ -10,6 +10,10 @@ class Villager(Role):
         return PlayerTypeEnum.Villager;
 
     @property
+    def CanTargetDeadPlayers(self):
+        return False;
+
+    @property
     def HasDayAction(self):
         return True;
 
