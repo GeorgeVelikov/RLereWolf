@@ -6,9 +6,12 @@ import Shared.utility.LogUtility as LogUtility;
 from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.PlayerGameDto import PlayerGameDto;
 from Shared.dtos.MessageMetaDataDto import MessageMetaDataDto;
+from Shared.enums.AgentTypeEnum import AgentTypeEnum;
 from Shared.utility.Helpers import GenerateFirstName;
 
 from Werewolf.agents.DummyPlayer import DummyPlayer;
+from Werewolf.agents.RuleBasedPlayer import RuleBasedPlayer;
+from Werewolf.agents.TrainablePlayer import TrainablePlayer;
 from Werewolf.game.actions.Vote import Vote;
 
 import pickle;
@@ -22,13 +25,26 @@ class GameActionHandler(HandlerBase):
         dto = packet.Data;
         gameIdentifier = dto.GameIdentifier;
 
+        agentType = dto.AgentType;
+
         game = self.HandlerContext.GetGameWithIdentifier(gameIdentifier);
 
         if not game:
             connection.sendall(pickle.dumps(False));
             return;
 
-        agent = DummyPlayer(GenerateFirstName(), game);
+        agent = None;
+
+        if agentType == AgentTypeEnum.DummyAgent:
+            agent = DummyPlayer(GenerateFirstName(), game);
+        elif agentType == AgentTypeEnum.RuleBasedAgent:
+            agent = RuleBasedPlayer(GenerateFirstName(), game);
+        elif agentType == AgentTypeEnum.TrainableAgent:
+            agent = TrainablePlayer(GenerateFirstName(), game);
+        else:
+            # agent is None;
+            connection.sendall(pickle.dumps(False));
+            return;
 
         connection.sendall(pickle.dumps(True));
         return;

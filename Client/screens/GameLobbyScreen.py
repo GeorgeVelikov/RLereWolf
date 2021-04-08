@@ -502,7 +502,7 @@ class GameLobbyScreen(ScreenBase):
         return;
 
     def AddAgent_AddSpecificAgentType(self, agentType):
-        self.Context.ServiceContext.AddAgentToGame();
+        self.Context.ServiceContext.AddAgentToGame(agentType);
         return;
 
     def RemoveAgent_Clicked(self):

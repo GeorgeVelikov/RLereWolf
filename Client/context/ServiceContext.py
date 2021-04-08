@@ -4,6 +4,7 @@ from Shared.dtos.UpdatedEntityDto import UpdatedEntityDto;
 from Shared.dtos.ConnectDto import ConnectDto;
 from Shared.dtos.GameActionDto import GameActionDto;
 from Shared.dtos.CreateGameDto import CreateGameDto;
+from Shared.dtos.AddAgentGameDto import AddAgentGameDto;
 from Shared.Packet import Packet;
 
 import Client.utility.PacketUtility as PacketUtility;
@@ -148,11 +149,11 @@ class ServiceContext():
 
         return self.Client.Game;
 
-    def AddAgentToGame(self):
-        if not self.Client.GameIdentifier:
+    def AddAgentToGame(self, agentType):
+        if not self.Client.GameIdentifier or not agentType:
             return None;
 
-        dto = PlayerGameIdentifierDto(self.Client.Player, self.Client.GameIdentifier);
+        dto = AddAgentGameDto(self.Client.Player, self.Client.GameIdentifier, agentType);
         packet = PacketUtility.GetAddAgentToGamePacket(dto);
 
         reply = self.Send(packet);
