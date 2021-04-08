@@ -141,6 +141,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
             self.InstanceStatistics.TotalDays += 1;
 
         # done if you're dead
+        self.InstanceStatistics.TotalTurns += 1;
 
         gameIsOver, winningFaction = self.game.CheckWinCondition();
 
@@ -207,14 +208,19 @@ class WerewolfEnvironemnt(gym.Wrapper):
     def reset(self):
         self.game.Restart();
         self.game.Start();
+
+        self.InstanceStatistics.NumberOfPlayers = len(self.Game.Players);
+
         self.saveStatistics();
 
+        self.Statistics.NumberOfPlayers = self.InstanceStatistics.NumberOfPlayers;
         self.Statistics.DeadAgentVoted += self.InstanceStatistics.DeadAgentVoted;
         self.Statistics.DeadAgentAttacked += self.InstanceStatistics.DeadAgentAttacked;
         self.Statistics.TeammateAttacked += self.InstanceStatistics.TeammateAttacked;
         self.Statistics.IncorrectAction += self.InstanceStatistics.IncorrectAction;
         self.Statistics.WerewolfWins += self.InstanceStatistics.WerewolfWins;
         self.Statistics.VillagerWins += self.InstanceStatistics.VillagerWins;
+        self.Statistics.TotalTurns += self.InstanceStatistics.TotalTurns;
         self.Statistics.TotalDays += self.InstanceStatistics.TotalDays;
         self.Statistics.TotalGames += self.InstanceStatistics.TotalGames;
 
