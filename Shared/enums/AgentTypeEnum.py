@@ -15,13 +15,13 @@ class AgentTypeEnum(Enum):
             return str();
 
         elif self.value == self.DummyAgent.value:
-            return nameof(self.DummyAgent);
+            return "Dummy Agent";
 
         elif self.value == self.RuleBasedAgent.value:
-            return nameof(self.RuleBasedAgent);
+            return "Rule-Based Agent";
 
         elif self.value == self.TrainableAgent.value:
-            return nameof(self.TrainableAgent);
+            return "Trainable Agent";
         else:
             raise GameException("Unknown agent type used.");
 

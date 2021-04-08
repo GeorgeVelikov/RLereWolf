@@ -5,6 +5,7 @@ import Client.utility.TalkMessageUtility as TalkMessageUtility;
 from Client.screens.ScreenBase import ScreenBase;
 
 from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.AgentTypeEnum import AgentTypeEnum;
 from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
 from Shared.dtos.MessageRequestDto import MessageRequestDto;
 
@@ -29,6 +30,7 @@ class GameLobbyScreen(ScreenBase):
 
         self.__talkMessagesMenu = None;
         self.__whisperMessagesMenu = None;
+        self.__addAgentMenu = None;
 
         self.__gameName = self.GetVariable("GameName");
         self.__gameTurn = self.GetVariable("GameTurn");
@@ -54,6 +56,7 @@ class GameLobbyScreen(ScreenBase):
         self.__isReadyButtonText = self.GetVariable(nameof(self.Client.Player.IsReady));
 
         self.UpdateButtons();
+        self.SetupAddAgentSubMenu();
 
         self.__threadUpdateGameData = KillableThread(func = self.UpdateGameData);
         self.__threadUpdateGameData.start();
@@ -337,6 +340,16 @@ class GameLobbyScreen(ScreenBase):
 
         return;
 
+    def SetupAddAgentSubMenu(self):
+        self.__addAgentMenu = tk.Menu(self.Root, tearoff = False);
+
+        for agentType in AgentTypeEnum.Values():
+            self.__addAgentMenu.add_command(\
+                label = str(agentType),\
+                command = partial(self.AddAgent_AddSpecificAgentType, agentType));
+
+        return;
+
     #endregion
 
     # General Controls
@@ -482,6 +495,13 @@ class GameLobbyScreen(ScreenBase):
         if self.Client.Game.HasStarted:
             return;
 
+        x = self.Root.winfo_pointerx();
+        y = self.Root.winfo_pointery();
+
+        self.__addAgentMenu.tk_popup(x, y);
+        return;
+
+    def AddAgent_AddSpecificAgentType(self, agentType):
         self.Context.ServiceContext.AddAgentToGame();
         return;
 
