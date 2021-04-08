@@ -25,7 +25,7 @@ class TrainablePlayer(AgentPlayer):
         playersToVoteFor = [player for player in self.Game.Players];
 
         if not playersToVoteFor:
-            return None;
+            return Vote(self, None);
 
         votedPlayer = None
 

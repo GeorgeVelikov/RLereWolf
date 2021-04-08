@@ -83,7 +83,7 @@ class RuleBasedPlayer(AgentPlayer):
                 and player.Identifier != self.Identifier];
 
         if not viablePlayersToVoteFor:
-            return;
+            return Vote(self, None);
 
         playersOrderedByTrust = sorted(viablePlayersToVoteFor,\
             key = lambda p: self.__trust[p.Identifier]);
@@ -102,7 +102,7 @@ class RuleBasedPlayer(AgentPlayer):
                 and player.Role.Type != PlayerTypeEnum.Werewolf]
 
         if not viablePlayersToVoteFor:
-            return;
+            return Vote(self, None);
 
         playerToVoteFor = random.choice(viablePlayersToVoteFor);
 
@@ -122,7 +122,7 @@ class RuleBasedPlayer(AgentPlayer):
                 and player.Role.Type != PlayerTypeEnum.Werewolf]
 
         if not viablePlayersToVoteFor:
-            return;
+            return Vote(self, None);
 
         playerToKill = random.choice(viablePlayersToVoteFor);
 
@@ -133,7 +133,7 @@ class RuleBasedPlayer(AgentPlayer):
             if player.Identifier != self.Identifier];
 
         if not viablePlayersToDivine:
-            return;
+            return Vote(self, None);
 
         playersOrderedByTrust = sorted(viablePlayersToVoteFor,\
             key = lambda p: self.__trust[p.Identifier]);
@@ -150,7 +150,7 @@ class RuleBasedPlayer(AgentPlayer):
             if player.IsAlive];
 
         if not viablePlayersToGuard:
-            return None;
+            return Vote(self, None);
 
         playerToGuard = random.choice(viablePlayersToGuard);
 
