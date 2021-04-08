@@ -15,7 +15,7 @@ class Statistics():
 
     def __str__(self):
         statistics = \
-            "\nNumber Of Players:" + str(self.DeadAgentVoted) +\
+            "\nNumber Of Players:" + str(self.NumberOfPlayers) +\
             "\nDead Agents Voted:" + str(self.DeadAgentVoted) +\
             "\nDead Agents Attacked:" + str(self.DeadAgentAttacked) +\
             "\nTeammates Attacked:" + str(self.TeammateAttacked) +\
