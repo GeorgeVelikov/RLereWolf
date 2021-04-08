@@ -7,6 +7,14 @@ class TrainablePlayer(AgentPlayer):
     def __init__(self, name, game):
         super().__init__(name, game);
 
+    # overrides from the base Agent class, needed by the client-server
+    # game implementation to force a play from the user
+    def ActDay(self):
+        return self.Act();
+
+    def ActNight(self):
+        return self.Act();
+
     def Act(self):
         action = None;
 
@@ -28,3 +36,19 @@ class TrainablePlayer(AgentPlayer):
         action = Vote(self, votedPlayer);
 
         return action;
+
+    def PreGameSetup(self):
+        return;
+
+    def PostGameSetup(self):
+        return;
+
+    #region Communication
+
+    def Talk(self):
+        return;
+
+    def Sway(self):
+        return;
+
+    #endregion

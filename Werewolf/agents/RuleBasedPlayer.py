@@ -7,9 +7,13 @@ import Shared.utility.LogUtility as LogUtility;
 
 import random;
 
-class DummyPlayer(AgentPlayer):
+class RuleBasedPlayer(AgentPlayer):
     def __init__(self, name, game):
         super().__init__(name, game);
+
+        # We keep a tally of every identifier we've ever played with for this instance
+        self.__trust = {};
+        self.__honestyFactor = random.uniform(0, 1);
 
     def Act(self):
         action = None;
@@ -18,6 +22,7 @@ class DummyPlayer(AgentPlayer):
             return None;
 
         if self.Game.TimeOfDay == TimeOfDayEnum.Day:
+            self.Talk();
             action = self.ActDay();
         elif self.Game.TimeOfDay == TimeOfDayEnum.Night:
             action = self.ActNight();
@@ -59,9 +64,15 @@ class DummyPlayer(AgentPlayer):
         return action;
 
     def PreGameSetup(self):
+        for player in self.Game.Players:
+            if not self.__trust[player.Identifier] or player.Identifier != self.Identifier:
+                self.__trust[player.Identifier] = 0.0;
+
         return;
 
     def PostGameSetup(self):
+
+
         return;
 
     #region Day
@@ -69,12 +80,18 @@ class DummyPlayer(AgentPlayer):
     def ActDayVillager(self):
         viablePlayersToVoteFor = [player for player in self.Game.Players\
             if player.IsAlive\
-                and player.Identifier != self.Identifier]
+                and player.Identifier != self.Identifier];
 
         if not viablePlayersToVoteFor:
-            return Vote(self, None);
+            return;
 
-        playerToVoteFor = random.choice(viablePlayersToVoteFor);
+        playersOrderedByTrust = sorted(viablePlayersToVoteFor,\
+            key = lambda p: self.__trust[p.Identifier]);
+
+        leastTrustedPlayer = next(playersOrderedByTrust, None);
+
+        playerToVoteFor = leastTrustedPlayer if leastTrustedPlayer\
+            else random.choice(viablePlayersToVoteFor);
 
         return Vote(self, playerToVoteFor);
 
@@ -85,7 +102,7 @@ class DummyPlayer(AgentPlayer):
                 and player.Role.Type != PlayerTypeEnum.Werewolf]
 
         if not viablePlayersToVoteFor:
-            return Vote(self, None);
+            return;
 
         playerToVoteFor = random.choice(viablePlayersToVoteFor);
 
@@ -105,7 +122,7 @@ class DummyPlayer(AgentPlayer):
                 and player.Role.Type != PlayerTypeEnum.Werewolf]
 
         if not viablePlayersToVoteFor:
-            return Vote(self, None);
+            return;
 
         playerToKill = random.choice(viablePlayersToVoteFor);
 
@@ -116,9 +133,15 @@ class DummyPlayer(AgentPlayer):
             if player.Identifier != self.Identifier];
 
         if not viablePlayersToDivine:
-            return Vote(self, None);
+            return;
 
-        playerToDivine = random.choice(viablePlayersToDivine);
+        playersOrderedByTrust = sorted(viablePlayersToVoteFor,\
+            key = lambda p: self.__trust[p.Identifier]);
+
+        leastTrustedPlayer = next(playersOrderedByTrust, None);
+
+        playerToDivine = leastTrustedPlayer if leastTrustedPlayer\
+            else random.choice(viablePlayersToDivine);
 
         return Vote(self, playerToDivine);
 
@@ -127,7 +150,7 @@ class DummyPlayer(AgentPlayer):
             if player.IsAlive];
 
         if not viablePlayersToGuard:
-            return Vote(self, None);
+            return None;
 
         playerToGuard = random.choice(viablePlayersToGuard);
 
@@ -135,7 +158,7 @@ class DummyPlayer(AgentPlayer):
 
     #endregion
 
-    #region Communication
+    #region Commiunication
 
     def Talk(self):
         return;

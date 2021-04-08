@@ -30,6 +30,9 @@
     <Compile Include="agents\DummyPlayer.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="agents\RuleBasedPlayer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="agents\TrainablePlayer.py">
       <SubType>Code</SubType>
     </Compile>

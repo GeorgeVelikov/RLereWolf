@@ -34,7 +34,7 @@ def Log(status, message, game = None):
     # This should already be stored in the Logs folder created by the framework, but
     # I suppose it's quite handy to have this easily accessible so that you can
     # keep track of any changes and how they affect the game logic/steps
-    # print(logMessage);
+    print(logMessage);
 
     with open(filePath + os.path.sep + fileName, "a") as log:
         log.write("\n" + logMessage);

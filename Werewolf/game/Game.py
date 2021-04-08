@@ -170,6 +170,9 @@ class Game():
         self.__hasStarted = True;
         self.__turn = 0;
 
+        for agent in self.AgentPlayers:
+            agent.PreGameSetup();
+
         self.StartDay();
 
         return;
@@ -305,11 +308,14 @@ class Game():
             LogUtility.Error(f"Invalid vote, target player {vote.VotedPlayer.Name} is not alive", self);
             return VoteResultTypeEnum.DeadPlayerTargeted;
 
+        action = None;
+
         if not vote.VotedPlayer:
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' does not vote.", self);
-            return VoteResultTypeEnum.WaitAction;
+            action = VoteResultTypeEnum.WaitAction;
         else:
             LogUtility.CreateGameMessage(f"'{vote.Player.Name}' voted to execute {vote.VotedPlayer.Name}.", self);
+            action = VoteResultTypeEnum.SuccessfulAction;
 
         self.Votes.add(vote);
         self.__playerIdentifiersThatCanVote.remove(vote.Player.Identifier);
@@ -317,7 +323,7 @@ class Game():
         if not self.__playerIdentifiersThatCanVote:
             self.CountVotesExecute();
 
-        return VoteResultTypeEnum.SuccessfulAction;
+        return action;
 
     def CountVotesExecute(self):
         # remove the "wait" calls
@@ -469,6 +475,9 @@ class Game():
         gameIsOver, winningFaction = self.CheckWinCondition();
 
         if gameIsOver:
+            for agent in self.AgentPlayers:
+                agent.PreGameSetup();
+
             if self.__agentsAutomaticallyPlay:
                 # don't go to other turn and don't start the day if the game is over
                 self.Restart();

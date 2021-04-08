@@ -19,3 +19,19 @@ class AgentPlayer(Player):
     def ActNight(self):
         raise NotImplementedError("Act Night has not been implemented for this agent type.");
         return;
+
+    def PreGameSetup(self):
+        raise NotImplementedError("Pre Game Setup has not been implemented for this agent type.");
+        return;
+
+    def PostGameSetup(self):
+        raise NotImplementedError("Post Game Setup has not been implemented for this agent type.");
+        return;
+
+    def Talk(self):
+        raise NotImplementedError("Talk has not been implemented for this agent type.");
+        return;
+
+    def Sway(self):
+        raise NotImplementedError("Sway has not been implemented for this agent type.");
+        return;
