@@ -1,8 +1,9 @@
 from Werewolf.agents.AgentPlayer import AgentPlayer;
 from Werewolf.game.actions.Vote import Vote;
 
-from Shared.enums.PlayerTypeEnum import PlayerTypeEnum
-from Shared.enums.TimeOfDayEnum import TimeOfDayEnum
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
+from Shared.enums.AgentTypeEnum import AgentTypeEnum;
 import Shared.utility.LogUtility as LogUtility;
 
 import random;
@@ -14,6 +15,10 @@ class RuleBasedPlayer(AgentPlayer):
         # We keep a tally of every identifier we've ever played with for this instance
         self.__trust = {};
         self.__honestyFactor = random.uniform(0, 1);
+
+    @property
+    def AgentType(self):
+        return AgentTypeEnum.RuleBasedAgent;
 
     def Act(self):
         action = None;
@@ -71,8 +76,6 @@ class RuleBasedPlayer(AgentPlayer):
         return;
 
     def PostGameSetup(self):
-
-
         return;
 
     #region Day

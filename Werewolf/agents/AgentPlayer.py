@@ -1,5 +1,7 @@
 from Werewolf.game.Player import Player;
 
+from Shared.enums.AgentTypeEnum import AgentTypeEnum;
+
 class AgentPlayer(Player):
     def __init__(self, name, game):
         super().__init__("[AI] " + name);
@@ -11,6 +13,10 @@ class AgentPlayer(Player):
     @property
     def Game(self):
         return self.__game;
+
+    @property
+    def AgentType(self):
+        return AgentTypeEnum._None;
 
     def ActDay(self):
         raise NotImplementedError("Act Day has not been implemented for this agent type.");

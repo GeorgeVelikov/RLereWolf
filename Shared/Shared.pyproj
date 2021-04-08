@@ -73,6 +73,9 @@
     <Compile Include="dtos\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="enums\AgentTypeEnum.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="enums\FactionTypeEnum.py">
       <SubType>Code</SubType>
     </Compile>

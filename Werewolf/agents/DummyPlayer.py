@@ -1,8 +1,9 @@
 from Werewolf.agents.AgentPlayer import AgentPlayer;
 from Werewolf.game.actions.Vote import Vote;
 
-from Shared.enums.PlayerTypeEnum import PlayerTypeEnum
-from Shared.enums.TimeOfDayEnum import TimeOfDayEnum
+from Shared.enums.PlayerTypeEnum import PlayerTypeEnum;
+from Shared.enums.TimeOfDayEnum import TimeOfDayEnum;
+from Shared.enums.AgentTypeEnum import AgentTypeEnum;
 import Shared.utility.LogUtility as LogUtility;
 
 import random;
@@ -10,6 +11,10 @@ import random;
 class DummyPlayer(AgentPlayer):
     def __init__(self, name, game):
         super().__init__(name, game);
+
+    @property
+    def AgentType(self):
+        return AgentTypeEnum.DummyAgent;
 
     def Act(self):
         action = None;

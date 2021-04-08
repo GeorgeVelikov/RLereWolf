@@ -1,11 +1,17 @@
 from Werewolf.agents.AgentPlayer import AgentPlayer;
 from Werewolf.game.actions.Vote import Vote;
 
+from Shared.enums.AgentTypeEnum import AgentTypeEnum;
+
 import random;
 
 class TrainablePlayer(AgentPlayer):
     def __init__(self, name, game):
         super().__init__(name, game);
+
+    @property
+    def AgentType(self):
+        return AgentTypeEnum.TrainableAgent;
 
     # overrides from the base Agent class, needed by the client-server
     # game implementation to force a play from the user
