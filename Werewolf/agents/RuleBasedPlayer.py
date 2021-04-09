@@ -40,6 +40,8 @@ class RuleBasedPlayer(AgentPlayer):
         if not self.IsAlive or not self.Game.HasStarted:
             return None;
 
+        self.Talk();
+
         if self.Role.Type == PlayerTypeEnum.Villager:
             action = self.ActDayVillager();
         elif self.Role.Type == PlayerTypeEnum.Werewolf:
@@ -70,8 +72,13 @@ class RuleBasedPlayer(AgentPlayer):
 
     def PreGameSetup(self):
         for player in self.Game.Players:
-            if not self.__trust[player.Identifier] or player.Identifier != self.Identifier:
+
+            if player.Identifier != self.Identifier \
+                and player.Identifier not in self.__trust:
+
                 self.__trust[player.Identifier] = 0.0;
+
+            pass;
 
         return;
 
@@ -91,7 +98,7 @@ class RuleBasedPlayer(AgentPlayer):
         playersOrderedByTrust = sorted(viablePlayersToVoteFor,\
             key = lambda p: self.__trust[p.Identifier]);
 
-        leastTrustedPlayer = next(playersOrderedByTrust, None);
+        leastTrustedPlayer = next((p for p in playersOrderedByTrust), None);
 
         playerToVoteFor = leastTrustedPlayer if leastTrustedPlayer\
             else random.choice(viablePlayersToVoteFor);
@@ -138,10 +145,10 @@ class RuleBasedPlayer(AgentPlayer):
         if not viablePlayersToDivine:
             return Vote(self, None);
 
-        playersOrderedByTrust = sorted(viablePlayersToVoteFor,\
+        playersOrderedByTrust = sorted(viablePlayersToDivine,\
             key = lambda p: self.__trust[p.Identifier]);
 
-        leastTrustedPlayer = next(playersOrderedByTrust, None);
+        leastTrustedPlayer = next((p for p in playersOrderedByTrust), None);
 
         playerToDivine = leastTrustedPlayer if leastTrustedPlayer\
             else random.choice(viablePlayersToDivine);
@@ -163,7 +170,18 @@ class RuleBasedPlayer(AgentPlayer):
 
     #region Commiunication
 
+    #@ray.remove(num_gpus)
     def Talk(self):
+
+        # create message
+        # add message to game
+
+        # sway other players
+        agents = self.Game.AgentPlayers;
+
+        for agent in agents:
+            agent.Sway();
+
         return;
 
     def Sway(self):

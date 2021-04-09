@@ -47,6 +47,14 @@ class TrainablePlayerWrapper():
             for index, identifier in enumerate(observations.keys()):
                 pass;
 
+            # Sanity checks since we do work with "low-level" data in here, and may or may
+            # not get nulls, depending on our agent type. "Logically safer" agents will put
+            # Nones as their action, i.e. they cannot do anything, whereas a "Wait" action
+            # is a vote directed to no one, this is a bit of a bad design choice and would
+            # ideally be replaced by some class Action which can then be inherited by
+            # Wait/Vote/Divine etc. However, time for the project didn't allow gold plating
+            actions = [a for a in actions if a != None];
+
             observations, rewards, dones, info = environment.step(actions);
 
             for agentId in allAliveAgentIds:
