@@ -14,7 +14,7 @@ class RuleBasedPlayer(AgentPlayer):
 
         # We keep a tally of every identifier we've ever played with for this instance
         self.__trust = {};
-        self.__honestyFactor = random.uniform(0, 1);
+        self.__honestyFactor = random.uniform(-1, 1);
 
     @property
     def AgentType(self):
