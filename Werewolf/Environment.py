@@ -3,7 +3,7 @@ from Werewolf.game.Game import Game;
 from Werewolf.agents.DummyPlayer import DummyPlayer;
 from Werewolf.agents.RuleBasedPlayer import RuleBasedPlayer;
 from Werewolf.agents.TrainablePlayer import TrainablePlayer;
-from Werewolf.agents.TrainablePlayerWrapper import TrainablePlayerWrapper;
+from Werewolf.TrainableEnvironmentWrapper import TrainableEnvironmentWrapper;
 
 import multiprocessing;
 import logging;
@@ -20,7 +20,7 @@ def RunWerewolfEnvironment():
     environment = WerewolfEnvironemnt(game);
 
     # wrapper over everything
-    trainablePlayer = TrainablePlayerWrapper(game);
+    trainablePlayer = TrainableEnvironmentWrapper(game);
 
     generalInfo, metrics = trainablePlayer.Experiment(100, environment, True);
     print("\n" + str(environment.Statistics));

@@ -6,7 +6,7 @@ from tqdm import tqdm;
 
 from multiprocessing.pool import ThreadPool
 
-class TrainablePlayerWrapper():
+class TrainableEnvironmentWrapper():
     def __init__(self, game):
         self.__game = game;
         self.__metrics = {};

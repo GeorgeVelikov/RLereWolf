@@ -36,7 +36,7 @@
     <Compile Include="agents\TrainablePlayer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="agents\TrainablePlayerWrapper.py">
+    <Compile Include="TrainableEnvironmentWrapper.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="agents\__init__.py">
