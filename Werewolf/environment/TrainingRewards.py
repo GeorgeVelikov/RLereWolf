@@ -1,5 +1,5 @@
 class TrainingRewards():
-    DayPassed = +1;
+    DayPassed = -1;
     Vote = +1;
     Wait = +0.5;
     Death = -5;
