@@ -13,6 +13,8 @@ import numpy;
 import random;
 import csv;
 import os;
+import time;
+import datetime;
 
 from ray.rllib import MultiAgentEnv;
 from ray.rllib.env import EnvContext;
@@ -25,6 +27,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
         self.__numberOfAgents = len(self.game.AgentPlayers);
         self.__totalEpisodeReward = [0 for _ in range(self.__numberOfAgents)]
         self.__stepCount = int();
+        self.__startTime = datetime.datetime.now();
 
         self.__instanceStatistics = Statistics();
         self.__statistics = Statistics();
@@ -206,7 +209,12 @@ class WerewolfEnvironemnt(gym.Wrapper):
         return observations;
 
     def reset(self):
+        self.InstanceStatistics.GameTimeSeconds =\
+            (datetime.datetime.now()- self.__startTime).total_seconds();
+
         self.game.Restart();
+
+        self.__startTime = datetime.datetime.now();
         self.game.Start();
 
         self.InstanceStatistics.NumberOfPlayers = len(self.Game.Players);
@@ -223,6 +231,7 @@ class WerewolfEnvironemnt(gym.Wrapper):
         self.Statistics.TotalTurns += self.InstanceStatistics.TotalTurns;
         self.Statistics.TotalDays += self.InstanceStatistics.TotalDays;
         self.Statistics.TotalGames += self.InstanceStatistics.TotalGames;
+        self.Statistics.GameTimeSeconds += self.InstanceStatistics.GameTimeSeconds;
 
         self.__instanceStatistics = Statistics();
         return self.observe();

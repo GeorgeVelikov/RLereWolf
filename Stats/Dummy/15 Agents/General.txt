@@ -1,0 +1,29 @@
+Number Of Players:15
+Dead Agents Voted:0
+Dead Agents Attacked:73
+Teammates Attacked:0
+Incorrect Actions:2234
+Werewolf Wins:628
+Villager Wins:372
+Total Turns:11518
+Total Days:5282
+Total Games:1000
+Game Time (seconds):248.40256399999993
+
+
+
+{'113b4e1fc0914692a0cd5b4a97073607': -4238,
+ '4f75427caaf543d3a3bb4ab72f490ebb': -3148,
+ '60fcd3a7880e4c96b1eca22e42b97e75': -3988,
+ '772692bfea9044ea9b31fb8f250267d4': -3892,
+ '82465d5e98f9425cb38cfe38dd008696': -3588,
+ '82a2cab9c28647f58b094d83d6257955': -3264,
+ '901e7e62a6ff4ec08496c297e9c1b565': -3579,
+ 'af46cc8ecb64461b9ee54fd32896c378': -2941,
+ 'bb42d92ba3234c849a94bc557bf57476': -4498,
+ 'c0739e22ce564666aa711bb7586c0a93': -3340,
+ 'd3350301d8d04a898b58c124bb85658f': -4242,
+ 'd8aca9a78dcf4bd7a05e8bf176a75f98': -3872,
+ 'd8de7607441b40e8ba57cbb8e4c4027b': -4190,
+ 'ddb84b166ca14cef8f1f5016f935042f': -5638,
+ 'f5a41255d3af43118cde6e360b399a9a': -3895}

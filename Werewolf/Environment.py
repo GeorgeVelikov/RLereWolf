@@ -14,15 +14,15 @@ import pprint;
 def RunWerewolfEnvironment():
     game = Game("Training game", False);
 
-    for i in range(10):
-        TrainablePlayer("TBot-" + str(i), game);
+    for i in range(75):
+        RuleBasedPlayer("TBot-" + str(i), game);
 
     environment = WerewolfEnvironemnt(game);
 
     # wrapper over everything
     trainablePlayer = TrainableEnvironmentWrapper(game);
 
-    generalInfo, metrics = trainablePlayer.Experiment(100, environment, True);
+    generalInfo, metrics = trainablePlayer.Experiment(1000, environment, True);
     print("\n" + str(environment.Statistics));
 
     print("\n");

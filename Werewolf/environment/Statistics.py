@@ -12,6 +12,7 @@ class Statistics():
         self.TotalTurns = int();
         self.TotalDays = int();
         self.TotalGames = int();
+        self.GameTimeSeconds = int();
 
     def __str__(self):
         statistics = \
@@ -24,6 +25,7 @@ class Statistics():
             "\nVillager Wins:" + str(self.VillagerWins) +\
             "\nTotal Turns:" + str(self.TotalTurns) +\
             "\nTotal Days:" + str(self.TotalDays) +\
-            "\nTotal Games:" + str(self.TotalGames);
+            "\nTotal Games:" + str(self.TotalGames) +\
+            "\nGame Time (seconds):" + str(self.GameTimeSeconds);
 
         return statistics;
