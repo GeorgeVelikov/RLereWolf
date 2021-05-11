@@ -14,8 +14,8 @@ import pprint;
 def RunWerewolfEnvironment():
     game = Game("Training game", False);
 
-    for i in range(75):
-        RuleBasedPlayer("TBot-" + str(i), game);
+    for i in range(5):
+        TrainablePlayer("TBot-" + str(i), game);
 
     environment = WerewolfEnvironemnt(game);
 
