@@ -131,3 +131,4 @@ dmypy.json
 .pyre/
 .vs/Werewolf/v16/.suo
 Werewolf/Werewolf.pyproj.user
+Client/Client.pyproj.user
